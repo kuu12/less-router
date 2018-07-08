@@ -5,18 +5,19 @@ const pattern = new Set();
 const regex = new Set();
 const is_pattern = /:\w+/;
 
-const set = path =>
+const whichSet = path =>
     path instanceof RegExp ? regex :
         is_pattern.test(path) ? pattern :
             string;
 
-const func = name => path =>
-    set(path)[name](String(path));
+const uniformFunction = name =>
+    path =>
+        whichSet(path)[name](String(path));
 
 const cache = {
-    has: func('has'),
-    add: func('add'),
-    delete: func('delete'),
-}
+    has: uniformFunction('has'),
+    add: uniformFunction('add'),
+    delete: uniformFunction('delete'),
+};
 
 export default cache;

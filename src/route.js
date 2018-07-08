@@ -3,7 +3,7 @@ import cache from './cache';
 import config from './config';
 import { patternToRegex, pathParams, PARAM } from './path-params';
 
-const Route = (Component) =>
+const Route = Component =>
     ({ path, title, titleName, style = {}, cachable, ...rest }) => {
         const pathname = location.pathname.replace(
             new RegExp('^' + config.basename), ''
@@ -17,6 +17,8 @@ const Route = (Component) =>
                     : path === pathname;
 
         const cached = cache.has(path);
+
+        config.paths[path] = match;
 
         if (match) {
             if (cachable && !cached) cache.add(path);

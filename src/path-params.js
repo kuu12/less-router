@@ -34,7 +34,7 @@ const pathParams = (pattern, pathname = location.pathname) => {
         );
 
     return result;
-}
+};
 
 export {
     PARAM,
