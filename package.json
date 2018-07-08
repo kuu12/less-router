@@ -1,0 +1,16 @@
+{
+  "name": "less-router",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/less-router.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "peerDependencies": {
+    "react": ">= 0.13.0",
+    "es6-promise": "*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
