@@ -1,5 +1,5 @@
 // app.jsx
-import { Router } from 'less-router';
+import { Router, Route } from 'less-router';
 import Cookie from 'js-cookie';
 import Login from './login';
 import Order from './order';
@@ -19,6 +19,13 @@ class App extends Router {
                 <Login
                     path="/login"
                     title="Login"
+                    /**
+                     * if you want to control routes inside Login,
+                     * pass the router object as a parameter.
+                     * Then you can use it in Login, 
+                     * like `this.props.router.push('/order)`
+                     */
+                    router={this.router}
                 />
                 <Order
                     path="/order/:orderId"
@@ -29,6 +36,9 @@ class App extends Router {
                     path="/order/:orderId/:itemId"
                     title="Item Detail"
                 />
+                {this.router.notFound() &&
+                    <NotFound />
+                }
             </div>
         )
     }

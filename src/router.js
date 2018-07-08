@@ -8,9 +8,8 @@ class Router extends React.Component {
         super(props);
         this.state = {};
         this.router = {
-            basename(basename) {
-                config.basename = basename;
-            },
+            basename: basename =>
+                config.basename = basename,
 
             push: path => (
                 history.pushState(
@@ -38,7 +37,7 @@ class Router extends React.Component {
                 new Promise(resolve =>
                     this.setState(
                         { __pathname__: config.basename + location.pathname },
-                        resolve
+                        resolve,
                     )
                 ),
 
@@ -48,6 +47,10 @@ class Router extends React.Component {
                     this.forceUpdate(resolve)
                 )
             ),
+
+            notFound: () => Object
+                .values(config.paths)
+                .some(Boolean),
         };
         window.addEventListener(
             'popstate',
