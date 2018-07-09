@@ -1,4 +1,3 @@
-import 'es6-promise';
 import React from 'react';
 import cache from './cache';
 import config from './config';
@@ -41,16 +40,12 @@ class Router extends React.Component {
                     )
                 ),
 
-            clear: path => (
+            clearCache: path => (
                 cache.delete(path),
                 new Promise(resolve =>
                     this.forceUpdate(resolve)
                 )
             ),
-
-            notFound: () => Object
-                .values(config.paths)
-                .some(Boolean),
         };
         window.addEventListener(
             'popstate',

@@ -1,12 +1,16 @@
-const PARAM = /:\w+(?=\W?)/g;
+const param = /:\w+(?=\W?)/g;
 
-const patternToRegex = (pattern, callback) =>
-    pattern.replace(
-        PARAM,
-        callback instanceof Function
-            ? (...args) => (callback(...args), '(\\w+)')
-            : '(\\w+)'
+const regexFromPattern = (pattern, callback) => {
+    const replacement = callback instanceof Function
+        ? (...args) => (callback(...args), '(\\w+)')
+        : '(\\w+)';
+
+    return new RegExp(
+        pattern.replace(
+            param, replacement
+        )
     );
+}
 
 /**
  * @param   {string} pattern    '/calendar/:year/:month/:date'
@@ -18,17 +22,17 @@ const patternToRegex = (pattern, callback) =>
  *                                  date: '8' 
  *                              }
  */
-const pathParams = (pattern, pathname = location.pathname) => {
+const paramsFromPath = (pattern, pathname = location.pathname) => {
     const params = ['path'];
     const result = {};
 
-    const regex = patternToRegex(
+    const regex = regexFromPattern(
         pattern,
         ([syntax_ignored, ...paramName]) =>
             params.push(paramName.join(''))
     );
 
-    (new RegExp(regexp).exec(pathname) || [])
+    (regex.exec(pathname) || [])
         .forEach((match, index) =>
             result[params[index]] = match
         );
@@ -36,8 +40,15 @@ const pathParams = (pattern, pathname = location.pathname) => {
     return result;
 };
 
+const pathMatchPathname = (path, pathname = location.pathname) =>
+    path instanceof RegExp
+        ? path.test(pathname)
+        : param.test(path)
+            ? regexFromPattern(path).test(pathname)
+            : path === pathname;
+
 export {
-    PARAM,
-    patternToRegex,
-    pathParams,
+    param,
+    paramsFromPath,
+    pathMatchPathname,
 }

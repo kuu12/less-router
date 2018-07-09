@@ -1,48 +1,49 @@
 import React from 'react';
 import cache from './cache';
 import config from './config';
-import { patternToRegex, pathParams, PARAM } from './path-params';
+import {
+    paramsFromPath,
+    pathMatchPathname,
+} from './path';
 
 const Route = Component =>
-    ({ path, title, titleName, style = {}, cachable, ...rest }) => {
-        const pathname = location.pathname.replace(
-            new RegExp('^' + config.basename), ''
-        );
+    ({ path, title, titleName, style = {}, autoCache, ...rest }) => {
+        const pathname =
+            location
+                .pathname
+                .replace(
+                    new RegExp('^' + config.basename), ''
+                ) ||
+            '/';
 
-        const match =
-            path instanceof RegExp
-                ? path.test(pathname)
-                : PARAM.test(path)
-                    ? patternToRegex(path).test(pathname)
-                    : path === pathname;
-
+        const match = pathMatchPathname(path, pathname);
         const cached = cache.has(path);
 
         config.paths[path] = match;
 
         if (match) {
-            if (cachable && !cached) cache.add(path);
+            if (autoCache && !cached) cache.add(path);
             if (typeof title === 'string') document.title = title;
 
-            return (
+            return (<div className="route-container">
                 <Component
                     path={path}
                     style={style}
                     title={titleName}
-                    {...pathParams(path, pathname)}
+                    {...paramsFromPath(path, pathname)}
                     {...rest}
                 />
-            );
+            </div>);
         } else if (cached) {
-            return (
+            return (<div className="route-container hidden">
                 <Component
                     path={path}
                     style={{ ...style, display: 'none' }}
                     title={titleName}
-                    {...pathParams(path, pathname)}
+                    {...paramsFromPath(path, pathname)}
                     {...rest}
                 />
-            );
+            </div>);
         } else {
             return null;
         }

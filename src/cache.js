@@ -1,4 +1,4 @@
-import Set from 'set';
+// import Set from './set';
 
 const string = new Set();
 const pattern = new Set();
