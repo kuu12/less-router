@@ -49,6 +49,7 @@ const pathMatchPathname = (path, pathname = location.pathname) =>
 
 export {
     param,
+    regexFromPattern,
     paramsFromPath,
     pathMatchPathname,
 }

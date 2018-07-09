@@ -1,10 +1,7 @@
 import React from 'react';
 import cache from './cache';
 import config from './config';
-import {
-    paramsFromPath,
-    pathMatchPathname,
-} from './path';
+import { paramsFromPath, pathMatchPathname } from './path';
 
 const Route = Component =>
     ({ path, title, titleName, style = {}, autoCache, ...rest }) => {

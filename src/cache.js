@@ -1,23 +1,20 @@
-// import Set from './set';
+import { param, regexFromPattern } from './path';
 
-const string = new Set();
-const pattern = new Set();
-const regex = new Set();
-const is_pattern = /:\w+/;
+const regexFromString = string => new RegExp(`^${string}$`);
 
-const whichSet = path =>
-    path instanceof RegExp ? regex :
-        is_pattern.test(path) ? pattern :
-            string;
+const regexFrompPath = path =>
+    path instanceof RegExp ? path :
+        param.test(path) ? regexFromPattern(path) :
+            regexFromString(path);
 
-const uniformFunction = name =>
-    path =>
-        whichSet(path)[name](String(path));
+const keyFromPath = path => String(regexFrompPath(path));
+
+const store = {};
 
 const cache = {
-    has: uniformFunction('has'),
-    add: uniformFunction('add'),
-    delete: uniformFunction('delete'),
+    has: path => Boolean(store[keyFromPath(path)]),
+    add: path => store[keyFromPath(path)],
+    delete: path => delete store[keyFromPath(path)],
 };
 
 export default cache;
