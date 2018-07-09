@@ -1,16 +1,23 @@
 const param = /:\w+(?=\W?)/g;
 
+const regexFromString = string =>
+    new RegExp(`^${string}`);
+
 const regexFromPattern = (pattern, callback) => {
     const replacement = callback instanceof Function
         ? (...args) => (callback(...args), '(\\w+)')
         : '(\\w+)';
-
     return new RegExp(
         pattern.replace(
             param, replacement
         )
     );
-}
+};
+
+const regexFrompPath = path =>
+    path instanceof RegExp ? path :
+        param.test(path) ? regexFromPattern(path) :
+            regexFromString(path);
 
 /**
  * @param   {string} pattern    '/calendar/:year/:month/:date'
@@ -22,34 +29,31 @@ const regexFromPattern = (pattern, callback) => {
  *                                  date: '8' 
  *                              }
  */
-const paramsFromPath = (pattern, pathname = location.pathname) => {
-    const params = ['path'];
-    const result = {};
+const paramsFromPath =
+    (pattern, pathname = location.pathname) => {
+        const params = ['path'];
+        const result = {};
 
-    const regex = regexFromPattern(
-        pattern,
-        ([syntax_ignored, ...paramName]) =>
-            params.push(paramName.join(''))
-    );
-
-    (regex.exec(pathname) || [])
-        .forEach((match, index) =>
-            result[params[index]] = match
+        const regex = regexFromPattern(
+            pattern,
+            ([syntax_ignored, ...paramName]) =>
+                params.push(paramName.join(''))
         );
 
-    return result;
-};
+        (regex.exec(pathname) || [])
+            .forEach((match, index) =>
+                result[params[index]] = match
+            );
 
-const pathMatchPathname = (path, pathname = location.pathname) =>
-    path instanceof RegExp
-        ? path.test(pathname)
-        : param.test(path)
-            ? regexFromPattern(path).test(pathname)
-            : path === pathname;
+        return result;
+    };
+
+const pathMatchPathname =
+    (path, pathname = location.pathname) =>
+        regexFromPath(path).test(pathname);
 
 export {
-    param,
-    regexFromPattern,
+    regexFromPath,
     paramsFromPath,
     pathMatchPathname,
 }

@@ -1,13 +1,6 @@
-import { param, regexFromPattern } from './path';
+import { regexFromPath } from './path';
 
-const regexFromString = string => new RegExp(`^${string}$`);
-
-const regexFrompPath = path =>
-    path instanceof RegExp ? path :
-        param.test(path) ? regexFromPattern(path) :
-            regexFromString(path);
-
-const keyFromPath = path => String(regexFrompPath(path));
+const keyFromPath = path => String(regexFromPath(path));
 
 const store = {};
 

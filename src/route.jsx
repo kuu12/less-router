@@ -1,7 +1,7 @@
 import React from 'react';
 import cache from './cache';
 import config from './config';
-import { paramsFromPath, pathMatchPathname } from './path';
+import { paramsFromPath, regexFromPath } from './path';
 
 const Route = Component =>
     ({ path, title, titleName, style = {}, autoCache, ...rest }) => {
@@ -13,7 +13,7 @@ const Route = Component =>
                 ) ||
             '/';
 
-        const match = pathMatchPathname(path, pathname);
+        const match = regexFromPath(path).exec(pathname);
         const cached = cache.has(path);
 
         config.paths[path] = match;
@@ -24,7 +24,7 @@ const Route = Component =>
 
             return (<div className="route-container">
                 <Component
-                    path={path}
+                    path={match[0]}
                     style={style}
                     title={titleName}
                     {...paramsFromPath(path, pathname)}
@@ -34,7 +34,7 @@ const Route = Component =>
         } else if (cached) {
             return (<div className="route-container hidden">
                 <Component
-                    path={path}
+                    path={match[0]}
                     style={{ ...style, display: 'none' }}
                     title={titleName}
                     {...paramsFromPath(path, pathname)}
