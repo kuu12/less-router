@@ -10,23 +10,19 @@ class Router extends React.Component {
             basename: basename =>
                 config.basename = basename,
 
-            push: path => (
-                history.pushState(
-                    {},
-                    null,
-                    config.basename + path,
-                ),
-                this.router.__updatePathnameState__()
-            ),
+            push: path => 'pushState' in history
+                ? (
+                    history.pushState({}, null, pathname),
+                    this.router.__updatePathnameState__()
+                )
+                : location.href = pathname,
 
-            replace: path => (
-                history.replaceState(
-                    {},
-                    null,
-                    config.basename + path,
-                ),
-                this.router.__updatePathnameState__()
-            ),
+            replace: path => 'replaceState' in history
+                ? (
+                    history.replaceState({}, null, config.basename + path),
+                    this.router.__updatePathnameState__()
+                )
+                : location.href = config.basename + path,
 
             back: () => history.back(),
             forward: () => history.forward(),
