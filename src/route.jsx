@@ -24,21 +24,23 @@ const Route = Component =>
 
             return (<div className="route-container">
                 <Component
-                    path={match[0]}
+                    path={path}
+                    pathname={match[0]}
                     style={style}
-                    title={titleName}
                     {...paramsFromPath(path, pathname)}
                     {...rest}
+                    title={titleName}
                 />
             </div>);
         } else if (cached) {
             return (<div className="route-container hidden">
                 <Component
-                    path={match[0]}
+                    path={path}
+                    pathname={null}
                     style={{ ...style, display: 'none' }}
-                    title={titleName}
                     {...paramsFromPath(path, pathname)}
                     {...rest}
+                    title={titleName}
                 />
             </div>);
         } else {

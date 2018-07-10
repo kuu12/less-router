@@ -1,7 +1,7 @@
 const param = /:\w+(?=\W?)/g;
 
 const regexFromString = string =>
-    new RegExp(`^${string}`);
+    new RegExp(`^${string}$`);
 
 const regexFromPattern = (pattern, callback) => {
     const replacement = callback instanceof Function
@@ -14,7 +14,7 @@ const regexFromPattern = (pattern, callback) => {
     );
 };
 
-const regexFrompPath = path =>
+const regexFromPath = path =>
     path instanceof RegExp ? path :
         param.test(path) ? regexFromPattern(path) :
             regexFromString(path);
@@ -29,28 +29,26 @@ const regexFrompPath = path =>
  *                                  date: '8' 
  *                              }
  */
-const paramsFromPath =
-    (pattern, pathname = location.pathname) => {
-        const params = ['path'];
-        const result = {};
+const paramsFromPath = (pattern, pathname = location.pathname) => {
+    const params = ['path'];
+    const result = {};
 
-        const regex = regexFromPattern(
-            pattern,
-            ([syntax_ignored, ...paramName]) =>
-                params.push(paramName.join(''))
+    const regex = regexFromPattern(
+        pattern,
+        ([syntax_ignored, ...paramName]) =>
+            params.push(paramName.join(''))
+    );
+
+    (regex.exec(pathname) || [])
+        .forEach((match, index) =>
+            result[params[index]] = match
         );
 
-        (regex.exec(pathname) || [])
-            .forEach((match, index) =>
-                result[params[index]] = match
-            );
+    return result;
+};
 
-        return result;
-    };
-
-const pathMatchPathname =
-    (path, pathname = location.pathname) =>
-        regexFromPath(path).test(pathname);
+const pathMatchPathname = (path, pathname = location.pathname) =>
+    regexFromPath(path).test(pathname);
 
 export {
     regexFromPath,
