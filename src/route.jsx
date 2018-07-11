@@ -1,18 +1,11 @@
 import React from 'react';
 import cache from './cache';
 import config from './config';
-import { paramsFromPath, regexFromPath } from './path';
+import { getPathname, paramsFromPath, regexFromPath } from './path';
 
 const Route = Component =>
     ({ path, title, titleName, style = {}, autoCache, ...rest }) => {
-        const pathname =
-            location
-                .pathname
-                .replace(
-                    new RegExp('^' + config.basename), ''
-                ) ||
-            '/';
-
+        const pathname = getPathname();
         const match = regexFromPath(path).exec(pathname);
         const cached = cache.has(path);
 

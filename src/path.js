@@ -1,3 +1,14 @@
+import config from './config';
+
+const getPathname = () =>
+    location
+        .pathname
+        .replace(
+            new RegExp('^' + config.basename),
+            ''
+        ) ||
+    '/';
+
 const param = /:\w+(?=\W?)/g;
 
 const regexFromString = string =>
@@ -51,6 +62,7 @@ const pathMatchPathname = (path, pathname = location.pathname) =>
     regexFromPath(path).test(pathname);
 
 export {
+    getPathname,
     regexFromPath,
     paramsFromPath,
     pathMatchPathname,

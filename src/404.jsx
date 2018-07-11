@@ -1,6 +1,6 @@
 import React from 'react';
 import config from './config';
-import { pathMatchPathname } from './path';
+import { getPathname, pathMatchPathname } from './path';
 
 const NotFound = Component =>
     class extends React.Component {
@@ -15,33 +15,24 @@ const NotFound = Component =>
                 values.length &&
                 !values.some(Boolean);
 
-            if (notFound)
-                this.setState({
-                    entryPoint: getPathname()
-                });
+            if (notFound) this.setState({
+                entryPoint: getPathname(),
+            });
         }
 
         render() {
             if (!this.state.entryPoint) return null;
 
-            if (
-                this.state.entryPoint !==
-                getPathname()
-            ) return null;
+            const pathname = getPathname();
+            if (pathname !== this.state.entryPoint) return null;
 
             const { path, title, titleName, ...rest } = this.props;
-
-            if (
-                typeof path !== 'undefined' &&
-                !pathMatchPathname(
-                    this.props.path,
-                    this.state.entryPoint,
-                )
-            ) return null;
+            document.title = title;
 
             return (
                 <Component
                     path={path}
+                    pathname={pathname}
                     title={titleName}
                     {...rest}
                 />
@@ -50,12 +41,3 @@ const NotFound = Component =>
     }
 
 export default NotFound;
-
-const getPathname = () =>
-    location
-        .pathname
-        .replace(
-            new RegExp('^' + config.basename),
-            ''
-        ) ||
-    '/';
