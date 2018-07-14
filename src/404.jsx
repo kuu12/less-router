@@ -1,6 +1,6 @@
 import React from 'react';
 import config from './config';
-import { getPathname, pathMatchPathname } from './path';
+import { getPathname } from './path';
 
 const NotFound = Component =>
     class extends React.Component {
@@ -38,6 +38,6 @@ const NotFound = Component =>
                 />
             );
         }
-    }
+    };
 
 export default NotFound;

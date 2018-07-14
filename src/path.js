@@ -19,9 +19,7 @@ const regexFromPattern = (pattern, callback) => {
         ? (...args) => (callback(...args), '(\\w+)')
         : '(\\w+)';
     return new RegExp(
-        pattern.replace(
-            param, replacement
-        )
+        `^${pattern.replace(param, replacement)}($|\\/$)`
     );
 };
 
@@ -66,4 +64,4 @@ export {
     regexFromPath,
     paramsFromPath,
     pathMatchPathname,
-}
+};
