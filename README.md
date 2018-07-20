@@ -8,7 +8,7 @@
 You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
 
 #### Cachable
-
+Route components could be cachable by adding 'autoCache' property. Route changes won't lead these component to be destroyed/remounting, but hidden/shown.
 
 ## Usage
 
@@ -25,7 +25,6 @@ const OrderDetailRoute = Route(OrderDetail);
 export default class App extends Router {
   constructor(props) {
     super(props);
-    console.log(this.state); // { __pathname__: **current location.pathname** }
     console.log(typeof this.router); // 'object'
     
     this.state.orders = [{
