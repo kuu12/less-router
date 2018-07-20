@@ -12,6 +12,10 @@ Route components could be cachable by adding `autoCache` property. Route changes
 
 ## Usage
 
+- [Basic and URL parameters](#basic-and-url-parameters)
+- [Using Cache](#using-cache)
+- [Basename](#basename)
+
 ### Basic and URL parameters
 ```javascript
 /****************************  app.js  ******************************/
