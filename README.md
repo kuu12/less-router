@@ -35,8 +35,8 @@ export default class App extends Router { // root component extends the Router c
     // It contains push, replace, back, forward and other methods.
     
     this.state.orders = [{
-      id: 'o0001',
-      products: [{ id: 'p0001', name: 'sugar' }],
+      id: '0001',
+      products: 'sugar, salt',
     }];
   }
 
@@ -44,7 +44,7 @@ export default class App extends Router { // root component extends the Router c
     return (
       <div>
         <header>
-          <button onClick={() => this.router.push('/order')}>
+          <button onClick={() => this.router.push('/order')}> // .push to enter a new path, .replace to replace current path 
             Orders
           </button>
         </header>
@@ -92,18 +92,10 @@ const OrderDetail = ({
   router, 
 }) => (
   <div>
-    Products: 
-    <ul>
-      {((orders
-        .find(order => order.id === orderId) || {})
-        .products || [])
-        .map(product =>
-          <li>
-            {product.name}
-          </li>
-      )}
-    </ul>
-    <button onClick={() => history.back()}>
+    Products: {
+      (orders.find(order => order.id === orderId) || {}).products
+    }
+    <button onClick={() => history.back()}> // both history.back() and router.back() are available
       Back to orders
     </button>
   </div>
