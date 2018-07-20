@@ -22,13 +22,8 @@ export default class App extends Router {
       products: [{
         id: 'p0001',
         name: 'sugar',
-        price: '$1',
-      }, {
-        id: 'p0002',
-        name: 'salt',
-        price: '$2'
       }];
-    }]
+    }];
   }
   
   componentDidMount() {
@@ -62,35 +57,40 @@ export default class App extends Router {
 }
 
 // order.js
-import React from 'react';
+export default ({ orders = [], router }) => (
+  <ul>
+    {orders.map(order =>
+      <li key={order.id}>
+        Order ID: {order.id}
+        <button onClick={() => router.push(`/order/${order.id}`)}>
+          Detail
+        </button>
+      </li>
+    )}
+  </ul>
+);
 
-export default class Order extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  
-  detail(id) {
-    this.props.router.push(`/order/${id}`);
-  }
-  
-  render() {
-    const orders = this.props.orders || [];
-    
-    return (
-      <ul>
-        {orders.map(order =>
-          <li key={order.id}>
-            Order ID: {order.id}
-            <button onClick={() => this.detail(order.id)}>
-              Detail
-            </button>
+// order-detail.js
+export default ({ 
+  orders = [], 
+  orderId, // auto injected by the path declaration '/order/:orderId'
+  router, 
+}) => (
+  <div>
+    Products: 
+    <ul>
+      {((orders
+        .find(order => order.id === orderId) || {})
+        .products || [])
+        .map(product =>
+          <li>
+            {product.name}
           </li>
-        )}
-      </ul>
-    );
-  }
-}
-
-// order-detai.js
+      )}
+    </ul>
+    <button onClick={() => history.back()}>
+      Back to orders
+     </button>
+  </div>
+)
 ```
