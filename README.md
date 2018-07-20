@@ -44,7 +44,9 @@ export default class App extends Router { // root component extends the Router c
     return (
       <div>
         <header>
-          <button onClick={() => this.router.push('/order')}> // .push to enter a new path, .replace to replace current path 
+          // this.router.push to enter a new path 
+          // this.router.replace to replace current path 
+          <button onClick={() => this.router.push('/order')}> 
             Orders
           </button>
         </header>
