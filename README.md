@@ -110,16 +110,6 @@ export default OrderDetail;
 /****************************  app.js  ******************************/
   render() {
     ...
-        <header>
-          <button onClick={
-            async () => {
-              await this.router.clearCache('/order');
-              this.router.push('/order');
-            }
-          }>
-            Orders
-          </button>
-        </header>
         <OrderRoute
           path="/order"
           title="Order List"
@@ -128,6 +118,22 @@ export default OrderDetail;
           autoCache // mark as cachable
         />
     ...
-
 ```
 
+Now the OrderRoute component won't be remounting. But usually we make requests in componentDidMount, to invoked componentDidMount again, we should clear cache before entering a route.
+```javascript
+/****************************  app.js  ******************************/
+  render() {
+    ...
+        <header>
+          <button onClick={
+            async () => {
+              await this.router.clearCache('/order'); // Cache clearing takes time, need to be await before next operation.
+              this.router.push('/order');
+            }
+          }>
+            Orders
+          </button>
+        </header>
+    ...
+```
