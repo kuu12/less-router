@@ -2,7 +2,7 @@
 
 ### Less API, more graceful and flatter learning curve.
 
-## Features
+# Features
 
 ### No \<Link> tag, no \<Switch>, no black box hooks
 You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
@@ -10,13 +10,13 @@ You can get full control of all routing behaviors, by using javascript, a turing
 ### Cachable
 Route components could be cachable by adding `autoCache` property. Route changes won't lead these component to be destroyed/remounting, but hidden/shown.
 
-## Usage
+# Usage
 
 - [Basic and URL parameters](#basic-and-url-parameters)
 - [Using Cache](#using-cache)
 - [Basename](#basename)
 
-### Basic and URL parameters
+## Basic and URL parameters
 ```javascript
 /****************************  app.js  ******************************/
 import { Router, Route } from 'less-router';
@@ -112,7 +112,7 @@ const OrderDetail = ({
 export default OrderDetail;
 ```
 
-### Using Cache
+## Using Cache
 Add an `autoCache` property.
 ```javascript
 /****************************  app.js  ******************************/
@@ -147,7 +147,7 @@ Now the `OrderRoute` component won't be remounting. But usually we make requests
 ```
 (p.s. Just for explanation, actually the `Order` component doesn't have a `componentDidMount` function in this case.)
 
-### Basename
+## Basename
 If your app is not deployed on root path, for example, `https://www.mydomain.com/my-app/`, you should specific the basename in `router`.
 
 ```javascript
