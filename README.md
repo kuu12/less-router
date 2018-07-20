@@ -5,7 +5,7 @@
 ## Features
 
 #### No \<Link> tag, no \<Switch>, no black box hooks
-You can fully and explicitly control all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
+You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
 
 #### Cachable
 
