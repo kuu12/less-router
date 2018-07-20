@@ -62,7 +62,8 @@ export default class App extends Router { // root component extends the Router c
     );
   }
 };
-
+```
+```javascript
 /****************************  order.js  ******************************/
 const Order = ({ orders = [], router }) => (
   <ul>
@@ -78,7 +79,8 @@ const Order = ({ orders = [], router }) => (
 );
 
 export default Order;
-
+```
+```javascript
 /****************************  order-detail.js  ******************************/
 const OrderDetail = ({ 
   orders = [], 
@@ -104,11 +106,10 @@ const OrderDetail = ({
 );
 
 export default OrderDetail;
-
 ```
 
 ### Using Cache
-Add an autoCache property.
+Add an `autoCache` property.
 ```javascript
 /****************************  app.js  ******************************/
   render() {
