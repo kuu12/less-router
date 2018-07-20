@@ -4,17 +4,17 @@
 
 ## Features
 
-#### No \<Link> tag, no \<Switch>, no black box hooks
+### No \<Link> tag, no \<Switch>, no black box hooks
 You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
 
-#### Cachable
+### Cachable
 Route components could be cachable by adding 'autoCache' property. Route changes won't lead these component to be destroyed/remounting, but hidden/shown.
 
 ## Usage
 
-### Basic
+### Basic and URL parameters
 ```javascript
-// app.js
+/****************************  app.js  ******************************/
 import { Router, Route } from 'less-router';
 import Order from './order';
 import OrderDetail from './order-detail';
@@ -22,10 +22,10 @@ import OrderDetail from './order-detail';
 const OrderRoute = Route(Order);
 const OrderDetailRoute = Route(OrderDetail);
 
-export default class App extends Router {
+export default class App extends Router { // Root component extends the Router class
   constructor(props) {
     super(props);
-    console.log(typeof this.router); // 'object'
+    console.log(typeof this.router); // 'object', created by Router class.
     
     this.state.orders = [{
       id: 'o0001',
@@ -35,20 +35,15 @@ export default class App extends Router {
       }];
     }];
   }
-  
-  componentDidMount() {
-    let login = true;
-    
-    if(login) {
-      this.router.replace('/order');
-    } else {
-      this.router.replace('/login');
-    }
-  }
 
   render() {
     return (
       <div>
+        <header>
+          <button onClick={() => this.router.push('/order')}>
+            Orders
+          </button>
+        </header>
         <OrderRoute
           path="/order"
           title="Order List"
@@ -66,7 +61,7 @@ export default class App extends Router {
   }
 };
 
-// order.js
+/****************************  order.js  ******************************/
 const Order = ({ orders = [], router }) => (
   <ul>
     {orders.map(order =>
@@ -82,7 +77,7 @@ const Order = ({ orders = [], router }) => (
 
 export default Order;
 
-// order-detail.js
+/****************************  order-detail.js  ******************************/
 const OrderDetail = ({ 
   orders = [], 
   orderId, // auto injected by the path declaration '/order/:orderId'
@@ -109,3 +104,30 @@ const OrderDetail = ({
 export default OrderDetail;
 
 ```
+
+### Using Cache
+```javascript
+/****************************  app.js  ******************************/
+  render() {
+    ...
+        <header>
+          <button onClick={
+            async () => {
+              await this.router.clearCache('/order');
+              this.router.push('/order');
+            }
+          }>
+            Orders
+          </button>
+        </header>
+        <OrderRoute
+          path="/order"
+          title="Order List"
+          orders={this.state.orders}
+          router={this.router}
+          autoCache // mark as cachable
+        />
+    ...
+
+```
+
