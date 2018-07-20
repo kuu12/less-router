@@ -8,7 +8,7 @@
 You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
 
 ### Cachable
-Route components could be cachable by adding 'autoCache' property. Route changes won't lead these component to be destroyed/remounting, but hidden/shown.
+Route components could be cachable by adding `autoCache` property. Route changes won't lead these component to be destroyed/remounting, but hidden/shown.
 
 ## Usage
 
@@ -123,7 +123,7 @@ Add an autoCache property.
     ...
 ```
 
-Now the OrderRoute component won't be remounting. But usually we make requests in componentDidMount, to invoked componentDidMount again, we should clear cache before entering a route.
+Now the `OrderRoute` component won't be remounting. But usually we make requests in `componentDidMount`, to invoked `componentDidMount` again, we should `clearCache` before entering a route.
 ```javascript
 /****************************  app.js  ******************************/
   render() {
@@ -140,10 +140,10 @@ Now the OrderRoute component won't be remounting. But usually we make requests i
         </header>
     ...
 ```
-(p.s. Just for explanation, actually the Order component doesn't have a componentDidMount function in this case.)
+(p.s. Just for explanation, actually the `Order` component doesn't have a `componentDidMount` function in this case.)
 
 ### Basename
-If your app is not deployed on root path, for example, 'https://www.mydomain.com/my-app/', you should specific the basename in router.
+If your app is not deployed on root path, for example, `https://www.mydomain.com/my-app/`, you should specific the basename in `router`.
 
 ```javascript
 /****************************  app.js  ******************************/
