@@ -26,7 +26,7 @@ import OrderDetail from './order-detail';
 const OrderRoute = Route(Order);
 const OrderDetailRoute = Route(OrderDetail);
 
-export default class App extends Router { // root component extends the Router class
+class App extends Router { // root component extends the Router component
   constructor(props) {
     super(props);
    
@@ -53,8 +53,9 @@ export default class App extends Router { // root component extends the Router c
         <OrderRoute
           path="/order" // path pattern
           title="Order List" // auto sets document.title
-          orders={this.state.orders}  // other properties, will be straight pass
-          router={this.router}        // into origin Order component.
+          // other properties, will be straight pass into origin Order component.
+          orders={this.state.orders}  
+          router={this.router}
         />
         <OrderDetailRoute
           // use URL parameter, extract from location.pathname and
@@ -68,6 +69,8 @@ export default class App extends Router { // root component extends the Router c
     );
   }
 };
+
+export default App;
 ```
 ```javascript
 /****************************  order.js  ******************************/
