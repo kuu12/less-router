@@ -25,14 +25,14 @@ const OrderDetailRoute = Route(OrderDetail);
 export default class App extends Router { // root component extends the Router class
   constructor(props) {
     super(props);
-    console.log(typeof this.router); // 'object', created by Router class.
+   
+    console.log(typeof this.router);  // 'object'
+    // this.router is created by class Router. 
+    // It contains push, replace, back, forward and other methods.
     
     this.state.orders = [{
       id: 'o0001',
-      products: [{
-        id: 'p0001',
-        name: 'sugar',
-      }];
+      products: [{ id: 'p0001', name: 'sugar' }],
     }];
   }
 
@@ -45,13 +45,15 @@ export default class App extends Router { // root component extends the Router c
           </button>
         </header>
         <OrderRoute
-          path="/order"
-          title="Order List"
-          orders={this.state.orders}
-          router={this.router}
+          path="/order" // path pattern
+          title="Order List" // auto sets document.title
+          orders={this.state.orders}  // other properties, will be straight pass
+          router={this.router}        // into origin Order component.
         />
         <OrderDetailRoute
-          path="/order/:orderId" // use URL parameter
+          // use URL parameter, extract from location.pathname and
+          // pass into OrderDetail component as orderId property.
+          path="/order/:orderId" 
           title="Order Detail"
           orders={this.state.orders}
           router={this.router}
@@ -139,3 +141,18 @@ Now the OrderRoute component won't be remounting. But usually we make requests i
     ...
 ```
 (p.s. Just for explanation, actually the Order component doesn't have a componentDidMount function in this case.)
+
+### Basename
+If your app is not deployed on root path, for example, 'https://www.mydomain.com/my-app/', you should specific the basename in router.
+
+```javascript
+/****************************  app.js  ******************************/
+...
+  constructor(props) {
+    super(props);
+    this.router.basename('/my-app');
+    ...
+  }
+...
+```
+When using `this.router.push(pathname)` or `this.router.replace(pathname)`, just forget the basename, it will be automatically added.
