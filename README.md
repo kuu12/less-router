@@ -1,7 +1,18 @@
 # less-router
 
+### Less API, more graceful and flatter learning curve.
+
+## Features
+
+#### No \<Link> tag, no \<Switch>, no black box hooks
+You can fully and explicitly control all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
+
+#### Cachable
+
+
 ## Usage
 
+### Basic
 ```javascript
 // app.js
 import { Router, Route } from 'less-router';
@@ -46,7 +57,7 @@ export default class App extends Router {
           router={this.router}
         />
         <OrderDetailRoute
-          path="/order/:orderId"
+          path="/order/:orderId" // use URL parameter
           title="Order Detail"
           orders={this.state.orders}
           router={this.router}
@@ -54,10 +65,10 @@ export default class App extends Router {
       </div>
     );
   }
-}
+};
 
 // order.js
-export default ({ orders = [], router }) => (
+const Order = ({ orders = [], router }) => (
   <ul>
     {orders.map(order =>
       <li key={order.id}>
@@ -70,8 +81,10 @@ export default ({ orders = [], router }) => (
   </ul>
 );
 
+export default Order;
+
 // order-detail.js
-export default ({ 
+const OrderDetail = ({ 
   orders = [], 
   orderId, // auto injected by the path declaration '/order/:orderId'
   router, 
@@ -90,7 +103,10 @@ export default ({
     </ul>
     <button onClick={() => history.back()}>
       Back to orders
-     </button>
+    </button>
   </div>
-)
+);
+
+export default OrderDetail;
+
 ```
