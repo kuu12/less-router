@@ -22,7 +22,7 @@ import OrderDetail from './order-detail';
 const OrderRoute = Route(Order);
 const OrderDetailRoute = Route(OrderDetail);
 
-export default class App extends Router { // Root component extends the Router class
+export default class App extends Router { // root component extends the Router class
   constructor(props) {
     super(props);
     console.log(typeof this.router); // 'object', created by Router class.
@@ -106,6 +106,7 @@ export default OrderDetail;
 ```
 
 ### Using Cache
+Add an autoCache property.
 ```javascript
 /****************************  app.js  ******************************/
   render() {
@@ -128,7 +129,7 @@ Now the OrderRoute component won't be remounting. But usually we make requests i
         <header>
           <button onClick={
             async () => {
-              await this.router.clearCache('/order'); // Cache clearing takes time, need to be await before next operation.
+              await this.router.clearCache('/order'); // cache clearing is asynchronous
               this.router.push('/order');
             }
           }>
@@ -137,3 +138,4 @@ Now the OrderRoute component won't be remounting. But usually we make requests i
         </header>
     ...
 ```
+(p.s. Just for explanation, actually the Order component doesn't have a componentDidMount function in this case.)
