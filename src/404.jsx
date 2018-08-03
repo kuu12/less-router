@@ -10,20 +10,32 @@ const NotFound = Component =>
         }
 
         componentDidMount() {
-            const values = Object.values(config.paths);
-            const notFound =
-                values.length &&
-                !values.some(Boolean);
+            const namespace = new RegExp(
+                `^${this.props.parentPath || ''}`
+            );
+
+            const keyToValue = path => config.paths[path];
+
+            const all = Object
+                .keys(config.paths)
+                .filter(keyToValue)
+                .filter(path => namespace.test(path));
+
+            const matches = all
+                .filter(path => path.replace(namespace, ''))
+                .map(keyToValue);
+
+            const notFound = all.length && !matches.some(Boolean);
 
             if (notFound) this.setState({
-                entryPoint: getPathname(),
+                entryPoint: getPathname(config.basename),
             });
         }
 
         render() {
             if (!this.state.entryPoint) return null;
 
-            const pathname = getPathname();
+            const pathname = getPathname(config.basename);
             if (pathname !== this.state.entryPoint) return null;
 
             const { path, title, titleName, ...rest } = this.props;

@@ -1,32 +1,41 @@
-import config from './config';
+// 将'/basename/xxx'替换为'/xxx'
+// 将'/basename'去头后，会变成''，此时作特殊处理，变成'/'
+const getPathname = basename => {
+    if (!basename) return location.pathname;
+    if (!basename.startsWith('/')) basename = '/' + basename;
+    const regex = new RegExp('^' + basename);
+    return location.pathname.replace(regex, '') || '/';
+};
 
-const getPathname = () =>
-    location
-        .pathname
-        .replace(
-            new RegExp('^' + config.basename),
-            ''
-        ) ||
-    '/';
+const regexFromString = string => {
+    if ('/' === string) {
+        string += '(index.html)?$';
+    } else if (string.endsWith('/')) {
+        string = string.slice(0, string.length - 1);
+        string += '\\/?';
+    } else {
+        string += '\\/?$';
+    }
 
-const param = /:\w+(?=\W?)/g;
+    return new RegExp(`^${string}`);
+};
 
-const regexFromString = string =>
-    new RegExp(`^${string}$`);
-
+/**
+ * 把 '/order/:orderNo' 这样的字符串，转化为正则表达式
+ * 生成的正则表达式，能匹配 '/order/753xxxxx3512351' 之类的字符串
+ */
 const regexFromPattern = (pattern, callback) => {
     const replacement = callback instanceof Function
         ? (...args) => (callback(...args), '(\\w+)')
         : '(\\w+)';
-    return new RegExp(
-        `^${pattern.replace(param, replacement)}($|\\/$)`
-    );
+
+    const string = pattern.replace(/:\w+(?=\W?)/g, replacement);
+    return regexFromString(string);
 };
 
 const regexFromPath = path =>
-    path instanceof RegExp ? path :
-        param.test(path) ? regexFromPattern(path) :
-            regexFromString(path);
+    path instanceof RegExp ?
+        path : regexFromPattern(path);
 
 /**
  * @param   {string} pattern    '/calendar/:year/:month/:date'
@@ -39,7 +48,7 @@ const regexFromPath = path =>
  *                              }
  */
 const paramsFromPath = (pattern, pathname = location.pathname) => {
-    const params = ['path'];
+    const params = ['pathname'];
     const result = {};
 
     const regex = regexFromPattern(
@@ -48,7 +57,9 @@ const paramsFromPath = (pattern, pathname = location.pathname) => {
             params.push(paramName.join(''))
     );
 
-    (regex.exec(pathname) || [])
+    Array
+        .from(regex.exec(pathname) || [])
+        .filter(Boolean)
         .forEach((match, index) =>
             result[params[index]] = match
         );
@@ -56,12 +67,35 @@ const paramsFromPath = (pattern, pathname = location.pathname) => {
     return result;
 };
 
-const pathMatchPathname = (path, pathname = location.pathname) =>
-    regexFromPath(path).test(pathname);
+const joinPath = (...paths) => {
+    let availablePaths = paths
+        .filter(Boolean)
+        .filter(path => path !== '/');
+
+    let fullPath = availablePaths
+        .map(path =>
+            path.endsWith('/')
+                ? path.slice(0, -1)
+                : path
+        )
+        .map(path =>
+            path.startsWith('/')
+                ? path
+                : `/${path}`
+        )
+        .join('');
+
+    if (!fullPath)
+        fullPath = '/';
+    else if (availablePaths[availablePaths.length - 1].endsWith('/'))
+        fullPath += '/';
+
+    return fullPath;
+};
 
 export {
     getPathname,
     regexFromPath,
     paramsFromPath,
-    pathMatchPathname,
+    joinPath,
 };
