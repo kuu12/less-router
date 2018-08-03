@@ -48,6 +48,19 @@ class Router extends React.Component {
             this.router.__updatePathnameState__,
         );
     }
+
+    render() {
+        const transform = child =>
+            child instanceof Function
+                ? child(this.router)
+                : child;
+
+        const { children } = this.props;
+
+        return children instanceof Array
+            ? children.map(transform)
+            : transform(children);
+    }
 }
 
 export default Router;
