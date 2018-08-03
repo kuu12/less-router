@@ -1,14 +1,25 @@
 import React from 'react';
 import cache from './cache';
 import config from './config';
+import { getPathname } from './path';
 
 class Router extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
         this.router = {
-            basename: basename =>
-                config.basename = basename,
+            basename: basename => {
+                if (typeof basename === 'undefined')
+                    return config.basename;
+
+                if (config.basename)
+                    console.warn('已设置过basename，请勿重复设置');
+
+                config.basename =
+                    basename && !basename.startsWith('/')
+                        ? `/${basename}`
+                        : basename;
+            },
 
             push: path => 'pushState' in history
                 ? (
@@ -30,11 +41,14 @@ class Router extends React.Component {
 
             __updatePathnameState__: () =>
                 new Promise(resolve =>
-                    this.setState(
-                        { __pathname__: config.basename + location.pathname },
-                        resolve,
-                    )
+                    this.setState({
+                        __pathname__: getPathname(config.basename),
+                    }, resolve)
                 ),
+
+            pathname: () =>
+                this.state.__pathname__ ||
+                getPathname(config.basename),
 
             clearCache: path => (
                 cache.delete(path),

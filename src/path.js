@@ -1,11 +1,9 @@
 // 将'/basename/xxx'替换为'/xxx'
 // 将'/basename'去头后，会变成''，此时作特殊处理，变成'/'
-const getPathname = basename => {
-    if (!basename) return location.pathname;
-    if (!basename.startsWith('/')) basename = '/' + basename;
-    const regex = new RegExp('^' + basename);
-    return location.pathname.replace(regex, '') || '/';
-};
+const getPathname = (basename = '') =>
+    location.pathname.replace(
+        new RegExp('^' + basename), ''
+    ) || '/';
 
 const regexFromString = string => {
     if ('/' === string) {
