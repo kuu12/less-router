@@ -1,14 +1,13 @@
 {
   "name": "less-router",
-  "version": "1.0.0",
+  "version": "1.3.3",
   "description": "",
-  "main": "dist/less-router.min.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "peerDependencies": {
-    "react": ">= 0.13.0",
-    "babel-polyfill": "*"
+    "react": ">= 0.13.0"
   },
   "keywords": [],
   "author": "",
