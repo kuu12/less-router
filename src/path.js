@@ -6,6 +6,9 @@ const getPathname = (basename = '') =>
     ) || '/';
 
 const regexFromString = string => {
+    if (!regexFromString.cache)
+        regexFromString.cache = {};
+
     const { cache } = regexFromString;
     if (cache[string]) return cache[string];
 
@@ -37,6 +40,9 @@ const regexFromPattern = (pattern, callback) => {
 
 const regexFromPath = path => {
     if (path instanceof RegExp) return path;
+
+    if (!regexFromPath.cache)
+        regexFromPath.cache = {};
 
     const { cache } = regexFromPath;
     if (!cache[path])
