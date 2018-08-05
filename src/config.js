@@ -1,5 +1,5 @@
 export default {
     basename: '',
-    paths: [],
-    router: {},
+    registeredRoutes: [],
+    routerProxy: {},
 };

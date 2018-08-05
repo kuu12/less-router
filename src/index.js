@@ -5,7 +5,7 @@ import * as __path__ from './path';
 import __cache__ from './cache';
 import __config__ from './config';
 
-const { router } = __config__;
+const router = __config__.routerProxy;
 
 export {
     Router,

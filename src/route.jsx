@@ -23,7 +23,7 @@ const Routing = Component => ({
         Component.propTypes &&
         Component.propTypes.style
     );
-    config.paths[fullPath] = match;
+    config.registeredRoutes[fullPath] = match;
 
     let component = null;
 

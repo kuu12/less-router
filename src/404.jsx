@@ -14,10 +14,10 @@ const NotFound = Component =>
                 `^${this.props.parentPath || ''}`
             );
 
-            const keyToValue = path => config.paths[path];
+            const keyToValue = path => config.registeredRoutes[path];
 
             const all = Object
-                .keys(config.paths)
+                .keys(config.registeredRoutes)
                 .filter(keyToValue)
                 .filter(path => namespace.test(path));
 

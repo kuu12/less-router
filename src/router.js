@@ -6,7 +6,7 @@ import { getPathname } from './path';
 class Router extends React.Component {
     constructor(props) {
         if (Object
-            .getPrototypeOf(config.router)
+            .getPrototypeOf(config.routerProxy)
             .__updatePathnameState__
         ) throw new Error('请勿在一个应用中创建多个Router');
 
@@ -67,7 +67,7 @@ class Router extends React.Component {
             this.router.__updatePathnameState__,
         );
 
-        Object.setPrototypeOf(config.router, this.router);
+        Object.setPrototypeOf(config.routerProxy, this.router);
     }
 
     render() {
