@@ -3,7 +3,7 @@ import cache from './cache';
 import config from './config';
 import { getPathname, paramsFromPath, regexFromPath, joinPath } from './path';
 
-const Route = Component => ({
+const Routing = Component => ({
     parentPath,
     path,
     title,
@@ -19,38 +19,57 @@ const Route = Component => ({
     const pathname = getPathname(config.basename);
     const match = regexFromPath(fullPath).exec(pathname);
     const cached = cache.has(fullPath);
-
+    const wrap = autoCache && !(
+        Component.propTypes &&
+        Component.propTypes.style
+    );
     config.paths[fullPath] = match;
 
-    if (match) {
-        if (autoCache && !cached) cache.add(fullPath);
-        if (typeof title === 'string') document.title = title;
+    let component = null;
 
-        return (
-            <div className="route-container">
-                <Component
-                    path={fullPath}
-                    style={style}
-                    {...paramsFromPath(fullPath, pathname)}
-                    {...rest}
-                    title={titleName}
-                />
-            </div>
+    if (match) {
+        component = (
+            <Component
+                path={fullPath}
+                style={style}
+                {...paramsFromPath(fullPath, pathname)}
+                {...rest}
+                title={titleName}
+            />
         );
+
+        if (wrap)
+            component = (
+                <div className="route-container">
+                    {component}
+                </div>
+            );
+
+        if (autoCache && !cached)
+            cache.add(fullPath);
+
+        if (typeof title === 'string')
+            document.title = title;
+
     } else if (cached) {
-        return (
-            <div className="route-container hidden">
-                <Component
-                    path={fullPath}
-                    style={{ ...style, display: 'none' }}
-                    {...rest}
-                    title={titleName}
-                />
-            </div>
+        component = (
+            <Component
+                path={fullPath}
+                style={{ ...style, display: 'none' }}
+                {...rest}
+                title={titleName}
+            />
         );
-    } else {
-        return null;
+
+        if (wrap)
+            component = (
+                <div className="route-container hidden">
+                    {component}
+                </div>
+            );
     }
+
+    return component;
 };
 
-export default Route;
+export default Routing;

@@ -5,6 +5,11 @@ import { getPathname } from './path';
 
 class Router extends React.Component {
     constructor(props) {
+        if (Object
+            .getPrototypeOf(config.router)
+            .__updatePathnameState__
+        ) throw new Error('请勿在一个应用中创建多个Router');
+
         super(props);
         this.state = {};
         this.router = {
@@ -61,6 +66,8 @@ class Router extends React.Component {
             'popstate',
             this.router.__updatePathnameState__,
         );
+
+        Object.setPrototypeOf(config.router, this.router);
     }
 
     render() {
