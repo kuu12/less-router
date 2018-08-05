@@ -6,6 +6,9 @@ const getPathname = (basename = '') =>
     ) || '/';
 
 const regexFromString = string => {
+    const { cache } = regexFromString;
+    if (cache[string]) return cache[string];
+
     if ('/' === string) {
         string += '(index.html)?$';
     } else if (string.endsWith('/')) {
@@ -15,7 +18,8 @@ const regexFromString = string => {
         string += '\\/?$';
     }
 
-    return new RegExp(`^${string}`);
+    cache[string] = new RegExp(`^${string}`);
+    return cache[string];
 };
 
 /**
@@ -31,9 +35,15 @@ const regexFromPattern = (pattern, callback) => {
     return regexFromString(string);
 };
 
-const regexFromPath = path =>
-    path instanceof RegExp ?
-        path : regexFromPattern(path);
+const regexFromPath = path => {
+    if (path instanceof RegExp) return path;
+
+    const { cache } = regexFromPath;
+    if (!cache[path])
+        cache[path] = regexFromPattern(path);
+
+    return cache[path];
+};
 
 /**
  * @param   {string} pattern    '/calendar/:year/:month/:date'
