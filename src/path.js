@@ -26,27 +26,29 @@ const regexFromString = string => {
 };
 
 /**
- * 把 '/order/:orderNo' 这样的字符串，转化为正则表达式
- * 生成的正则表达式，能匹配 '/order/753xxxxx3512351' 之类的字符串
+ * 把 '/order/:orderNo' 这样的字符串，转化为'/order/(\\w+)'
+ * 用此字符串创建正则表达式，能匹配 '/order/753xxxxx3512351' 之类的字符串
  */
-const regexFromPattern = (pattern, callback) => {
+const replacePattern = (pattern, callback) => {
     const replacement = callback instanceof Function
         ? (...args) => (callback(...args), '(\\w+)')
         : '(\\w+)';
 
     const string = pattern.replace(/:\w+(?=\W?)/g, replacement);
-    return regexFromString(string);
+    return string;
 };
 
 const regexFromPath = path => {
-    if (path instanceof RegExp) return path;
-
     if (!regexFromPath.cache)
         regexFromPath.cache = {};
 
     const { cache } = regexFromPath;
-    if (!cache[path])
-        cache[path] = regexFromPattern(path);
+
+    if (!cache[path]) {
+        const string = replacePattern(path);
+        const regex = regexFromString(string);
+        cache[path] = regex;
+    }
 
     return cache[path];
 };
@@ -65,11 +67,12 @@ const paramsFromPath = (pattern, pathname = location.pathname) => {
     const params = ['pathname'];
     const result = {};
 
-    const regex = regexFromPattern(
+    const string = replacePattern(
         pattern,
         ([syntax_ignored, ...paramName]) =>
             params.push(paramName.join(''))
     );
+    const regex = regexFromString(string);
 
     Array
         .from(regex.exec(pathname) || [])
@@ -110,6 +113,7 @@ const joinPath = (...paths) => {
 export {
     getPathname,
     regexFromPath,
+    replacePattern,
     paramsFromPath,
     joinPath,
 };

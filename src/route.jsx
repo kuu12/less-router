@@ -1,9 +1,10 @@
 import React from 'react';
 import cache from './cache';
-import config from './config';
+import state from './state';
 import { getPathname, paramsFromPath, regexFromPath, joinPath } from './path';
 
-const Routing = Component => ({
+const Route = ({
+    Component,
     parentPath,
     path,
     title,
@@ -16,14 +17,14 @@ const Routing = Component => ({
         throw new Error(`path必须以'/'开头，当前组件path为 ${path}`);
 
     const fullPath = joinPath(parentPath, path);
-    const pathname = getPathname(config.basename);
+    const pathname = getPathname(state.basename);
     const match = regexFromPath(fullPath).exec(pathname);
     const cached = cache.has(fullPath);
     const wrap = autoCache && !(
         Component.propTypes &&
         Component.propTypes.style
     );
-    config.registeredRoutes[fullPath] = match;
+    state.registeredRoutes[fullPath] = match;
 
     let component = null;
 
@@ -32,11 +33,13 @@ const Routing = Component => ({
             <Component
                 path={fullPath}
                 style={style}
+                title={titleName}
                 {...paramsFromPath(fullPath, pathname)}
                 {...rest}
-                title={titleName}
+                router={state.routerProxy}
             />
         );
+
 
         if (wrap)
             component = (
@@ -56,8 +59,9 @@ const Routing = Component => ({
             <Component
                 path={fullPath}
                 style={{ ...style, display: 'none' }}
-                {...rest}
                 title={titleName}
+                {...rest}
+                router={state.routerProxy}
             />
         );
 
@@ -72,4 +76,4 @@ const Routing = Component => ({
     return component;
 };
 
-export default Routing;
+export default Route;
