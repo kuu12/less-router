@@ -1,3 +1,5 @@
+import { cacheable } from './helper';
+
 // 将'/basename/xxx'替换为'/xxx'
 // 将'/basename'去头后，会变成''，此时作特殊处理，变成'/'
 const getPathname = (basename = '') =>
@@ -5,13 +7,7 @@ const getPathname = (basename = '') =>
         new RegExp('^' + basename), ''
     ) || '/';
 
-const regexFromString = string => {
-    if (!regexFromString.cache)
-        regexFromString.cache = {};
-
-    const { cache } = regexFromString;
-    if (cache[string]) return cache[string];
-
+const regexFromString = cacheable(function (string) {
     if ('/' === string) {
         string += '(index.html)?$';
     } else if (string.endsWith('/')) {
@@ -20,41 +16,37 @@ const regexFromString = string => {
     } else {
         string += '\\/?$';
     }
+    return new RegExp(`^${string}`);
+});
 
-    cache[string] = new RegExp(`^${string}`);
-    return cache[string];
-};
-
+const PARAMS = /:\w+(?=\W?)/g;
 /**
  * 把 '/order/:orderNo' 这样的字符串，转化为'/order/(\\w+)'
  * 用此字符串创建正则表达式，能匹配 '/order/753xxxxx3512351' 之类的字符串
  */
-const replacePattern = (pattern, callback) => {
+const replaceParam = (path, callback) => {
     const replacement = callback instanceof Function
         ? (...args) => (callback(...args), '(\\w+)')
         : '(\\w+)';
 
-    const string = pattern.replace(/:\w+(?=\W?)/g, replacement);
+    const string = path.replace(PARAMS, replacement);
     return string;
 };
 
-const regexFromPath = path => {
-    if (!regexFromPath.cache)
-        regexFromPath.cache = {};
+const removeParam = cacheable(
+    path =>
+        path && path.replace(PARAMS, '\\w+')
+);
 
-    const { cache } = regexFromPath;
-
-    if (!cache[path]) {
-        const string = replacePattern(path);
-        const regex = regexFromString(string);
-        cache[path] = regex;
-    }
-
-    return cache[path];
-};
+const regexFromPath = cacheable(
+    path =>
+        regexFromString(
+            replaceParam(path)
+        )
+);
 
 /**
- * @param   {string} pattern    '/calendar/:year/:month/:date'
+ * @param   {string} path    '/calendar/:year/:month/:date'
  * @param   {string} pathname   '/calendar/2018/7/8'
  * @returns {Object}            {
  *                                  path: '/calendar/2018/7/8', 
@@ -63,12 +55,12 @@ const regexFromPath = path => {
  *                                  date: '8' 
  *                              }
  */
-const paramsFromPath = (pattern, pathname = location.pathname) => {
+const paramsFromPath = (path, pathname = location.pathname) => {
     const params = ['pathname'];
     const result = {};
 
-    const string = replacePattern(
-        pattern,
+    const string = replaceParam(
+        path,
         ([syntax_ignored, ...paramName]) =>
             params.push(paramName.join(''))
     );
@@ -113,7 +105,7 @@ const joinPath = (...paths) => {
 export {
     getPathname,
     regexFromPath,
-    replacePattern,
+    removeParam,
     paramsFromPath,
     joinPath,
 };

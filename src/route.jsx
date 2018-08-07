@@ -1,7 +1,13 @@
 import React from 'react';
 import cache from './cache';
 import state from './state';
-import { getPathname, paramsFromPath, regexFromPath, joinPath } from './path';
+import {
+    getPathname,
+    paramsFromPath,
+    regexFromPath,
+    joinPath,
+    removeParam,
+} from './path';
 
 const Route = ({
     Component,
@@ -29,12 +35,17 @@ const Route = ({
     let component = null;
 
     if (match) {
+        const params = paramsFromPath(
+            joinPath(removeParam(parentPath), path),
+            pathname,
+        );
+
         component = (
             <Component
                 path={fullPath}
                 style={style}
                 title={titleName}
-                {...paramsFromPath(fullPath, pathname)}
+                {...params}
                 {...rest}
                 router={state.routerProxy}
             />
