@@ -18,21 +18,26 @@ Route components could be cachable by adding `autoCache` property. Route changes
 
 ## Basic and URL parameters
 ```javascript
+/****************************  index.jsx *****************************/
+import { render } from 'react-dom';
+import App from './app';
+
+render(
+  <App />,
+  document.getElementById('root-element-id'),
+);
+
 /****************************  app.js  ******************************/
-import { Router, Route } from 'less-router';
+import { render } from 'react-dom';
+import Routing from 'less-router';
 import Order from './order';
 import OrderDetail from './order-detail';
 
-const OrderRoute = Route(Order);
-const OrderDetailRoute = Route(OrderDetail);
-
-class App extends Router { // root component extends the Router component
+class App extends React.Component { // root component extends the Router component
   constructor(props) {
-    super(props);
-   
-    console.log(typeof this.router);  // 'object'
-    // this.router is created by class Router. 
-    // It contains push, replace, back, forward and other methods.
+    console.log(typeof props.router);  // 'object'
+    // props.router is passed by Routing HOC. 
+    // It contains push, replace, back, forward and other useful methods.
     
     this.state.orders = [{
       id: '0001',
@@ -44,36 +49,36 @@ class App extends Router { // root component extends the Router component
     return (
       <div>
         <header>
-          // this.router.push to enter a new path 
-          // this.router.replace to replace current path 
-          <button onClick={() => this.router.push('/order')}> 
+          // this.props.router.push to enter a new path 
+          // this.props.router.replace to replace current path 
+          <button onClick={() => this.props.router.push('/order')}> 
             Orders
           </button>
         </header>
-        <OrderRoute
+        <Order
           path="/order" // path pattern
           title="Order List" // auto sets document.title
           // other properties, will be straight pass into origin Order component.
           orders={this.state.orders}  
-          router={this.router}
         />
-        <OrderDetailRoute
+        <OrderDetail
           // use URL parameter, extract from location.pathname and
           // pass into OrderDetail component as orderId property.
           path="/order/:orderId" 
           title="Order Detail"
           orders={this.state.orders}
-          router={this.router}
         />
       </div>
     );
   }
 };
 
-export default App;
+export default Routing(App);
 ```
 ```javascript
 /****************************  order.js  ******************************/
+import Routing from 'less-router';
+
 const Order = ({ orders = [], router }) => (
   <ul>
     {orders.map(order =>
@@ -87,14 +92,16 @@ const Order = ({ orders = [], router }) => (
   </ul>
 );
 
-export default Order;
+export default Routing(Order);
 ```
 ```javascript
 /****************************  order-detail.js  ******************************/
+import Routing from 'less-router';
+
 const OrderDetail = ({ 
   orders = [], 
   orderId, // auto injected by the path declaration '/order/:orderId'
-  router, 
+  router,
 }) => (
   <div>
     Products: {
@@ -106,7 +113,7 @@ const OrderDetail = ({
   </div>
 );
 
-export default OrderDetail;
+export default Routing(OrderDetail);
 ```
 
 ## Using Cache
@@ -115,17 +122,16 @@ Add an `autoCache` property.
 /****************************  app.js  ******************************/
   render() {
     ...
-        <OrderRoute
+        <Order
           path="/order"
           title="Order List"
           orders={this.state.orders}
-          router={this.router}
           autoCache // mark as cachable
         />
     ...
 ```
 
-Now the `OrderRoute` component won't be remounting. But usually we make requests in `componentDidMount`, to invoked `componentDidMount` again, we should `clearCache` before entering a route.
+Now the `Order` component won't be remounting. But usually we make requests in `componentDidMount`, to invoked `componentDidMount` again, we should `clearCache` before entering a route.
 ```javascript
 /****************************  app.js  ******************************/
   render() {
@@ -133,8 +139,8 @@ Now the `OrderRoute` component won't be remounting. But usually we make requests
         <header>
           <button onClick={
             async () => {
-              await this.router.clearCache('/order'); // cache clearing is asynchronous
-              this.router.push('/order');
+              await this.props.router.clearCache('/order'); // cache clearing is asynchronous
+              this.props.router.push('/order');
             }
           }>
             Orders
@@ -145,16 +151,15 @@ Now the `OrderRoute` component won't be remounting. But usually we make requests
 (p.s. Just for explanation, actually the `Order` component doesn't have a `componentDidMount` function in this case.)
 
 ## Basename
-If your app is not deployed on root path, for example, `https://www.mydomain.com/my-app/`, you should specific the basename in `router`.
+If your app is not deployed on root path, for example, `https://www.mydomain.com/my-app/`, you should specific the basename in the first routing component.
 
 ```javascript
-/****************************  app.js  ******************************/
+/****************************  index.js  ******************************/
 ...
-  constructor(props) {
-    super(props);
-    this.router.basename('/my-app');
-    ...
-  }
+render(
+  <App basename="my-app" />,
+  document.getElementById('root-element-id'),
+);
 ...
 ```
-When using `this.router.push(pathname)` or `this.router.replace(pathname)`, just forget the basename, it will be automatically added.
+When using `this.props.router.push(pathname)` or `this.props.router.replace(pathname)`, just forget the basename, it will be added automatically.
