@@ -1,0 +1,45 @@
+---
+env:
+  browser: true
+  node: true
+  commonjs: true
+  es6: true
+extends: eslint:recommended
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  sourceType: module
+  ecmaVersion: 2018
+plugins:
+- import
+- react
+settings:
+  import/resolver:
+      node: 
+        extensions: 
+        - .js 
+        - .jsx
+        - .json
+rules:
+  linebreak-style:
+  - error
+  - unix
+  quotes:
+  - warn
+  - single
+  semi: 
+  - error
+  - always
+  no-console: 'off'
+  no-unused-vars:
+  - warn
+  - varsIgnorePattern: React
+    argsIgnorePattern: _[iI]gnored
+  react/jsx-uses-vars: 1
+  no-unreachable: warn
+  no-constant-condition: warn
+  no-empty: warn
+  no-debugger: warn
+  no-eval: error
+  no-extend-native: error
+  import/no-unresolved: error
