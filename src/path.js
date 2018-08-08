@@ -20,18 +20,7 @@ const regexFromString = cacheable(function (string) {
 });
 
 const PARAMS = /:\w+(?=\W?)/g;
-/**
- * 把 '/order/:orderNo' 这样的字符串，转化为'/order/(\\w+)'
- * 用此字符串创建正则表达式，能匹配 '/order/753xxxxx3512351' 之类的字符串
- */
-const replaceParam = (path, callback) => {
-    const replacement = callback instanceof Function
-        ? (...args) => (callback(...args), '(\\w+)')
-        : '(\\w+)';
-
-    const string = path.replace(PARAMS, replacement);
-    return string;
-};
+const PARAMS_REPLACEMENT = '(\\w+)';
 
 const removeParam = cacheable(
     path =>
@@ -41,7 +30,7 @@ const removeParam = cacheable(
 const regexFromPath = cacheable(
     path =>
         regexFromString(
-            replaceParam(path)
+            path.replace(PARAMS, PARAMS_REPLACEMENT)
         )
 );
 
@@ -59,10 +48,12 @@ const paramsFromPath = (path, pathname = location.pathname) => {
     const params = ['pathname'];
     const result = {};
 
-    const string = replaceParam(
-        path,
-        ([syntax_ignored, ...paramName]) =>
-            params.push(paramName.join(''))
+    const string = path.replace(
+        PARAMS,
+        function ([syntax_ignored, ...paramName]) {
+            params.push(paramName.join(''));
+            return PARAMS_REPLACEMENT;
+        },
     );
     const regex = regexFromString(string);
 

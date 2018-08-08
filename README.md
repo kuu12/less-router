@@ -10,6 +10,9 @@ You can get full control of all routing behaviors, by using javascript, a turing
 ### Cachable
 Route components could be cachable by adding `autoCache` property. Route changes won't lead these component to be destroyed/remounting, but hidden/shown.
 
+### Support most features in React Router V4
+Dynamic routing, recursive paths, no match (404), and other features.
+
 # Usage
 
 - [Basic and URL parameters](#basic-and-url-parameters)
@@ -115,6 +118,23 @@ const OrderDetail = ({
 
 export default Routing(OrderDetail);
 ```
+
+## Matching Rules
+
+`/users` matches
+[x] `/users`
+[x] `/users/`
+[ ] `/users/123`
+
+`/users/` matches
+[x] `/users`
+[x] `/users/`
+[x] `/users/123`
+
+> About query string
+> 
+> Query string is not part of `location.pathname`, `Less Router` would do nothing on it.
+> It you want to deal with query string, see [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
 ## Using Cache
 Add an `autoCache` property.
