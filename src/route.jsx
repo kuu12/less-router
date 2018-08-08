@@ -78,7 +78,10 @@ const Route = ({
 
         if (wrap)
             component = (
-                <div className="route-container hidden">
+                <div
+                    className="route-container"
+                    style={{ display: 'none' }}
+                >
                     {component}
                 </div>
             );
