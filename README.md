@@ -30,6 +30,7 @@ npm install --save less-router
 - [Using Cache](#using-cache)
 - [Dynamic Routing](#dynamic-routing)
 - [Not Found](#not-found)
+- [API Reference](#api-reference)
 
 ## Basic and URL parameters
 Just wrap your route component and root component.
@@ -101,7 +102,7 @@ Property `router` is automatically injected by `Routing`.
 - [x] `/users/`
 - [x] `/users/123`
 
-> About Query String: query string is not part of `location.pathname`, *Less Router* would do nothing on it.
+> **About Query String:** query string is not part of `location.pathname`, *Less Router* would do nothing on it.
 > If you want to deal with it, see [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
 ## Basename
@@ -174,3 +175,39 @@ const ParentComponent = ({ path }) => (
   </div>
 );
 ```
+
+## API Reference
+
+### Routing
+
+A higher-order component. Receving a component and return a new component with route features.
+The initial rendered component will be treated as root route.
+
+### Component With Route Features
+
+Wrapped Component settings.
+
+- path
+- title
+- parentPath
+- autoFocus
+- basename
+- NotFound
+
+### Props injected to Origin Component
+
+- router
+- path
+- pathname
+- URL Parameters
+- Passthrough props
+
+### Property `router`
+
+- push
+- replace
+- clearCache
+- back
+- forward
+- go
+- pathname
