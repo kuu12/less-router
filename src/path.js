@@ -68,7 +68,7 @@ const paramsFromPath = (path, pathname = location.pathname) => {
 };
 
 const joinPath = (...paths) => {
-    let availablePaths = paths
+    const availablePaths = paths
         .filter(Boolean)
         .filter(path => path !== '/');
 

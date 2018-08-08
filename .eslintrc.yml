@@ -4,6 +4,7 @@ env:
   node: true
   commonjs: true
   es6: true
+  jest: true
 extends: eslint:recommended
 parserOptions:
   ecmaFeatures:
@@ -33,7 +34,7 @@ rules:
   no-console: 'off'
   no-unused-vars:
   - warn
-  - varsIgnorePattern: React
+  - varsIgnorePattern: React|[iI]gnored
     argsIgnorePattern: _[iI]gnored
   react/jsx-uses-vars: 1
   no-unreachable: warn

@@ -66,7 +66,7 @@ class Router extends React.Component {
             this.setState({
                 __pathname__: getPathname(state.basename),
             }, resolve)
-        )
+        );
     }
 
     pathname() {
@@ -82,7 +82,11 @@ class Router extends React.Component {
     }
 
     render() {
-        const { basename, Component, ...rest } = this.props;
+        const {
+            basename: ignored,
+            Component,
+            ...rest
+        } = this.props;
 
         return (
             <Component

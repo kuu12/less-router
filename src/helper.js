@@ -4,5 +4,5 @@ export function cacheable(func) {
         if (!(arg in cache))
             cache[arg] = func(arg);
         return cache[arg];
-    }
+    };
 }

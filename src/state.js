@@ -3,6 +3,7 @@ const state = {
     basename: '',
     routerProxy: {},
     registeredRoutes: {},
+    cache: {},
 };
 
 export default state;

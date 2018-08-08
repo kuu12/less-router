@@ -25,10 +25,13 @@ const Routing = Component => props => {
     );
 };
 
+const router = state.routerProxy;
+
 export default Routing;
 export {
     Routing,
     Router,
+    router,
     Route,
     NotFound,
     state,

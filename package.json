@@ -4,7 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "start": "start demo",
+    "build": "",
+    "test": "jest",
+    "publish": ""
   },
   "peerDependencies": {
     "react": ">= 0.13.0"
