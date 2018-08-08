@@ -18,8 +18,10 @@ Dynamic routing, recursive paths, no match (404), and other features.
 - [Basic and URL parameters](#basic-and-url-parameters)
 - [Change Route](#change-route)
 - [Matching Rules](#matching-rules)
-- [Using Cache](#using-cache)
 - [Basename](#basename)
+- [Using Cache](#using-cache)
+- [Dynamic Routing](#dynamic-routing)
+- [Not Found](#not-found)
 
 ## Basic and URL parameters
 Just wrap your route component and root component.
@@ -35,7 +37,7 @@ export default Routing(Component);
 And use the wrapped component.
 ```javascript
 <Component
-  path="/somepath/:nickname
+  path="/somepath/:nickname"
   title="Welcome"
 />
 ```
@@ -117,4 +119,36 @@ Now the component won't be remounting. But usually we make requests in `componen
 ```javascript
 await this.props.router.clearCache('/somepath');
 this.props.router.push('/somepath');
+```
+
+## Dynamic Routing
+```javascript
+const ParentComponent = ({ path }) => (
+  <div>
+    <ChildComponent
+      parentPath={path}
+      path="/child"
+    />
+  </div>
+);
+```
+
+## Not Found
+```javascript
+<Component
+  NotFound
+  title="Not Found"
+/>
+```
+*NotFound* also supports dynamic routing.
+```javascript
+const ParentComponent = ({ path }) => (
+  <div>
+    <ChildComponent
+      NotFound
+      title="Not Found"
+      parentPath={path}
+    />
+  </div>
+);
 ```
