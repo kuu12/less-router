@@ -16,170 +16,90 @@ Dynamic routing, recursive paths, no match (404), and other features.
 # Usage
 
 - [Basic and URL parameters](#basic-and-url-parameters)
+- [Matching Rules](#matching-rules)
+- [Change Route](#change-route)
 - [Using Cache](#using-cache)
 - [Basename](#basename)
 
 ## Basic and URL parameters
+Just wrap your root component and all route component.
 ```javascript
-/****************************  index.jsx *****************************/
-import { render } from 'react-dom';
-import App from './app';
-
-render(
-  <App />,
-  document.getElementById('root-element-id'),
-);
-
-/****************************  app.js  ******************************/
-import { render } from 'react-dom';
 import Routing from 'less-router';
-import Order from './order';
-import OrderDetail from './order-detail';
-
-class App extends React.Component { // root component extends the Router component
-  constructor(props) {
-    console.log(typeof props.router);  // 'object'
-    // props.router is passed by Routing HOC. 
-    // It contains push, replace, back, forward and other useful methods.
-    
-    this.state.orders = [{
-      id: '0001',
-      products: 'sugar, salt',
-    }];
-  }
-
-  render() {
-    return (
-      <div>
-        <header>
-          // this.props.router.push to enter a new path 
-          // this.props.router.replace to replace current path 
-          <button onClick={() => this.props.router.push('/order')}> 
-            Orders
-          </button>
-        </header>
-        <Order
-          path="/order" // path pattern
-          title="Order List" // auto sets document.title
-          // other properties, will be straight pass into origin Order component.
-          orders={this.state.orders}  
-        />
-        <OrderDetail
-          // use URL parameter, extract from location.pathname and
-          // pass into OrderDetail component as orderId property.
-          path="/order/:orderId" 
-          title="Order Detail"
-          orders={this.state.orders}
-        />
-      </div>
-    );
-  }
-};
-
-export default Routing(App);
-```
-```javascript
-/****************************  order.js  ******************************/
-import Routing from 'less-router';
-
-const Order = ({ orders = [], router }) => (
-  <ul>
-    {orders.map(order =>
-      <li key={order.id}>
-        Order ID: {order.id}
-        <button onClick={() => router.push(`/order/${order.id}`)}>
-          Detail
-        </button>
-      </li>
-    )}
-  </ul>
-);
-
-export default Routing(Order);
-```
-```javascript
-/****************************  order-detail.js  ******************************/
-import Routing from 'less-router';
-
-const OrderDetail = ({ 
-  orders = [], 
-  orderId, // auto injected by the path declaration '/order/:orderId'
-  router,
-}) => (
+const Component = ({ router, nickname }) => (
   <div>
-    Products: {
-      (orders.find(order => order.id === orderId) || {}).products
-    }
-    <button onClick={() => history.back()}> // both history.back() and router.back() are available
-      Back to orders
-    </button>
+    ...
   </div>
 );
-
-export default Routing(OrderDetail);
+export default Routing(Component);
+```
+And use the wrapped component.
+```
+<Component
+  path="/somepath/:nickname
+  title="Welcome"
+/>
 ```
 
 ## Matching Rules
 
 `/users` matches
-[x] `/users`
-[x] `/users/`
-[ ] `/users/123`
+- [x] `/users`
+- [x] `/users/`
+- [ ] `/users/123`
 
 `/users/` matches
-[x] `/users`
-[x] `/users/`
-[x] `/users/123`
+- [x] `/users`
+- [x] `/users/`
+- [x] `/users/123`
 
 > About query string
 > 
-> Query string is not part of `location.pathname`, `Less Router` would do nothing on it.
-> It you want to deal with query string, see [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
+> Query string is not part of `location.pathname`, *Less Router* would do nothing on it.
+
+> If you want to deal with it, see [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
+
+## Change route
+```javascript
+import Routing from 'less-router';
+const Component = ({ router, nickname }) => (
+  <div>
+    <button onClick={() => router.push('/home')}>
+      Move to Home
+    </button>
+    <button onClick={() => router.replace('/home')}>
+      Redirect to Home
+    </button>
+    <button onClick={() => router.back()}>
+      Back
+    </button>
+  </div>
+);
+export default Routing(Component);
+```
 
 ## Using Cache
 Add an `autoCache` property.
 ```javascript
-/****************************  app.js  ******************************/
-  render() {
-    ...
-        <Order
-          path="/order"
-          title="Order List"
-          orders={this.state.orders}
-          autoCache // mark as cachable
-        />
-    ...
+<Component
+  path="/somepath"
+  title="A Component"
+  autoCache
+/>
 ```
 
-Now the `Order` component won't be remounting. But usually we make requests in `componentDidMount`, to invoked `componentDidMount` again, we should `clearCache` before entering a route.
+Now the component won't be remounting. But usually we make requests in `componentDidMount`, to invoked `componentDidMount` again, we should `clearCache` before entering a route.
 ```javascript
-/****************************  app.js  ******************************/
-  render() {
-    ...
-        <header>
-          <button onClick={
-            async () => {
-              await this.props.router.clearCache('/order'); // cache clearing is asynchronous
-              this.props.router.push('/order');
-            }
-          }>
-            Orders
-          </button>
-        </header>
-    ...
+await this.props.router.clearCache('/somepath');
+this.props.router.push('/somepath');
 ```
-(p.s. Just for explanation, actually the `Order` component doesn't have a `componentDidMount` function in this case.)
 
 ## Basename
-If your app is not deployed on root path, for example, `https://www.mydomain.com/my-app/`, you should specific the basename in the first routing component.
+If your app is not deployed on root path, for example, `https://www.freehost.com/my-username/my-app/`, you should specific the basename in the first routing component.
 
 ```javascript
-/****************************  index.js  ******************************/
-...
 render(
-  <App basename="my-app" />,
+  <App basename="/my-username/my-app" />,
   document.getElementById('root-element-id'),
 );
-...
 ```
 When using `this.props.router.push(pathname)` or `this.props.router.replace(pathname)`, just forget the basename, it will be added automatically.
