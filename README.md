@@ -45,7 +45,8 @@ export default Routing(Component);
 And use the wrapped component.
 ```javascript
 <Component
-  path="/somepath/:nickname"
+  // Notice the ':nickname' part, it will be treated as a variable.
+  path="/somepath/:nickname" 
   title="Welcome"
 />
 ```
@@ -68,7 +69,7 @@ ReactDOM.render(
 ## Change route
 ```javascript
 import Routing from 'less-router';
-const Component = ({ router, nickname }) => (
+const Component = ({ router }) => (
   <div>
     <button onClick={() => router.push('/home')}>
       Move to Home
@@ -78,6 +79,9 @@ const Component = ({ router, nickname }) => (
     </button>
     <button onClick={() => router.back()}>
       Back
+    </button>
+    <button onClick={() => router.forward()}>
+      Forward
     </button>
   </div>
 );
@@ -97,9 +101,7 @@ Property `router` is automatically injected by `Routing`.
 - [x] `/users/`
 - [x] `/users/123`
 
-> About query string
-> 
-> Query string is not part of `location.pathname`, *Less Router* would do nothing on it.
+> About Query String: query string is not part of `location.pathname`, *Less Router* would do nothing on it.
 > If you want to deal with it, see [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
 ## Basename
@@ -131,6 +133,8 @@ this.props.router.push('/somepath');
 
 ## Dynamic Routing
 ```javascript
+import Routing from 'less-router';
+import ChildComponent from './child';
 const ParentComponent = ({ path }) => (
   <div>
     <ChildComponent
@@ -139,6 +143,16 @@ const ParentComponent = ({ path }) => (
     />
   </div>
 );
+export default Routing(ParentComponent);
+```
+
+```javascript
+import Routing from 'less-router';
+const ChildComponent = () => (
+  <div>
+  </div>
+);
+export default Routing(ChildComponent);
 ```
 
 ## Not Found
