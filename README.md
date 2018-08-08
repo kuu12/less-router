@@ -4,14 +4,22 @@
 
 # Features
 
-### No \<Link> tag, no \<Switch>, no black box hooks
+#### No `<Link>` tag, no `<Switch>`, no black box hooks
 You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
 
-### Cachable
-Route components could be cachable by adding `autoCache` property. Route changes won't lead these component to be destroyed/remounting, but hidden/shown.
+#### Cachable
+By adding `autoCache` property, Route changes won't destroy/remounting component but hide/show it.
 
-### Support most features in React Router V4
+#### Support most features in *React Router V4*
 Dynamic routing, recursive paths, no match (404), and other features.
+
+#### Minimal
+less than 3KB(gzipped), while *React Router V4* takes 7KB.
+
+# Installation
+```shell
+npm install --save less-router
+```
 
 # Usage
 
@@ -29,7 +37,7 @@ Just wrap your route component and root component.
 import Routing from 'less-router';
 const Component = ({ router, nickname }) => (
   <div>
-    ...
+    Hello, {nickname}
   </div>
 );
 export default Routing(Component);
@@ -51,8 +59,7 @@ export default Routing(App);
 Root component doesn't need path property.
 ```javascript
 import App from './app';
-import { render } from 'react-dom';
-render(
+ReactDOM.render(
   <App />,
   document.querySelector('#root-id'),
 );
@@ -76,6 +83,7 @@ const Component = ({ router, nickname }) => (
 );
 export default Routing(Component);
 ```
+Property `router` is automatically injected by `Routing`.
 
 ## Matching Rules
 
@@ -98,9 +106,9 @@ export default Routing(Component);
 If your app deploys on `https://www.freehost.com/my-username/my-app/`, you should specific the basename in the first routing component.
 
 ```javascript
-render(
+ReactDOM.render(
   <App basename="/my-username/my-app" />,
-  document.getElementById('root-element-id'),
+  document.querySelector('#root-id'),
 );
 ```
 When using `this.props.router.push(pathname)` or `this.props.router.replace(pathname)`, just forget the basename, it will be added automatically.
