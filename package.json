@@ -1,8 +1,8 @@
 {
   "name": "less-router",
-  "version": "1.5.1",
-  "description": "",
-  "main": "src/index.js",
+  "version": "1.5.2",
+  "description": "A very easy React router component but full functionally.",
+  "main": "src/index.jsx",
   "scripts": {
     "start": "start demo",
     "build": "",
@@ -12,9 +12,19 @@
   "peerDependencies": {
     "react": ">= 0.13.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "react",
+    "router",
+    "higher-order",
+    "component"
+  ],
+  "author": "kuu12",
+  "license": "MIT",
+  "homepage": "https://github.com/kuu12/less-router",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kuu12/less-router"
+  },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
