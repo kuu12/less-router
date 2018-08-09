@@ -2,6 +2,7 @@ import React from 'react';
 import cache from './cache';
 import state from './state';
 import { getPathname } from './path';
+import Basename from './basename';
 
 class Router extends React.Component {
     constructor(props) {
@@ -9,8 +10,7 @@ class Router extends React.Component {
 
         this.state = {};
 
-        if (props.basename)
-            this.basename(props.basename);
+        if (props.basename) Basename.set(props.basename);
 
         window.addEventListener(
             'popstate',
@@ -20,35 +20,22 @@ class Router extends React.Component {
         Object.setPrototypeOf(state.routerProxy, this);
     }
 
-    basename(basename) {
-        if (typeof basename === 'undefined')
-            return state.basename;
-
-        if (state.basename)
-            console.warn('已设置过basename，请勿重复设置');
-
-        state.basename =
-            basename && !basename.startsWith('/')
-                ? `/${basename}`
-                : basename;
-    }
-
     push(path) {
         return 'pushState' in history
             ? (
-                history.pushState({}, null, state.basename + path),
+                history.pushState({}, null, Basename.get() + path),
                 this.__updatePathnameState__()
             )
-            : location.href = state.basename + path;
+            : location.href = Basename.get() + path;
     }
 
     replace(path) {
         return 'replaceState' in history
             ? (
-                history.replaceState({}, null, state.basename + path),
+                history.replaceState({}, null, Basename.get() + path),
                 this.__updatePathnameState__()
             )
-            : location.href = state.basename + path;
+            : location.href = Basename.get() + path;
     }
 
     back() {
@@ -64,14 +51,14 @@ class Router extends React.Component {
     __updatePathnameState__() {
         return new Promise(resolve =>
             this.setState({
-                __pathname__: getPathname(state.basename),
+                __pathname__: getPathname(Basename.get()),
             }, resolve)
         );
     }
 
     pathname() {
         return this.state.__pathname__ ||
-            getPathname(state.basename);
+            getPathname(Basename.get());
     }
 
     clearCache(path) {

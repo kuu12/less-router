@@ -8,6 +8,7 @@ import {
     joinPath,
     removeParam,
 } from './path';
+import Basename from './basename';
 import { PATH_MUST_STARTS_WITH_SLASH } from './message';
 
 const Route = ({
@@ -24,7 +25,7 @@ const Route = ({
         throw new Error(PATH_MUST_STARTS_WITH_SLASH + path);
 
     const fullPath = joinPath(parentPath, path);
-    const pathname = getPathname(state.basename);
+    const pathname = getPathname(Basename.get());
     const match = regexFromPath(fullPath).test(pathname);
     const cached = cache.has(fullPath);
     const wrap = autoCache && !(

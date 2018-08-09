@@ -1,6 +1,7 @@
 import React from 'react';
 import state from './state';
 import { getPathname } from './path';
+import Basename from './basename';
 
 class NotFound extends React.Component {
     constructor(props) {
@@ -28,14 +29,14 @@ class NotFound extends React.Component {
             !matches.some(Boolean);
 
         if (notFound) this.setState({
-            entryPoint: getPathname(state.basename),
+            entryPoint: getPathname(Basename.get()),
         });
     }
 
     render() {
         if (!this.state.entryPoint) return null;
 
-        const pathname = getPathname(state.basename);
+        const pathname = getPathname(Basename.get());
         if (pathname !== this.state.entryPoint) return null;
 
         const { Component, title, titleName, ...rest } = this.props;
