@@ -8,6 +8,7 @@ import {
     joinPath,
     removeParam,
 } from './path';
+import { PATH_MUST_STARTS_WITH_SLASH } from './message';
 
 const Route = ({
     Component,
@@ -20,11 +21,11 @@ const Route = ({
     ...rest
 }) => {
     if (!path.startsWith('/'))
-        throw new Error(`path必须以'/'开头，当前组件path为 ${path}`);
+        throw new Error(PATH_MUST_STARTS_WITH_SLASH + path);
 
     const fullPath = joinPath(parentPath, path);
     const pathname = getPathname(state.basename);
-    const match = regexFromPath(fullPath).exec(pathname);
+    const match = regexFromPath(fullPath).test(pathname);
     const cached = cache.has(fullPath);
     const wrap = autoCache && !(
         Component.propTypes &&
@@ -50,7 +51,6 @@ const Route = ({
                 router={state.routerProxy}
             />
         );
-
 
         if (wrap)
             component = (

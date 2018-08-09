@@ -13,7 +13,7 @@ const Routing = Component => props => {
     const Container =
         state.RootComponent === Component
             ? Router
-            : 'NotFound' in props || '404' in props
+            : 'NotFound' in props || 'notFound' in props
                 ? NotFound
                 : Route;
 

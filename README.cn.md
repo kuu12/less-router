@@ -1,41 +1,39 @@
 # less-router
 
-[中文README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
+### 更少的API，更多的优雅和更简单地学习。
 
-### Less API, more graceful and flatter learning curve.
+# 特性
 
-# Features
-
-#### No `<Link>` tag, no `<Switch>`, no black box hooks
+#### 没有`<Link>`组件, 没有`<Switch>`, 没有黑匣子般的钩子
 You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
 
-#### Cachable
-By adding `autoCache` property, Route changes won't destroy/remounting component but hide/show it.
+#### 可缓存
+加入`autoCache`属性后, 组件将不会被销毁或重新绑定，而是隐藏或显示。
 
-#### Support most features in *React Router V4*
-Dynamic routing, recursive paths, no match (404), and other features.
+#### 支持*React Router V4*的大多数特性
+动态路由、递归路由、404页面等等。
 
-#### Minimal
-Less than 3KB(gzipped), while *React Router V4* takes 7KB.
+#### 极限体积
+Gzip压缩后仅有3KB，而*React Router V4*是7KB.
 
-# Installation
+# 安装
 ```shell
 npm install --save less-router
 ```
 
-# Usage
+# 使用
 
-- [Basic and URL parameters](#basic-and-url-parameters)
-- [Change Route](#change-route)
-- [Matching Rules](#matching-rules)
-- [Basename](#basename)
-- [Using Cache](#using-cache)
-- [Dynamic Routing](#dynamic-routing)
-- [Not Found](#not-found)
-- [API Reference](#api-reference)
+- [基本使用及URL参数](#基本使用及URL参数)
+- [改变路由](#改变路由)
+- [匹配规则](#匹配规则)
+- [Basename](#Basename)
+- [使用缓存]](#使用缓存)
+- [动态路由](#动态路由)
+- [404页面](#404页面)
+- [API参考](#API参考)
 
-## Basic and URL parameters
-Just wrap your route component and root component.
+## 基本使用及URL参数
+用Routing函数包装路由组件，以及项目根组件
 ```javascript
 import Routing from 'less-router';
 const Component = ({ router, nickname }) => (
@@ -45,7 +43,7 @@ const Component = ({ router, nickname }) => (
 );
 export default Routing(Component);
 ```
-And use the wrapped component.
+使用已包装的组件
 ```javascript
 <Component
   // Notice the ':nickname' part, it will be treated as a variable.
@@ -53,14 +51,14 @@ And use the wrapped component.
   title="Welcome"
 />
 ```
-Don't forget the root component.
+根组件也需要包装
 ```javascript
 import Routing from 'less-router'
 class App extends React.Component {
 }
 export default Routing(App);
 ```
-Root component doesn't need `path` property.
+根组件不需要传入`path`属性
 ```javascript
 import App from './app';
 ReactDOM.render(
@@ -69,7 +67,7 @@ ReactDOM.render(
 );
 ```
 
-## Change route
+## 改变路由
 ```javascript
 import Routing from 'less-router';
 const Component = ({ router }) => (
@@ -90,25 +88,25 @@ const Component = ({ router }) => (
 );
 export default Routing(Component);
 ```
-Property `router` is automatically injected by `Routing`.
+`router`属性是由`Routing`自动注入的。
 
-## Matching Rules
+## 匹配规则
 
-`/users` matches
+`/users` 匹配
 - [x] `/users`
 - [x] `/users/`
 - [ ] `/users/123`
 
-`/users/` matches
+`/users/` 匹配
 - [x] `/users`
 - [x] `/users/`
 - [x] `/users/123`
 
-> **About Query String:** query string is not part of `location.pathname`, *Less Router* would do nothing on it.
-> If you want to deal with it, see [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
+> **关于Query String:** query string 不属于`location.pathname`的一部分，*Less Router*会忽略它。
+> 如果你需要从query string中获取参数，请参见[https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
 ## Basename
-If your app deploys on `https://www.freehost.com/my-username/my-app/`, you should specific the basename in the first routing component.
+假如你的项目准备部署在`https://www.freehost.com/my-username/my-app/`，你需要在**根组件**的basename属性中声明。
 
 ```javascript
 ReactDOM.render(
@@ -116,10 +114,10 @@ ReactDOM.render(
   document.querySelector('#root-id'),
 );
 ```
-When using `this.props.router.push(pathname)` or `this.props.router.replace(pathname)`, just forget the basename, it will be added automatically.
+之后使用`this.props.router.push(pathname)`或者`this.props.router.replace(pathname)`时，路由会自动为你加上basename。
 
-## Using Cache
-Add an `autoCache` property.
+## 使用缓存
+加入`autoCache`属性
 ```javascript
 <Component
   path="/list"
@@ -134,7 +132,7 @@ await this.props.router.clearCache('/somepath');
 this.props.router.push('/somepath');
 ```
 
-## Dynamic Routing
+## 动态路由
 ```javascript
 import Routing from 'less-router';
 import ChildComponent from './child';
@@ -158,27 +156,27 @@ const ChildComponent = () => (
 export default Routing(ChildComponent);
 ```
 
-## Not Found
+## 404页面
 ```javascript
 <Component
   NotFound
-  title="Not Found"
+  title="未找到该路径"
 />
 ```
-*NotFound* also supports dynamic routing.
+`NotFound`支持动态路由，可以使该组件只在某个路径下时才触发
 ```javascript
 const ParentComponent = ({ path }) => (
   <div>
     <ChildComponent
       NotFound
-      title="Not Found"
+      title="未找到该路径"
       parentPath={path}
     />
   </div>
 );
 ```
 
-## API Reference
+## API参考
 
 ### Routing
 
