@@ -6,17 +6,17 @@
 
 # 特性
 
-#### 没有`<Link>`组件, 没有`<Switch>`, 没有黑匣子般的钩子
+#### 没有`<Link>`组件，没有`<Switch>`，没有黑匣子般的钩子
 You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
 
 #### 可缓存
-加入`autoCache`属性后, 组件将不会被销毁或重新绑定，而是隐藏或显示。
+加入`autoCache`属性后，组件将不会被销毁或重新绑定，而是隐藏或显示。
 
-#### 支持*React Router V4*的大多数特性
+#### 支持 *React Router V4* 的大多数特性
 动态路由、递归路由、404页面等等。
 
 #### 极限体积
-Gzip压缩后仅有3KB，而*React Router V4*是7KB.
+Gzip压缩后仅有3KB，而 *React Router V4* 是7KB。
 
 # 安装
 ```shell
@@ -25,14 +25,14 @@ npm install --save less-router
 
 # 使用
 
-- [基本使用及URL参数](#基本使用及URL参数)
+- [基本使用及URL参数](#基本使用及url参数)
 - [改变路由](#改变路由)
 - [匹配规则](#匹配规则)
-- [Basename](#Basename)
+- [Basename](#basename)
 - [使用缓存](#使用缓存)
 - [动态路由](#动态路由)
 - [404页面](#404页面)
-- [API参考](#API参考)
+- [API参考](#api参考)
 
 ## 基本使用及URL参数
 用Routing函数包装路由组件，以及项目根组件
@@ -48,7 +48,7 @@ export default Routing(Component);
 使用已包装的组件
 ```javascript
 <Component
-  // Notice the ':nickname' part, it will be treated as a variable.
+  // nickname会从URL取值并注入到组件的属性中
   path="/somepath/:nickname" 
   title="Welcome"
 />
@@ -104,11 +104,11 @@ export default Routing(Component);
 - [x] `/users/`
 - [x] `/users/123`
 
-> **关于Query String:** query string 不属于`location.pathname`，*Less Router*会忽略它。
+> **关于Query String:** query string 不属于`location.pathname`，*Less Router* 会忽略它。
 > 如果你需要从query string中获取参数，参见 [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
 ## Basename
-假如你的项目准备部署在`https://www.freehost.com/my-username/my-app/`，你需要在**根组件**的basename属性中声明
+假如你的项目准备部署在`https://www.freehost.com/my-username/my-app/`，你需要在**根组件**的`basename`属性中声明
 
 ```javascript
 ReactDOM.render(
@@ -116,7 +116,7 @@ ReactDOM.render(
   document.querySelector('#root-id'),
 );
 ```
-之后使用`this.props.router.push(pathname)`或者`this.props.router.replace(pathname)`时，路由会自动为你加上basename
+之后使用`this.props.router.push(pathname)`或者`this.props.router.replace(pathname)`时，路由会自动为你加上basename。
 
 ## 使用缓存
 加入`autoCache`属性
