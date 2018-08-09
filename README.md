@@ -1,8 +1,8 @@
 # less-router
 
-[中文README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
-
 ### Less API, more graceful and flatter learning curve.
+
+[中文 README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
 
 # Features
 

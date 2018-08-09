@@ -2,6 +2,8 @@
 
 ### 更少的API，更多的优雅和更简单地学习。
 
+[README in English](https://github.com/kuu12/less-router/blob/master/README.md)
+
 # 特性
 
 #### 没有`<Link>`组件, 没有`<Switch>`, 没有黑匣子般的钩子
@@ -27,7 +29,7 @@ npm install --save less-router
 - [改变路由](#改变路由)
 - [匹配规则](#匹配规则)
 - [Basename](#Basename)
-- [使用缓存]](#使用缓存)
+- [使用缓存](#使用缓存)
 - [动态路由](#动态路由)
 - [404页面](#404页面)
 - [API参考](#API参考)
@@ -102,11 +104,11 @@ export default Routing(Component);
 - [x] `/users/`
 - [x] `/users/123`
 
-> **关于Query String:** query string 不属于`location.pathname`的一部分，*Less Router*会忽略它。
-> 如果你需要从query string中获取参数，请参见[https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
+> **关于Query String:** query string 不属于`location.pathname`，*Less Router*会忽略它。
+> 如果你需要从query string中获取参数，参见 [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
 ## Basename
-假如你的项目准备部署在`https://www.freehost.com/my-username/my-app/`，你需要在**根组件**的basename属性中声明。
+假如你的项目准备部署在`https://www.freehost.com/my-username/my-app/`，你需要在**根组件**的basename属性中声明
 
 ```javascript
 ReactDOM.render(
@@ -114,7 +116,7 @@ ReactDOM.render(
   document.querySelector('#root-id'),
 );
 ```
-之后使用`this.props.router.push(pathname)`或者`this.props.router.replace(pathname)`时，路由会自动为你加上basename。
+之后使用`this.props.router.push(pathname)`或者`this.props.router.replace(pathname)`时，路由会自动为你加上basename
 
 ## 使用缓存
 加入`autoCache`属性
