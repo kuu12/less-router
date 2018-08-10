@@ -8,12 +8,12 @@ const getPathname = (basename = '') =>
 
 const regexFromString = cacheable(function (string) {
     if ('/' === string) {
-        string += '(index.html)?$';
+        string += '(?=(index.html)?$)';
     } else if (string.endsWith('/')) {
         string = string.slice(0, string.length - 1);
-        string += '\\/?';
+        string += '(?=\\/?)';
     } else {
-        string += '\\/?$';
+        string += '(?=\\/?$)';
     }
     return new RegExp(`^${string}`);
 });

@@ -9,7 +9,10 @@ import {
     removeParam,
 } from './path';
 import Basename from './basename';
-import { PATH_MUST_STARTS_WITH_SLASH } from './message';
+import {
+    PATH_MUST_STARTS_WITH_SLASH,
+    PARENT_PATH_MUST_ENDS_WITH_SLASH
+} from './message';
 
 const Route = ({
     Component,
@@ -21,6 +24,9 @@ const Route = ({
 }) => {
     if (!path.startsWith('/'))
         throw new Error(PATH_MUST_STARTS_WITH_SLASH + path);
+
+    if (parentPath && !parentPath.endsWith('/'))
+        throw new Error(PARENT_PATH_MUST_ENDS_WITH_SLASH + parentPath);
 
     const fullPath = joinPath(parentPath, path);
     const pathname = getPathname(Basename.get());
