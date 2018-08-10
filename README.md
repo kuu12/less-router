@@ -125,7 +125,7 @@ When using `props.router.push(pathname)` or `props.router.replace(pathname)`, ju
 - **Inject to origin `Component`:** `router` `path` `pathname` and [URL parameters](#basic-and-url-parameters)
 
 Other props will straightly pass into origin `Component`:
-```javascript```
+```javascript
 <Component
   path="/somepath"
   title="Example"

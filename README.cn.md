@@ -125,7 +125,7 @@ ReactDOM.render(
 - **注入到原始组件：** `router` `path` `pathname` 以及 [URL参数](#基本使用及url参数)
 
 其他props会直接传给原始组件:
-```javascript```
+```javascript
 <Component
   path="/somepath"
   title="Example"
