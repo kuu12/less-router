@@ -40,7 +40,7 @@ npm install --save less-router
 import Routing from 'less-router';
 const Component = ({ router, nickname }) => (
   <div>
-    Hello, {nickname}
+    你好, {nickname}
   </div>
 );
 export default Routing(Component);
@@ -50,7 +50,7 @@ export default Routing(Component);
 <Component
   // nickname会从URL取值并注入到组件的属性中
   path="/somepath/:nickname" 
-  title="Welcome"
+  title="欢迎"
 />
 ```
 根组件也需要包装
@@ -75,16 +75,16 @@ import Routing from 'less-router';
 const Component = ({ router }) => (
   <div>
     <button onClick={() => router.push('/home')}>
-      Move to Home
+      进入 Home
     </button>
     <button onClick={() => router.replace('/home')}>
-      Redirect to Home
+      重定向到 Home
     </button>
     <button onClick={() => router.back()}>
-      Back
+      返回
     </button>
     <button onClick={() => router.forward()}>
-      Forward
+      前进
     </button>
   </div>
 );
@@ -116,38 +116,44 @@ ReactDOM.render(
   document.querySelector('#root-id'),
 );
 ```
-之后使用`this.props.router.push(pathname)`或者`this.props.router.replace(pathname)`时，路由会自动为你加上basename。
+之后使用`props.router.push(pathname)`或者`props.router.replace(pathname)`时，路由会自动为你加上basename。
 
 ## 使用缓存
 加入`autoCache`属性
 ```javascript
 <Component
   path="/list"
-  title="A Long List"
+  title="一个长列表"
   autoCache
 />
 ```
+改变路由后，这个组件也不会被销毁。再次回到此路由时，也不会触发`componentDidMount`。
+如果你在`componentDidMount`里写了网络请求的逻辑，想再次进入此路由时刷新页面，那在此之前先清除缓存。
 
-Now the component won't be remounting. But usually we make requests in `componentDidMount`, to invoked `componentDidMount` again, we should `clearCache` before entering a route.
 ```javascript
-await this.props.router.clearCache('/somepath');
-this.props.router.push('/somepath');
+// 现在在其他路由中
+await router.clearCache('/list'); // 清除'/list'路由的缓存。注意这是一个异步操作
+router.push('/list'); // 再次进入'/list'路由
 ```
 
 ## 动态路由
 ```javascript
 import Routing from 'less-router';
 import ChildComponent from './child';
-const ParentComponent = ({ path }) => (
+const ParentComponent = ({ router, path, pathname }) => (
   <div>
     <ChildComponent
       parentPath={path}
       path="/child"
     />
+    <button onClick={() => router.push(pathname + '/child')}>
+      Show Child
+    </button>
   </div>
 );
 export default Routing(ParentComponent);
 ```
+将`props.path`传入`parentPath`即可，无需手动输入`parentPath`的值。
 
 ```javascript
 import Routing from 'less-router';

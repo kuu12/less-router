@@ -116,7 +116,7 @@ ReactDOM.render(
   document.querySelector('#root-id'),
 );
 ```
-When using `this.props.router.push(pathname)` or `this.props.router.replace(pathname)`, just forget the basename, it will be added automatically.
+When using `props.router.push(pathname)` or `props.router.replace(pathname)`, just forget the basename, it will be added automatically.
 
 ## Using Cache
 Add an `autoCache` property.
@@ -127,23 +127,28 @@ Add an `autoCache` property.
   autoCache
 />
 ```
+This component will keep alive. Route changes won't make it destroy or remount, that means `componentDidMount` just run once. 
+If you want to invoke `componentDidMount` again, use `clearCache`.
 
-Now the component won't be remounting. But usually we make requests in `componentDidMount`, to invoked `componentDidMount` again, we should `clearCache` before entering a route.
 ```javascript
-await this.props.router.clearCache('/somepath');
-this.props.router.push('/somepath');
+// On other route.
+await router.clearCache('/list'); // Cache clearing is asynchronous
+router.push('/list'); // Enter list component again.
 ```
 
 ## Dynamic Routing
 ```javascript
 import Routing from 'less-router';
 import ChildComponent from './child';
-const ParentComponent = ({ path }) => (
+const ParentComponent = ({ router, path, pathname }) => (
   <div>
     <ChildComponent
       parentPath={path}
       path="/child"
     />
+    <button onClick={() => router.push(pathname + '/child')}>
+      Show Child
+    </button>
   </div>
 );
 export default Routing(ParentComponent);
@@ -157,6 +162,7 @@ const ChildComponent = () => (
 );
 export default Routing(ChildComponent);
 ```
+Pass `props.path` into `parentPath` property, you will never need to write down this value manually.
 
 ## Not Found
 ```javascript
@@ -165,7 +171,7 @@ export default Routing(ChildComponent);
   title="Not Found"
 />
 ```
-*NotFound* also supports dynamic routing.
+`NotFound` also supports dynamic routing.
 ```javascript
 const ParentComponent = ({ path }) => (
   <div>
