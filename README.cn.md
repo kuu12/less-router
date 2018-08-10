@@ -105,6 +105,11 @@ export default Routing(Component);
 - [x] `/users/`
 - [x] `/users/123`
 
+`/users/:id` 匹配
+- [ ] `/users`
+- [ ] `/users/`
+- [x] `/users/123`
+
 > **关于Query String：** query string 不属于`location.pathname`，*Less Router* 会忽略它。
 > 如果你需要从query string中获取参数，参见 [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
@@ -178,6 +183,7 @@ const ParentComponent = ({ router, path, pathname }) => (
 );
 export default Routing(ParentComponent);
 ```
+
 将`props.path`传入`parentPath`即可，无需手动输入`parentPath`的值。
 
 ```javascript
@@ -187,6 +193,14 @@ const ChildComponent = () => (
   </div>
 );
 export default Routing(ChildComponent);
+```
+
+**NOTICE:** `ParentComponent`的path**必须**以`/`结尾，否则无法匹配`/parent/child`，`ParentComponent`将消失，`ChildComponent`更不复存在
+```javascript
+<ParentComponent
+  path="/parent/" // 正确
+  // path = "/parent" // 错误
+/>
 ```
 
 ## 404页面

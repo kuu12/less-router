@@ -105,6 +105,11 @@ Property `router` is automatically injected by `Routing`.
 - [x] `/users/`
 - [x] `/users/123`
 
+`/users/:id` matches
+- [ ] `/users`
+- [ ] `/users/`
+- [x] `/users/123`
+
 > **About Query String:** query string is not part of `location.pathname`, *Less Router* would do nothing on it.
 > If you want to deal with it, see [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
@@ -178,6 +183,7 @@ const ParentComponent = ({ router, path, pathname }) => (
 );
 export default Routing(ParentComponent);
 ```
+Pass `props.path` into `parentPath` property, you will never need to write down this value manually.
 
 ```javascript
 import Routing from 'less-router';
@@ -187,7 +193,15 @@ const ChildComponent = () => (
 );
 export default Routing(ChildComponent);
 ```
-Pass `props.path` into `parentPath` property, you will never need to write down this value manually.
+
+**NOTICE:** `ParentComponent`'s path **must** ends with `/`, otherwise it won't matches `/parent/child`. `ParentComponent` go missing and `ChildComponent` no longer exists.
+```javascript
+<ParentComponent
+  path="/parent/" // Right
+  // path = "/parent" // Wrong
+/>
+```
+See previous section [Matching Rules](#matching-rules)
 
 ## Not Found
 ```javascript
