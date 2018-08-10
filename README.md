@@ -29,6 +29,7 @@ npm install --save less-router
 - [Change Route](#change-route)
 - [Matching Rules](#matching-rules)
 - [Basename](#basename)
+- [Props](#props)
 - [Using Cache](#using-cache)
 - [Dynamic Routing](#dynamic-routing)
 - [Not Found](#not-found)
@@ -117,6 +118,30 @@ ReactDOM.render(
 );
 ```
 When using `props.router.push(pathname)` or `props.router.replace(pathname)`, just forget the basename, it will be added automatically.
+
+## Props
+*Less Router* reserve serveral props:
+- **Input to wrapped `Component`:** `path` `title` `parentPath` `autoCache` `NotFound`
+- **Inject to origin `Component`:** `router` `path` `pathname` and [URL parameters](#basic-and-url-parameters)
+
+Other props will straightly pass into origin `Component`:
+```javascript```
+<Component
+  path="/somepath"
+  title="Example"
+  aaa="111"
+  bbb="222"
+/>
+```
+```javascript
+import Routing from 'less-router';
+const Component = ({ aaa, bbb }) => (
+  <div>
+    {aaa} {bbb}
+  </div>
+);
+export default Routing(Component);
+```
 
 ## Using Cache
 Add an `autoCache` property.

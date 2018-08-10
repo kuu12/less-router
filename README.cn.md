@@ -29,6 +29,7 @@ npm install --save less-router
 - [改变路由](#改变路由)
 - [匹配规则](#匹配规则)
 - [Basename](#basename)
+- [Props传递](#props传递)
 - [使用缓存](#使用缓存)
 - [动态路由](#动态路由)
 - [404页面](#404页面)
@@ -104,7 +105,7 @@ export default Routing(Component);
 - [x] `/users/`
 - [x] `/users/123`
 
-> **关于Query String:** query string 不属于`location.pathname`，*Less Router* 会忽略它。
+> **关于Query String：** query string 不属于`location.pathname`，*Less Router* 会忽略它。
 > 如果你需要从query string中获取参数，参见 [https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript](https://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript)
 
 ## Basename
@@ -118,6 +119,30 @@ ReactDOM.render(
 ```
 之后使用`props.router.push(pathname)`或者`props.router.replace(pathname)`时，路由会自动为你加上basename。
 
+## Props传递
+*Less Router* 保留数个props
+- **传给已包装的组件：** `path` `title` `parentPath` `autoCache` `NotFound`
+- **注入到原始组件：** `router` `path` `pathname` 以及 [URL参数](#基本使用及url参数)
+
+其他props会直接传给原始组件:
+```javascript```
+<Component
+  path="/somepath"
+  title="Example"
+  aaa="111"
+  bbb="222"
+/>
+```
+```javascript
+import Routing from 'less-router';
+const Component = ({ aaa, bbb }) => (
+  <div>
+    {aaa} {bbb}
+  </div>
+);
+export default Routing(Component);
+```
+
 ## 使用缓存
 加入`autoCache`属性
 ```javascript
@@ -127,7 +152,7 @@ ReactDOM.render(
   autoCache
 />
 ```
-改变路由后，这个组件也不会被销毁。再次回到此路由时，也不会触发`componentDidMount`。
+改变路由后，这个组件不会被销毁。再次回到此路由时，也不会触发`componentDidMount`。
 如果你在`componentDidMount`里写了网络请求的逻辑，想再次进入此路由时刷新页面，那在此之前先清除缓存。
 
 ```javascript
