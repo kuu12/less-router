@@ -43,3 +43,13 @@ export {
     __cache__,
     __path__,
 };
+Object.assign(Routing, {
+    Routing,
+    Router,
+    router,
+    Route,
+    NotFound,
+    state,
+    __cache__,
+    __path__,
+});
