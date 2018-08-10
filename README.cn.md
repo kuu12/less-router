@@ -195,13 +195,14 @@ const ChildComponent = () => (
 export default Routing(ChildComponent);
 ```
 
-**NOTICE:** `ParentComponent`的path**必须**以`/`结尾，否则无法匹配`/parent/child`，`ParentComponent`将消失，`ChildComponent`更不复存在
+**NOTICE:** `ParentComponent`的`path`**必须**以`/`结尾，否则将无法匹配`/parent/child`，`ParentComponent`会消失，`ChildComponent`更不复存在
 ```javascript
 <ParentComponent
   path="/parent/" // 正确
-  // path = "/parent" // 错误
+//path = "/parent" // 错误
 />
 ```
+复习 [匹配规则](#匹配规则)
 
 ## 404页面
 ```javascript
