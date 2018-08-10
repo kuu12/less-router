@@ -4,6 +4,7 @@ const state = {
     routerProxy: {},
     registeredRoutes: {},
     cache: {},
+    exclusive: [],
 };
 
 export default state;

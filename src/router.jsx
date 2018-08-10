@@ -1,7 +1,6 @@
 import React from 'react';
-import cache from './cache';
 import state from './state';
-import { getPathname } from './path';
+import { getPathname, regexFromPath } from './path';
 import Basename from './basename';
 
 class Router extends React.Component {
@@ -49,6 +48,7 @@ class Router extends React.Component {
     }
 
     __updatePathnameState__() {
+        state.exclusive = [];
         return new Promise(resolve =>
             this.setState({
                 __pathname__: getPathname(Basename.get()),
@@ -62,7 +62,7 @@ class Router extends React.Component {
     }
 
     clearCache(path) {
-        cache.delete(path);
+        delete state.cache[regexFromPath(path)];
         return new Promise(resolve =>
             this.forceUpdate(resolve)
         );

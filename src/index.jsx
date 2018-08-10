@@ -3,7 +3,6 @@ import Router from './router';
 import Route from './route';
 import NotFound from './404';
 import state from './state';
-import __cache__ from './cache';
 import * as __path__ from './path';
 
 const Routing = Component => props => {
@@ -40,7 +39,6 @@ export {
     Route,
     NotFound,
     state,
-    __cache__,
     __path__,
 };
 Object.assign(Routing, {
@@ -50,6 +48,5 @@ Object.assign(Routing, {
     Route,
     NotFound,
     state,
-    __cache__,
     __path__,
 });

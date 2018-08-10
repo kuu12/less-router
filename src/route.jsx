@@ -1,5 +1,4 @@
 import React from 'react';
-import cache from './cache';
 import state from './state';
 import {
     getPathname,
@@ -11,7 +10,7 @@ import {
 import Basename from './basename';
 import {
     PATH_MUST_STARTS_WITH_SLASH,
-    PARENT_PATH_MUST_ENDS_WITH_SLASH
+    PARENT_PATH_MUST_ENDS_WITH_SLASH,
 } from './message';
 
 const Route = ({
@@ -20,6 +19,7 @@ const Route = ({
     path,
     title,
     autoCache,
+    exclusive,
     ...rest
 }) => {
     if (!path.startsWith('/'))
@@ -30,8 +30,17 @@ const Route = ({
 
     const fullPath = joinPath(parentPath, path);
     const pathname = getPathname(Basename.get());
-    const match = regexFromPath(fullPath).test(pathname);
-    const cached = cache.has(fullPath);
+    const regex = regexFromPath(fullPath);
+
+    const exclusivePath = state.exclusive.find(exp =>
+        regexFromPath(exp).test(pathname)
+    );
+    const match =
+        exclusivePath && !exclusivePath.startsWith(fullPath)
+            ? false
+            : regex.test(pathname);
+
+    const cached = state.cache[regex];
     const wrap = autoCache && !(
         Component.propTypes &&
         Component.propTypes.routingStyle
@@ -63,8 +72,11 @@ const Route = ({
                 </div>
             );
 
+        if (exclusive && !state.exclusive.find(exp => fullPath === exp))
+            state.exclusive.push(fullPath);
+
         if (autoCache && !cached)
-            cache.add(fullPath);
+            state.cache[regex] = true;
 
         if (typeof title === 'string')
             document.title = title;
@@ -88,6 +100,8 @@ const Route = ({
                     {component}
                 </div>
             );
+    } else if (exclusive) {
+        state.exclusive = state.exclusive.filter(exp => fullPath !== exp);
     }
 
     return component;
