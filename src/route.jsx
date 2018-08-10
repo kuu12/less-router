@@ -16,8 +16,6 @@ const Route = ({
     parentPath,
     path,
     title,
-    titleName,
-    style = {},
     autoCache,
     ...rest
 }) => {
@@ -30,7 +28,7 @@ const Route = ({
     const cached = cache.has(fullPath);
     const wrap = autoCache && !(
         Component.propTypes &&
-        Component.propTypes.style
+        Component.propTypes.routingStyle
     );
     state.registeredRoutes[fullPath] = match;
 
@@ -45,8 +43,7 @@ const Route = ({
         component = (
             <Component
                 path={fullPath}
-                style={style}
-                title={titleName}
+                routingStyle={{}}
                 {...params}
                 {...rest}
                 router={state.routerProxy}
@@ -70,8 +67,7 @@ const Route = ({
         component = (
             <Component
                 path={fullPath}
-                style={{ ...style, display: 'none' }}
-                title={titleName}
+                routingStyle={{ display: 'none' }}
                 {...rest}
                 router={state.routerProxy}
             />
