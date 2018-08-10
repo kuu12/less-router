@@ -3,9 +3,8 @@ import { cacheable } from './helper';
 // '/basename/xxx' -> '/xxx'
 // '/basename' -> '/'
 const getPathname = (basename = '') =>
-    location.pathname.replace(
-        new RegExp('^' + basename), ''
-    ) || '/';
+    decodeURIComponent(location.pathname)
+        .replace(new RegExp('^' + basename), '') || '/';
 
 const regexFromString = cacheable(function (string) {
     if ('/' === string) {
