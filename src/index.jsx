@@ -13,11 +13,11 @@ const Routing = (...args) => {
 
         return []
             .concat(children)
-            .find(child => {
+            .filter(child => {
                 const { parentPath, path } = child.props;
                 const { match, cached } = Matching(parentPath, path);
                 return match || cached;
-            }) || null;
+            });
 
     } else {
 
