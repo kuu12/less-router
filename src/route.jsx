@@ -1,13 +1,6 @@
 import React from 'react';
 import state from './state';
-import {
-    getPathname,
-    paramsFromPath,
-    regexFromPath,
-    joinPath,
-    removeParam,
-} from './path';
-import Basename from './basename';
+import Matching from './match';
 import {
     PATH_MUST_STARTS_WITH_SLASH,
     PARENT_PATH_MUST_ENDS_WITH_SLASH,
@@ -19,7 +12,6 @@ const Route = ({
     path,
     title,
     autoCache,
-    exclusive,
     ...rest
 }) => {
     if (!path.startsWith('/'))
@@ -28,19 +20,9 @@ const Route = ({
     if (parentPath && !parentPath.endsWith('/'))
         throw new Error(PARENT_PATH_MUST_ENDS_WITH_SLASH + parentPath);
 
-    const fullPath = joinPath(parentPath, path);
-    const pathname = getPathname(Basename.get());
-    const regex = regexFromPath(fullPath);
+    const { fullPath, regex, match, cached, params } =
+        Matching(parentPath, path);
 
-    const exclusivePath = state.exclusive.find(exp =>
-        regexFromPath(exp).test(pathname)
-    );
-    const match =
-        exclusivePath && !exclusivePath.startsWith(fullPath)
-            ? false
-            : regex.test(pathname);
-
-    const cached = state.cache[regex];
     const wrap = autoCache && !(
         Component.propTypes &&
         Component.propTypes.routingStyle
@@ -50,11 +32,6 @@ const Route = ({
     let component = null;
 
     if (match) {
-        const params = paramsFromPath(
-            joinPath(removeParam(parentPath), path),
-            pathname,
-        );
-
         component = (
             <Component
                 path={fullPath}
@@ -71,9 +48,6 @@ const Route = ({
                     {component}
                 </div>
             );
-
-        if (exclusive && !state.exclusive.find(exp => fullPath === exp))
-            state.exclusive.push(fullPath);
 
         if (autoCache && !cached)
             state.cache[regex] = true;
@@ -100,8 +74,6 @@ const Route = ({
                     {component}
                 </div>
             );
-    } else if (exclusive) {
-        state.exclusive = state.exclusive.filter(exp => fullPath !== exp);
     }
 
     return component;

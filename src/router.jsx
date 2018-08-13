@@ -48,7 +48,6 @@ class Router extends React.Component {
     }
 
     __updatePathnameState__() {
-        state.exclusive = [];
         return new Promise(resolve =>
             this.setState({
                 __pathname__: getPathname(Basename.get()),
@@ -57,8 +56,12 @@ class Router extends React.Component {
     }
 
     pathname() {
-        return this.state.__pathname__ ||
+        const pathname = this.state.__pathname__ ||
             getPathname(Basename.get());
+
+        return pathname === '/index.html'
+            ? '/'
+            : pathname;
     }
 
     clearCache(path) {

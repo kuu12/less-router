@@ -3,30 +3,50 @@ import Router from './router';
 import Route from './route';
 import NotFound from './404';
 import state from './state';
-import * as __path__ from './path';
+import Matching from './match';
+import * as pathUtil from './path';
 
-const Routing = Component => props => {
-    if (!state.RootComponent)
-        state.RootComponent = Component;
+const Routing = (...args) => {
+    if (typeof args[0] !== 'function') {
 
-    const Container =
-        state.RootComponent === Component
-            ? Router
-            : (
-                'NotFound' in props ||
-                'notFound' in props ||
-                'Notfound' in props ||
-                'NOT_FOUND' in props
-            )
-                ? NotFound
-                : Route;
+        const children = args[0].children || args;
 
-    return (
-        <Container
-            Component={Component}
-            {...props}
-        />
-    );
+        return []
+            .concat(children)
+            .find(child => {
+                const { parentPath, path } = child.props;
+                const { match, cached } = Matching(parentPath, path);
+                return match || cached;
+            }) || null;
+
+    } else {
+
+        const Component = args[0];
+        return props => {
+            if (!state.RootComponent)
+                state.RootComponent = Component;
+
+            const Container =
+                state.RootComponent === Component
+                    ? Router
+                    : (
+                        'NotFound' in props ||
+                        'notFound' in props ||
+                        'Notfound' in props ||
+                        'NOT_FOUND' in props
+                    )
+                        ? NotFound
+                        : Route;
+
+            return (
+                <Container
+                    Component={Component}
+                    {...props}
+                />
+            );
+        }
+
+    }
 };
 
 const router = state.routerProxy;
@@ -39,7 +59,7 @@ export {
     Route,
     NotFound,
     state,
-    __path__,
+    pathUtil,
 };
 Object.assign(Routing, {
     Routing,
@@ -48,5 +68,5 @@ Object.assign(Routing, {
     Route,
     NotFound,
     state,
-    __path__,
+    pathUtil,
 });
