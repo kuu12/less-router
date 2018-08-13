@@ -9,15 +9,23 @@ import * as pathUtil from './path';
 const Routing = (...args) => {
     if (typeof args[0] !== 'function') {
 
-        const children = args[0].children || args;
+        const children = args[0].children
+            ? [].concat(args[0].children) // Both object and array transform to array.
+            : args;
 
-        return []
-            .concat(children)
-            .filter(child => {
-                const { parentPath, path } = child.props;
-                const { match, cached } = Matching(parentPath, path);
+        let found = false;
+
+        return children.filter(child => {
+            const { parentPath, path } = child.props;
+            const { match, cached } = Matching(parentPath, path);
+
+            if (found) {
+                return !match && cached;
+            } else {
+                if (match) found = match;
                 return match || cached;
-            });
+            }
+        });
 
     } else {
 
@@ -44,7 +52,7 @@ const Routing = (...args) => {
                     {...props}
                 />
             );
-        }
+        };
 
     }
 };
