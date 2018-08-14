@@ -42,7 +42,9 @@ class NotFound extends React.Component {
         const { Component, title, titleName, ...rest } = this.props;
         document.title = title;
         delete rest.NotFound;
-        delete rest[404];
+        delete rest.notFound;
+        delete rest.Notfound;
+        delete rest.NOT_FOUND;
 
         return (
             <Component
