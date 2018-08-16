@@ -2,12 +2,14 @@
 
 ### 更少的API，更多的优雅和更简单地学习。
 
+[![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router)
+
 [README in English](https://github.com/kuu12/less-router/blob/master/README.md)
 
 # 特性
 
-#### 没有`<Link>`组件，没有`<Switch>`，没有黑匣子般的钩子
-You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
+#### 简单的API
+花3-5分钟即可开始使用。
 
 #### 可缓存
 加入`autoCache`属性后，组件将不会被销毁或重新绑定，而是隐藏或显示。
@@ -33,6 +35,7 @@ npm install --save less-router
 - [使用缓存](#使用缓存)
 - [动态路由](#动态路由)
 - [404页面](#404页面)
+- [只渲染第一个匹配的路由](#只渲染第一个匹配的路由)
 - [API参考](#api参考)
 
 ## 基本使用及URL参数
@@ -222,6 +225,30 @@ const ParentComponent = ({ path }) => (
     />
   </div>
 );
+```
+
+## 只渲染第一个匹配的路由
+
+```javascript
+<Purchased
+  path="/movies/purchased"
+/>
+<Movie
+  path="/movies/:title"
+/>
+```
+
+两个`path`都能匹配`https://www.example.com/movies/purchased`。但显然我们只想匹配第一个路由，这时只需做一点点修改：
+
+```javascript
+<Routing>
+  <Purchased
+    path="/movies/purchased"
+  />
+  <Movie
+    path="/movies/:title"
+  />
+</Routing>
 ```
 
 ## API参考

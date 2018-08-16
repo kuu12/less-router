@@ -2,12 +2,14 @@
 
 ### Less API, more graceful and flatter learning curve.
 
+[![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router)
+
 [中文 README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
 
 # Features
 
-#### No `<Link>` tag, no `<Switch>`, no black box hooks
-You can get full control of all routing behaviors, by using javascript, a turing complete language, rather than an obscure DML.
+#### Simple API
+Start using in 5 minutes.
 
 #### Cachable
 By adding `autoCache` property, Route changes won't destroy/remounting component but hide/show it.
@@ -33,6 +35,7 @@ npm install --save less-router
 - [Using Cache](#using-cache)
 - [Dynamic Routing](#dynamic-routing)
 - [Not Found](#not-found)
+- [Render First Matched Route](#render-first-matched-route)
 - [API Reference](#api-reference)
 
 ## Basic and URL parameters
@@ -221,6 +224,30 @@ const ParentComponent = ({ path }) => (
     />
   </div>
 );
+```
+
+## Render First Matched Route
+
+```javascript
+<Purchased
+  path="/movies/purchased"
+/>
+<Movie
+  path="/movies/:title"
+/>
+```
+
+Both `path` can match `https://www.example.com/movies/purchased`. But obviously, we only want to render the first route component. Let's make some changes.
+
+```javascript
+<Routing>
+  <Purchased
+    path="/movies/purchased"
+  />
+  <Movie
+    path="/movies/:title"
+  />
+</Routing>
 ```
 
 ## API Reference
