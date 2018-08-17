@@ -12,7 +12,6 @@ delete pkg.jest;
 fse.outputJson(pp('./dist/package.json'), pkg, { spaces: 2 });
 
 [
-    'index.js',
     'src',
     'LICENSE',
     'README.md',
@@ -22,4 +21,13 @@ fse.outputJson(pp('./dist/package.json'), pkg, { spaces: 2 });
         pp('.', name),
         pp('./dist', name)
     )
+);
+
+fse.outputFileSync(
+    pp('./dist/index.js'),
+    [
+        'module.exports = process.env.NODE_ENV === \'production\'',
+        '    ? require(\'./less-router.production.min.js\')',
+        '    : require(\'./less-router.development.js\');',
+    ].join('\n')
 );
