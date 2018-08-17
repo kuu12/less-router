@@ -2,8 +2,8 @@ import React from 'react';
 import state from './state';
 import Matching from './match';
 import {
-    PATH_MUST_STARTS_WITH_SLASH,
-    PARENT_PATH_MUST_ENDS_WITH_SLASH,
+    PATH_START,
+    PARENT_END,
 } from './message';
 
 const Route = ({
@@ -15,10 +15,10 @@ const Route = ({
     ...rest
 }) => {
     if (!path.startsWith('/'))
-        throw new Error(PATH_MUST_STARTS_WITH_SLASH + path);
+        throw new Error(PATH_START + path);
 
     if (parentPath && !parentPath.endsWith('/'))
-        throw new Error(PARENT_PATH_MUST_ENDS_WITH_SLASH + parentPath);
+        throw new Error(PARENT_END + parentPath);
 
     const { fullPath, regex, match, cached, params } =
         Matching(parentPath, path);

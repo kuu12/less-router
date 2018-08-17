@@ -1,6 +1,24 @@
 {
     "presets": [
-        "env",
+        [
+            "env",
+            {
+                "modules": false,
+                "targets": {
+                    "browsers": [
+                        "Android >= 4.0",
+                        "ios >= 6"
+                    ]
+                },
+                "debug": true,
+                "include": [],
+                "useBuiltIns": false
+            }
+        ],
+        "stage-2",
         "react"
+    ],
+    "plugins": [
+        "external-helpers"
     ]
 }

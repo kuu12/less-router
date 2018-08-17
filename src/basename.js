@@ -1,10 +1,10 @@
 import state from './state';
-import { BASENAME_HAS_BEEN_SET } from './message';
+import { BASENAME } from './message';
 
 const Basename = {
     set(basename) {
         if (this.get())
-            console.error(new Error(BASENAME_HAS_BEEN_SET));
+            console.error(new Error(BASENAME));
 
         if (basename && !basename.startsWith('/'))
             basename = '/' + basename;

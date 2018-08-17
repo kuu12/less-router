@@ -1,20 +1,21 @@
 {
   "name": "less-router",
-  "version": "1.5.6",
+  "version": "1.6.0",
   "description": "A very easy React router component but full functionally.",
-  "main": "src/index.jsx",
+  "main": "index.js",
   "scripts": {
     "start": "start demo",
-    "build": "",
-    "test": "jest",
-    "publish": ""
+    "build": "rollup -c",
+    "test": "jest"
   },
   "peerDependencies": {
     "react": ">= 0.13.0"
   },
   "keywords": [
+    "react.js",
     "react",
     "router",
+    "minimal",
     "higher-order",
     "component"
   ],
@@ -26,12 +27,20 @@
     "url": "https://github.com/kuu12/less-router"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "eslint": "^5.3.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-react": "^7.10.0",
-    "jest": "^23.4.2"
+    "jest": "^23.4.2",
+    "rollup": "^0.64.1",
+    "rollup-plugin-babel": "^3.0.7",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^4.0.0"
   },
   "jest": {
     "testURL": "http://localhost"

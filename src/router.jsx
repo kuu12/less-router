@@ -48,11 +48,9 @@ class Router extends React.Component {
     }
 
     __updatePathnameState__() {
-        return new Promise(resolve =>
-            this.setState({
-                __pathname__: getPathname(Basename.get()),
-            }, resolve)
-        );
+        this.setState({
+            __pathname__: getPathname(Basename.get()),
+        });
     }
 
     pathname() {
@@ -64,11 +62,12 @@ class Router extends React.Component {
             : pathname;
     }
 
-    clearCache(path) {
+    clearCache(path, callback) {
         delete state.cache[regexFromPath(path)];
-        return new Promise(resolve =>
-            this.forceUpdate(resolve)
-        );
+        const exec = resolve => this.forceUpdate(resolve);
+        return typeof Promise === 'function'
+            ? new Promise(exec)
+            : exec(callback);
     }
 
     render() {
