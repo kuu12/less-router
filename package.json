@@ -1,11 +1,14 @@
 {
   "name": "less-router",
-  "version": "1.6.0",
+  "version": "1.6.2",
   "description": "A very easy React router component but full functionally.",
-  "main": "index.js",
+  "main": "src/index.jsx",
   "scripts": {
     "start": "start demo",
-    "build": "rollup -c",
+    "build": "rollup -c --environment NODE_ENV:production && rollup -c --environment NODE_ENV:development",
+    "install": "npm run build",
+    "pack": "node pack.js && npm run build",
+    "release": "npm run pack && cd dist && npm publish",
     "test": "jest"
   },
   "peerDependencies": {
@@ -35,6 +38,7 @@
     "eslint": "^5.3.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-react": "^7.10.0",
+    "fs-extra": "^7.0.0",
     "jest": "^23.4.2",
     "rollup": "^0.64.1",
     "rollup-plugin-babel": "^3.0.7",

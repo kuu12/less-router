@@ -2,6 +2,9 @@
 
 ### 更少的API，更多的优雅和更简单地学习。
 
+
+[![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router)
+[![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router@1.6.2.svg)](https://www.npmjs.com/package/less-router)
 [![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router)
 
 [README in English](https://github.com/kuu12/less-router/blob/master/README.md)

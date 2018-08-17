@@ -3,11 +3,10 @@ import replace from 'rollup-plugin-replace';
 import babel from 'rollup-plugin-babel';
 import { uglify } from 'rollup-plugin-uglify';
 
-export default {
+const config = {
     input: './src/index.jsx',
     external: ['react'],
     output: {
-        file: './dist/less-router.production.min.js',
         format: 'cjs',
     },
     plugins: [
@@ -15,15 +14,26 @@ export default {
             extensions: ['.js', '.jsx', '.json'],
         }),
         replace({
-            'process.env.NODE_ENV': JSON.stringify(
-                process.env.NODE_ENV || 'production'
-            ),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         }),
         babel(),
-        uglify({
-            mangle: {
-                toplevel: true,
-            },
-        }),
     ],
 };
+
+switch (process.env.NODE_ENV) {
+    case 'development':
+        config.output.file = './dist/less-router.development.js';
+        config.output.sourcemap = true;
+        break;
+
+    case 'production':
+        config.output.file = './dist/less-router.production.min.js';
+        config.plugins.push(
+            uglify({
+                mangle: { toplevel: true },
+            }),
+        );
+        break;
+}
+
+export default config;

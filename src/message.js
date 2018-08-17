@@ -1,4 +1,4 @@
-var message;
+let message;
 
 if (process.env.NODE_ENV !== 'production') {
 
