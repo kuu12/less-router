@@ -7,17 +7,17 @@ const config = {
     input: './src/index.jsx',
     external: ['react'],
     output: {
-        format: 'cjs',
+        format: 'cjs'
     },
     plugins: [
         resolve({
-            extensions: ['.js', '.jsx', '.json'],
+            extensions: ['.js', '.jsx', '.json']
         }),
         replace({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }),
-        babel(),
-    ],
+        babel()
+    ]
 };
 
 switch (process.env.NODE_ENV) {
@@ -30,8 +30,8 @@ switch (process.env.NODE_ENV) {
         config.output.file = './dist/less-router.min.js';
         config.plugins.push(
             uglify({
-                mangle: { toplevel: true },
-            }),
+                mangle: { toplevel: true }
+            })
         );
         break;
 }

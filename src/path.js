@@ -67,7 +67,7 @@ const paramsFromPath = (path, pathname = location.pathname) => {
 };
 
 const joinPath = (...paths) => {
-    const fullPath = paths
+    let fullPath = paths
         .filter(Boolean)
         .filter(path => '/' !== path)
         .map(addHeadRemoveTail)
