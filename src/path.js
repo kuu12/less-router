@@ -67,30 +67,23 @@ const paramsFromPath = (path, pathname = location.pathname) => {
 };
 
 const joinPath = (...paths) => {
-    const availablePaths = paths
+    const fullPath = paths
         .filter(Boolean)
-        .filter(path => path !== '/');
-
-    let fullPath = availablePaths
-        .map(path =>
-            path.endsWith('/')
-                ? path.slice(0, -1)
-                : path
-        )
-        .map(path =>
-            path.startsWith('/')
-                ? path
-                : `/${path}`
-        )
+        .filter(path => '/' !== path)
+        .map(addHeadRemoveTail)
         .join('');
 
-    if (!fullPath)
-        fullPath = '/';
-    else if (availablePaths[availablePaths.length - 1].endsWith('/'))
+    const last = paths[paths.length - 1];
+    if (last && last.endsWith('/'))
         fullPath += '/';
 
-    return fullPath;
+    return fullPath || '/';
 };
+
+const addHeadRemoveTail = path =>
+    path
+        .replace(/\/+$/, '')
+        .replace(/^(?=\\\/)/, '/');
 
 export {
     getPathname,
@@ -98,4 +91,5 @@ export {
     removeParam,
     paramsFromPath,
     joinPath,
+    addHeadRemoveTail,
 };

@@ -1,4 +1,5 @@
 import state from './state';
+import { addHeadRemoveTail } from './path';
 import { BASENAME } from './message';
 
 const Basename = {
@@ -6,8 +7,7 @@ const Basename = {
         if (this.get())
             console.error(new Error(BASENAME));
 
-        if (basename && !basename.startsWith('/'))
-            basename = '/' + basename;
+        basename = basename && addHeadRemoveTail(basename);
 
         if ('pushState' in history)
             state.basename = basename;

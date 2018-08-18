@@ -7,58 +7,57 @@ import Matching from './match';
 import * as pathUtil from './path';
 
 const Routing = (...args) => {
-    if (typeof args[0] !== 'function') {
+    switch (typeof args[0]) {
+        case 'function':
+            return props => {
+                const [Component] = args;
 
-        const children = args[0].children
-            ? [].concat(args[0].children) // Both object and array transform to array.
-            : args;
+                if (!state.RootComponent)
+                    state.RootComponent = Component;
 
-        let found = false;
+                const Container =
+                    state.RootComponent === Component
+                        ? Router
+                        : (
+                            'NotFound' in props ||
+                            'notFound' in props ||
+                            'Notfound' in props ||
+                            'NOT_FOUND' in props
+                        )
+                            ? NotFound
+                            : Route;
 
-        return children.filter(child => {
-            const { parentPath, path } = child.props;
-            const { match, cached } = Matching(parentPath, path);
+                return (
+                    <Container
+                        Component={Component}
+                        {...props}
+                    />
+                );
+            };
 
-            if (found) {
-                return !match && cached;
-            } else {
-                if (match) found = match;
-                return match || cached;
-            }
-        });
+        case 'object': {
+            const children = args[0].children
+                ? [].concat(args[0].children) // Both object and array transform to array.
+                : args;
 
-    } else {
+            let found = false;
 
-        const Component = args[0];
-        return props => {
-            if (!state.RootComponent)
-                state.RootComponent = Component;
+            return children.filter(child => {
+                const { parentPath, path } = child.props;
+                const { match, cached } = Matching(parentPath, path);
 
-            const Container =
-                state.RootComponent === Component
-                    ? Router
-                    : (
-                        'NotFound' in props ||
-                        'notFound' in props ||
-                        'Notfound' in props ||
-                        'NOT_FOUND' in props
-                    )
-                        ? NotFound
-                        : Route;
-
-            return (
-                <Container
-                    Component={Component}
-                    {...props}
-                />
-            );
-        };
-
+                if (found) {
+                    return !match && cached;
+                } else {
+                    if (match) found = match;
+                    return match || cached;
+                }
+            });
+        }
     }
 };
 
 const router = state.routerProxy;
-
 export default Routing;
 export {
     Routing,

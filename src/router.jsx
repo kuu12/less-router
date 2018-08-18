@@ -2,6 +2,7 @@ import React from 'react';
 import state from './state';
 import { getPathname, regexFromPath } from './path';
 import Basename from './basename';
+import { PATH_START, PATH_NOT_FOUND } from './message';
 
 class Router extends React.Component {
     constructor(props) {
@@ -20,6 +21,9 @@ class Router extends React.Component {
     }
 
     push(path) {
+        if (!path.startsWith('/'))
+            console.error(new Error(PATH_START + path));
+
         return 'pushState' in history
             ? (
                 history.pushState({}, null, Basename.get() + path),
@@ -29,6 +33,9 @@ class Router extends React.Component {
     }
 
     replace(path) {
+        if (!path.startsWith('/'))
+            console.error(new Error(PATH_START + path));
+
         return 'replaceState' in history
             ? (
                 history.replaceState({}, null, Basename.get() + path),
@@ -63,6 +70,11 @@ class Router extends React.Component {
     }
 
     clearCache(path, callback) {
+        if (!path.startsWith('/'))
+            throw new Error(PATH_START + path);
+        if (!(path in state.registeredRoutes))
+            console.warn(new Error(PATH_NOT_FOUND + path));
+
         delete state.cache[regexFromPath(path)];
         const exec = resolve => this.forceUpdate(resolve);
         return typeof Promise === 'function'

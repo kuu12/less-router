@@ -2,7 +2,6 @@
 
 ### 更少的API，更多的优雅和更简单地学习。
 
-
 [![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router)
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router@1.6.2.svg)](https://www.npmjs.com/package/less-router)
 [![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router)
@@ -11,16 +10,16 @@
 
 # 特性
 
-#### 简单的API
+### 简单的API
 花3-5分钟即可开始使用。
 
-#### 可缓存
+### 可缓存
 加入`autoCache`属性后，组件将不会被销毁或重新绑定，而是隐藏或显示。
 
-#### 支持 *React Router V4* 的大多数特性
+### 支持 *React Router V4* 的大多数特性
 动态路由、递归路由、404页面等等。
 
-#### 极限体积
+### 极限体积
 Gzip压缩后仅有3KB，而 *React Router V4* 是7KB。
 
 # 安装

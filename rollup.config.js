@@ -22,12 +22,12 @@ const config = {
 
 switch (process.env.NODE_ENV) {
     case 'development':
-        config.output.file = './dist/less-router.development.js';
+        config.output.file = './dist/less-router.js';
         config.output.sourcemap = true;
         break;
 
     case 'production':
-        config.output.file = './dist/less-router.production.min.js';
+        config.output.file = './dist/less-router.min.js';
         config.plugins.push(
             uglify({
                 mangle: { toplevel: true },
