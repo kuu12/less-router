@@ -20,7 +20,7 @@
 动态路由、递归路由、404页面等等。
 
 ### 极限体积
-Gzip压缩后仅有3KB，而 *React Router V4* 是8KB。
+Gzip压缩后仅有3kB，而 *React Router V4* 是8kB。
 
 # 安装
 ```shell

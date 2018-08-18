@@ -3,8 +3,8 @@
 ### Less API, more graceful and flatter learning curve.
 
 [![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router)
-[![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router)
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router@1.6.2.svg)](https://www.npmjs.com/package/less-router)
+[![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router)
 
 [中文 README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
 
@@ -20,7 +20,7 @@ By adding `autoCache` property, Route changes won't destroy/remount component bu
 Dynamic routing, recursive paths, no match (404), and other features.
 
 #### Minimal
-Less than 3KB(gzipped), while *React Router V4* takes 8KB.
+Less than 3kB(gzipped), while *React Router V4* takes 8kB.
 
 # Installation
 ```shell
@@ -202,8 +202,8 @@ export default Routing(ChildComponent);
 **NOTICE:** `ParentComponent`'s path **must** ends with `/`, otherwise it won't matches `/parent/child`. `ParentComponent` go missing and `ChildComponent` no longer exists.
 ```javascript
 <ParentComponent
-  path="/parent/" // Right
-  // path = "/parent" // Wrong
+  path="/parent/" // correct
+  // path = "/parent" // incorrect
 />
 ```
 See previous section [Matching Rules](#matching-rules)
@@ -239,7 +239,7 @@ const ParentComponent = ({ path }) => (
 />
 ```
 
-Both `path` can match `https://www.example.com/movies/purchased`. But obviously, we only want to render the first route component. Let's make some changes.
+Both of `path` match `https://www.example.com/movies/purchased`. But obviously, we only want to render the first route component. Let's make some changes.
 
 ```javascript
 <Routing>
