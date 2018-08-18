@@ -55,9 +55,13 @@ class Router extends React.Component {
     }
 
     __updatePathnameState__() {
-        this.setState({
-            __pathname__: getPathname(Basename.get()),
-        });
+        const exec = resolve =>
+            this.setState({
+                __pathname__: getPathname(Basename.get()),
+            }, resolve);
+        return typeof Promise === 'function'
+            ? new Promise(exec)
+            : exec();
     }
 
     pathname() {
