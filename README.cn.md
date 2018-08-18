@@ -53,7 +53,7 @@ export default Routing(Component);
 ```
 使用已包装的组件
 ```javascript
-<Component
+<ComponentRoute
   // nickname会从URL取值并注入到组件的属性中
   path="/somepath/:nickname" 
   title="欢迎"
@@ -68,9 +68,9 @@ export default Routing(App);
 ```
 根组件不需要传入`path`属性
 ```javascript
-import App from './app';
+import AppRoute from './app';
 ReactDOM.render(
-  <App />,
+  <AppRoute />,
   document.querySelector('#root-id'),
 );
 ```
@@ -123,7 +123,7 @@ export default Routing(Component);
 
 ```javascript
 ReactDOM.render(
-  <App basename="/my-username/my-app" />,
+  <AppRoute basename="/my-username/my-app" />,
   document.querySelector('#root-id'),
 );
 ```
@@ -136,7 +136,7 @@ ReactDOM.render(
 
 其他props会直接传给原始组件:
 ```javascript
-<Component
+<ComponentRoute
   path="/somepath"
   title="Example"
   aaa="111"
@@ -156,7 +156,7 @@ export default Routing(Component);
 ## 使用缓存
 加入`autoCache`属性
 ```javascript
-<Component
+<ComponentRoute
   path="/list"
   title="一个长列表"
   autoCache
@@ -174,10 +174,10 @@ router.push('/list'); // 再次进入'/list'路由
 ## 动态路由
 ```javascript
 import Routing from 'less-router';
-import ChildComponent from './child';
-const ParentComponent = ({ router, path, pathname }) => (
+import ChildRoute from './child';
+const Parent = ({ router, path, pathname }) => (
   <div>
-    <ChildComponent
+    <ChildRoute
       parentPath={path}
       path="/child"
     />
@@ -186,23 +186,23 @@ const ParentComponent = ({ router, path, pathname }) => (
     </button>
   </div>
 );
-export default Routing(ParentComponent);
+export default Routing(Parent);
 ```
 
 将`props.path`传入`parentPath`即可，无需手动输入`parentPath`的值。
 
 ```javascript
 import Routing from 'less-router';
-const ChildComponent = () => (
+const Child = () => (
   <div>
   </div>
 );
-export default Routing(ChildComponent);
+export default Routing(Child);
 ```
 
-**NOTICE:** `ParentComponent`的`path`**必须**以`/`结尾，否则将无法匹配`/parent/child`，`ParentComponent`会消失，`ChildComponent`更不复存在
+**留意:** `ParentRoute`的`path`**必须**以`/`结尾，否则将无法匹配`/parent/child`，`ParentRoute`会消失，`ChildRoute`更不复存在
 ```javascript
-<ParentComponent
+<ParentRoute
   path="/parent/" // 正确
 //path = "/parent" // 错误
 />
@@ -211,31 +211,33 @@ export default Routing(ChildComponent);
 
 ## 404页面
 ```javascript
-<Component
+<ComponentRoute
   NotFound
   title="未找到该路径"
 />
 ```
 `NotFound`支持动态路由，可以使该组件只在某个路径下时才触发
 ```javascript
-const ParentComponent = ({ path }) => (
+import Routing from 'less-router';
+const Parent = ({ path }) => (
   <div>
-    <ChildComponent
+    <ChildRoute
       NotFound
       title="未找到该路径"
       parentPath={path}
     />
   </div>
 );
+export default Routing(Parent);
 ```
 
 ## 只渲染第一个匹配的路由
 
 ```javascript
-<Purchased
+<PurchasedRoute
   path="/movies/purchased"
 />
-<Movie
+<MovieRoute
   path="/movies/:title"
 />
 ```
@@ -244,10 +246,10 @@ const ParentComponent = ({ path }) => (
 
 ```javascript
 <Routing>
-  <Purchased
+  <PurchasedRoute
     path="/movies/purchased"
   />
-  <Movie
+  <MovieRoute
     path="/movies/:title"
   />
 </Routing>

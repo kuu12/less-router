@@ -53,7 +53,7 @@ export default Routing(Component);
 ```
 And use the wrapped component.
 ```javascript
-<Component
+<ComponentRoute
   // Notice the ':nickname' part, it will be treated as a variable.
   path="/somepath/:nickname" 
   title="Welcome"
@@ -68,9 +68,9 @@ export default Routing(App);
 ```
 Root component doesn't need `path` property.
 ```javascript
-import App from './app';
+import AppRoute from './app';
 ReactDOM.render(
-  <App />,
+  <AppRoute />,
   document.querySelector('#root-id'),
 );
 ```
@@ -123,7 +123,7 @@ If your app deploys on `https://www.freehost.com/my-username/my-app/`, you shoul
 
 ```javascript
 ReactDOM.render(
-  <App basename="/my-username/my-app" />,
+  <AppRoute basename="/my-username/my-app" />,
   document.querySelector('#root-id'),
 );
 ```
@@ -131,12 +131,12 @@ When using `props.router.push(pathname)` or `props.router.replace(pathname)`, ju
 
 ## Props
 *Less Router* reserve serveral props:
-- **Input to wrapped `Component`:** `path` `title` `parentPath` `autoCache` `NotFound`
+- **Input to wrapped `ComponentRoute`:** `path` `title` `parentPath` `autoCache` `NotFound`
 - **Inject to origin `Component`:** `router` `path` `pathname` and [URL parameters](#basic-and-url-parameters)
 
 Other props will straightly pass into origin `Component`:
 ```javascript
-<Component
+<ComponentRoute
   path="/somepath"
   title="Example"
   aaa="111"
@@ -156,7 +156,7 @@ export default Routing(Component);
 ## Using Cache
 Add an `autoCache` property.
 ```javascript
-<Component
+<ComponentRoute
   path="/list"
   title="A Long List"
   autoCache
@@ -174,10 +174,10 @@ router.push('/list'); // Enter list component again.
 ## Dynamic Routing
 ```javascript
 import Routing from 'less-router';
-import ChildComponent from './child';
-const ParentComponent = ({ router, path, pathname }) => (
+import ChildRoute from './child';
+const Parent = ({ router, path, pathname }) => (
   <div>
-    <ChildComponent
+    <ChildRoute
       parentPath={path}
       path="/child"
     />
@@ -186,22 +186,22 @@ const ParentComponent = ({ router, path, pathname }) => (
     </button>
   </div>
 );
-export default Routing(ParentComponent);
+export default Routing(Parent);
 ```
 Pass `props.path` into `parentPath` property, you will never need to write down this value manually.
 
 ```javascript
 import Routing from 'less-router';
-const ChildComponent = () => (
+const Child = () => (
   <div>
   </div>
 );
-export default Routing(ChildComponent);
+export default Routing(Child);
 ```
 
-**NOTICE:** `ParentComponent`'s path **must** ends with `/`, otherwise it won't matches `/parent/child`. `ParentComponent` go missing and `ChildComponent` no longer exists.
+**NOTICE:** `ParentRoute`'s path **must** ends with `/`, otherwise it won't matches `/parent/child`. `ParentRoute` go missing and `ChildRoute` no longer exists.
 ```javascript
-<ParentComponent
+<ParentRoute
   path="/parent/" // correct
   // path = "/parent" // incorrect
 />
@@ -210,31 +210,33 @@ See previous section [Matching Rules](#matching-rules)
 
 ## Not Found
 ```javascript
-<Component
+<ComponentRoute
   NotFound
   title="Not Found"
 />
 ```
 `NotFound` also supports dynamic routing.
 ```javascript
-const ParentComponent = ({ path }) => (
+import Routing from 'less-router';
+const Parent = ({ path }) => (
   <div>
-    <ChildComponent
+    <ChildRoute
       NotFound
       title="Not Found"
       parentPath={path}
     />
   </div>
 );
+export default Routing(Parent);
 ```
 
 ## Render First Matched Route
 
 ```javascript
-<Purchased
+<PurchasedRoute
   path="/movies/purchased"
 />
-<Movie
+<MovieRoute
   path="/movies/:title"
 />
 ```
@@ -243,10 +245,10 @@ Both of `path` match `https://www.example.com/movies/purchased`. But obviously, 
 
 ```javascript
 <Routing>
-  <Purchased
+  <PurchasedRoute
     path="/movies/purchased"
   />
-  <Movie
+  <MovieRoute
     path="/movies/:title"
   />
 </Routing>
