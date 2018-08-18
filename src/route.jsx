@@ -54,6 +54,8 @@ const Route = ({
 
         if (typeof title === 'string')
             document.title = title;
+        else if (typeof params.title === 'string')
+            document.title = params.title;
 
     } else if (cached) {
         component = (

@@ -14,13 +14,13 @@
 Start using in 5 minutes.
 
 #### Cachable
-By adding `autoCache` property, Route changes won't destroy/remounting component but hide/show it.
+By adding `autoCache` property, Route changes won't destroy/remount component but hide/show it.
 
 #### Support most features in *React Router V4*
 Dynamic routing, recursive paths, no match (404), and other features.
 
 #### Minimal
-Less than 3KB(gzipped), while *React Router V4* takes 7KB.
+Less than 3KB(gzipped), while *React Router V4* takes 8KB.
 
 # Installation
 ```shell
