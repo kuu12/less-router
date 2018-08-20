@@ -16,7 +16,23 @@ const config = {
         replace({
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
         }),
-        babel()
+        babel({
+            babelrc: false,
+            presets: [
+                ['env', {
+                    modules: false,
+                    targets: {
+                        browsers: ['Android >= 4.0', 'ios >= 6']
+                    },
+                    debug: true,
+                    include: [],
+                    useBuiltIns: false
+                }],
+                'stage-2',
+                'react'
+            ],
+            plugins: ['external-helpers']
+        })
     ]
 };
 
