@@ -1,16 +1,15 @@
 import '../demo';
 import { router } from '../src';
 
-test('11', () => {
-    expect(location.pathname).toEqual('/cinima');
-    expect(document.getElementById('app')).toBeTruthy();
-});
+describe('router.push', () => {
+    beforeAll(() =>
+        document.getElementById('button-tv').click()
+    );
 
-describe('', () => {
-    beforeAll(() => document.getElementById('button-tv').click());
-
-    test('22', () => {
-        expect(location.pathname).toEqual('/cinima/tv/');
+    test('pathname and route', () => {
+        expect(location.pathname)
+            .toEqual('/cinima/tv');
+        expect(document.getElementById('tv'))
+            .toBeInstanceOf(HTMLElement);
     });
-
 });
