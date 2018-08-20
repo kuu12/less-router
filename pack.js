@@ -27,7 +27,7 @@ fse.outputFileSync(
     pp('./dist/index.js'),
     [
         'module.exports = process.env.NODE_ENV === \'production\'',
-        '    ? require(\'./less-router.production.min.js\')',
-        '    : require(\'./less-router.development.js\');',
+        '    ? require(\'./less-router.min.js\')',
+        '    : require(\'./less-router.js\');',
     ].join('\n')
 );
