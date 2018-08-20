@@ -16,7 +16,17 @@ render(
 const style = document.createElement('style');
 style.innerHTML = `
 
+#app {
+  display: flex;
+}
 
+#sidebar {
+  flex: 0 0 20%;
+}
+
+#main {
+  flex 1 1 100%;
+}
 
 `;
 document.head.appendChild(style);

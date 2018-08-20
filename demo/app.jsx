@@ -2,6 +2,8 @@ import React from 'react';
 import Routing from '../src';
 import TV from './tv';
 import Movie from './movie';
+import Purchased from './purchased';
+import Play from './play';
 import NotFound from './notfound';
 
 class App extends React.Component {
@@ -20,7 +22,10 @@ class App extends React.Component {
     return (
       <div id="app">
         <div id="sidebar">
-          <button onClick={() => router.push('/tv')}>
+          <button
+            id="button-tv"
+            onClick={() => router.push('/tv')}
+          >
             TV Series
           </button>
           <button onClick={() => router.push('/movie')}>
@@ -38,7 +43,7 @@ class App extends React.Component {
           />
         </div>
         <div id="main">
-          <TV path="/tv" title="TV Series" />
+          <TV path="/tv/" title="TV Series" />
           <Movie path="/movie" title="Movies" />
           <Routing>
             <Purchased path="/library/purchased" />
