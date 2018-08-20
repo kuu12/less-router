@@ -6,11 +6,10 @@ import {
     paramsFromPath,
     removeParam,
 } from './path';
-import Basename from './basename';
 
 export default (parentPath, path) => {
     const fullPath = joinPath(parentPath, path);
-    const pathname = getPathname(Basename.get());
+    const pathname = getPathname();
     const regex = regexFromPath(fullPath);
     const match = regex.test(pathname);
     const cached = state.cache[regex];

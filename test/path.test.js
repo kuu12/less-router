@@ -2,9 +2,11 @@ import {
     regexFromPath,
     paramsFromPath,
     joinPath,
+    getPathname,
 } from '../src/path';
+import Basename from '../src/basename';
 
-test('path matching', () => {
+test('regexFromPath', () => {
     expect(
         regexFromPath('/order').test('/order')
     ).toBeTruthy();
@@ -26,7 +28,7 @@ test('path matching', () => {
     ).toBeTruthy();
 });
 
-test('params', () => {
+test('paramsFromPath', () => {
     expect(
         paramsFromPath(
             '/order/:orderId/:itemId',
@@ -47,7 +49,7 @@ test('params', () => {
     });
 });
 
-test('join path', () => {
+test('joinPath', () => {
     expect(
         joinPath('/order', '/:orderId')
     ).toEqual('/order/:orderId');
@@ -84,3 +86,45 @@ test('join path', () => {
     ).toEqual('/order');
 });
 
+describe('getPathname', () => {
+    beforeAll(() => {
+        Basename.set('/my-project');
+    });
+
+    describe('/', () => {
+        beforeEach(() => {
+            window.history.pushState({}, null, '/my-project');
+        });
+
+        test('0', () => {
+            expect(
+                getPathname()
+            ).toEqual('/');
+        });
+    });
+
+    describe('/order/191919', () => {
+        beforeEach(() => {
+            window.history.pushState({}, null, '/my-project/order/191919');
+        });
+
+        test('1', () => {
+            expect(
+                getPathname()
+            ).toEqual('/order/191919');
+        });
+    });
+
+    describe('/home', () => {
+        beforeEach(() => {
+            window.history.replaceState({}, null, '/my-project/home');
+        });
+
+        test('2', () => {
+            expect(
+                getPathname()
+            ).toEqual('/home');
+        });
+    });
+
+});

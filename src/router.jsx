@@ -57,7 +57,7 @@ class Router extends React.Component {
     __updatePathnameState__() {
         const exec = resolve =>
             this.setState({
-                __pathname__: getPathname(Basename.get()),
+                __pathname__: getPathname(),
             }, resolve);
         return typeof Promise === 'function'
             ? new Promise(exec)
@@ -66,7 +66,7 @@ class Router extends React.Component {
 
     pathname() {
         const pathname = this.state.__pathname__ ||
-            getPathname(Basename.get());
+            getPathname();
 
         return pathname === '/index.html'
             ? '/'

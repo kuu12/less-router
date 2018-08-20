@@ -1,7 +1,14 @@
+import path from 'path';
+import fse from 'fs-extra';
 import resolve from 'rollup-plugin-node-resolve';
 import replace from 'rollup-plugin-replace';
 import babel from 'rollup-plugin-babel';
 import { uglify } from 'rollup-plugin-uglify';
+
+const babelrc = fse.readJsonSync(
+    path.join(__dirname, '.babelrc')
+);
+babelrc.presets[0][1].modules = false;
 
 const config = {
     input: './src/index.jsx',
@@ -18,20 +25,8 @@ const config = {
         }),
         babel({
             babelrc: false,
-            presets: [
-                ['env', {
-                    modules: false,
-                    targets: {
-                        browsers: ['Android >= 4.0', 'ios >= 6']
-                    },
-                    debug: true,
-                    include: [],
-                    useBuiltIns: false
-                }],
-                'stage-2',
-                'react'
-            ],
-            plugins: ['external-helpers']
+            plugins: ['external-helpers'],
+            ...babelrc
         })
     ]
 };

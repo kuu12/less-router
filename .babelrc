@@ -9,7 +9,7 @@
                         "ios >= 6"
                     ]
                 },
-                "debug": true,
+                "debug": false,
                 "include": [],
                 "useBuiltIns": false
             }

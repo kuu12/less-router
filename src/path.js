@@ -1,10 +1,17 @@
 import { cacheable } from './helper';
+import state from './state';
 
 // '/basename/xxx' -> '/xxx'
 // '/basename' -> '/'
-const getPathname = (basename = '') =>
-    decodeURIComponent(location.pathname)
-        .replace(new RegExp('^' + basename), '') || '/';
+let getPathname; {
+    const cache = cacheable(
+        pathname =>
+            decodeURIComponent(pathname)
+                .replace(new RegExp('^' + state.basename), '') || '/'
+    );
+    getPathname = (pathname = location.pathname) =>
+        cache(pathname);
+}
 
 const regexFromString = cacheable(function (string) {
     if ('/' === string) {
