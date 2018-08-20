@@ -83,7 +83,7 @@ const joinPath = (...paths) => {
 const addHeadRemoveTail = path =>
     path
         .replace(/\/+$/, '')
-        .replace(/^(?=\\\/)/, '/');
+        .replace(/^(?=[^/])/, '/');
 
 export {
     getPathname,

@@ -43,4 +43,7 @@ rules:
   no-debugger: warn
   no-eval: error
   no-extend-native: error
-  import/no-unresolved: error
+  import/no-unresolved:
+  - error
+  - ignore:
+    - react
