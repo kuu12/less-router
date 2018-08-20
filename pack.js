@@ -2,7 +2,6 @@ const path = require('path');
 const fse = require('fs-extra');
 
 const pp = (...args) => path.join(__dirname, ...args);
-fse.emptyDirSync(pp('./dist/'));
 
 const pkg = fse.readJsonSync(pp('./package.json'));
 pkg.main = 'index.js';

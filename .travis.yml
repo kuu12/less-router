@@ -1,0 +1,16 @@
+if: tag IS present
+
+language: node_js
+node_js: "8"
+
+before_deploy:
+  - npm run pack
+  - cd dist
+
+deploy:
+  provider: npm
+  email: "$NPM_EMAIL"
+  api_key: "$NPM_TOKEN"
+  skip_cleanup: true
+  on:
+    tags: true
