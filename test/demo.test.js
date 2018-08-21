@@ -1,11 +1,15 @@
 import '../demo';
-import { router } from '../src';
+import { getCount } from '../demo/data';
 
 const getProps = containerId => JSON.parse(
     document
         .getElementById(containerId)
         .querySelector('.hidden-log')
         .value
+);
+
+const delay = time => new Promise(resolve =>
+    setTimeout(resolve, time)
 );
 
 describe('basic use', () => {
@@ -51,7 +55,7 @@ describe('dynamic routing', () => {
     });
 
     test('path and pathname in props', () => {
-        const props = getProps('tv')
+        const props = getProps('tv');
         expect(props.path).toBe('/tv/');
         expect(props.pathname).toBe('/tv');
     });
@@ -90,9 +94,7 @@ describe('history back', () => {
             .getElementById('button-back')
             .click();
 
-        await new Promise(resolve =>
-            setTimeout(resolve, 500)
-        );
+        await delay(500);
     });
 
     test('location.pathname', () => {
@@ -106,5 +108,63 @@ describe('history back', () => {
         expect(document.querySelector('#tv #genre'))
             .toBeFalsy();
     });
+});
 
+describe('exclusive route', () => {
+    beforeAll(() => {
+        document
+            .getElementById('button-purchased')
+            .click();
+    });
+
+    test('route rendering', () => {
+        expect(document.getElementById('purchased'))
+            .toBeInstanceOf(HTMLElement);
+        expect(document.getElementById('play'))
+            .toBeFalsy();
+    });
+});
+
+describe('caching', () => {
+    beforeAll(async () => {
+        await delay(1500);
+        document
+            .querySelector('#purchased li')
+            .click();
+    });
+
+    test('route rendering', () => {
+        expect(document.getElementById('purchased'))
+            .toBeInstanceOf(HTMLElement);
+        expect(document.getElementById('play'))
+            .toBeInstanceOf(HTMLElement);
+    });
+
+    test('invisible', () => {
+        const dom = document.getElementById('purchased');
+        expect(
+            dom.parentNode.style.display
+        ).toEqual('none');
+    });
+
+    describe('back to purchased', () => {
+        let count;
+
+        beforeAll(async () => {
+            count = getCount();
+            history.back();
+            await delay(2000);
+        });
+
+        test('visible', () => {
+            const dom = document.getElementById('purchased');
+            expect(
+                dom.parentNode.style.display
+            ).not.toEqual('none');
+        });
+
+        test('no remouting', () => {
+            expect(getCount()).toBe(count);
+        });
+    });
 });

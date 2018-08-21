@@ -59,10 +59,11 @@ class App extends React.Component {
             title="TV Series"
           />
           <Routing>
-            <Purchased    // test exclusive route
+            <Purchased    // test exclusive route / test caching
               path="/library/purchased"
+              autoCache
             />
-            <Play         // test url parameters
+            <Play         // test exclusive route / test url parameters
               path="/library/:id"
             />
           </Routing>

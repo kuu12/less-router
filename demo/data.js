@@ -45,17 +45,19 @@ const data = [
   }
 ];
 
-const fetchData = () => new Promise(resolve =>
+const fetchData = () => new Promise(resolve => {
+  count += 1;
   setTimeout(() => {
-    count += 1;
     resolve(data);
-  }, Math.random() * 1000)
-);
+  }, Math.random() * 1000);
+});
 
 let count = 0;
+
+const getCount = () => count;
 
 export default data;
 export {
   fetchData,
-  count,
+  getCount,
 };
