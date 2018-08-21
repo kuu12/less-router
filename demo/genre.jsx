@@ -1,8 +1,9 @@
 import React from 'react';
 import Routing from '../src';
 import data from './data';
+import HiddenLog from './hidden-log';
 
-const Genre = ({ router, genre }) => (
+const Genre = ({ router, genre, ...rest }) => (
   <div id="genre">
     {genre} ...
     <ul>
@@ -12,15 +13,22 @@ const Genre = ({ router, genre }) => (
           .find(g => g === genre)
         )
         .map(work =>
-          <li onClick={() => router.push(`/library/${work.id}`)}>
+          <li
+            key={work.id}
+            onClick={() => router.push(`/library/${work.id}`)}
+          >
             {work.title}
           </li>
         )
       }
     </ul>
-    <button onClick={() => router.back()}>
+    <button
+      id="button-back"
+      onClick={() => router.back()}
+    >
       Back
     </button>
+    <HiddenLog {...{ genre, ...rest }} />
   </div>
 );
 

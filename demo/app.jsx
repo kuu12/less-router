@@ -10,7 +10,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      advise: {
+      recommend: {
         id: 12345,
         title: 'S.A.C 2nd GIG',
         image: 'https://images-na.ssl-images-amazon.com/images/I/516I1mJy5KL._SY445_.jpg',
@@ -23,33 +23,52 @@ class App extends React.Component {
       <div id="app">
         <div id="sidebar">
           <button
+            id="button-movie"
+            onClick={() => router.push('/movie')}
+          >
+            Movies
+          </button>
+          <button
             id="button-tv"
             onClick={() => router.push('/tv')}
           >
             TV Series
           </button>
-          <button onClick={() => router.push('/movie')}>
-            Movie
-          </button>
-          <button onClick={() => router.push('/library/purchased')}>
+          <button
+            id="button-purchased"
+            onClick={() => router.push('/library/purchased')}
+          >
             Purchased
           </button>
           <img
-            alt={this.state.advise.title}
-            src={this.state.advise.image}
-            onClick={() =>
-              router.push(`/library/${this.state.advise.id}`)
-            }
+            id="recommend"
+            alt={this.state.recommend.title}
+            src={this.state.recommend.image}
+            onClick={() => router.push(`/library/${this.state.recommend.id}`)}
           />
         </div>
         <div id="main">
-          <TV path="/tv/" title="TV Series" />
-          <Movie path="/movie" title="Movies" />
+          <Movie          // test basic use
+            path="/movie"
+            title="Movies"
+            foo={11}
+            bar={22}
+          />
+          <TV             // test dynamic routing
+            path="/tv/"
+            title="TV Series"
+          />
           <Routing>
-            <Purchased path="/library/purchased" />
-            <Play path="/library/:id" />
+            <Purchased    // test exclusive route
+              path="/library/purchased"
+            />
+            <Play         // test url parameters
+              path="/library/:id"
+            />
           </Routing>
-          <NotFound notFound />
+          <NotFound       // test not found
+            notFound
+          />
         </div>
       </div>
     );

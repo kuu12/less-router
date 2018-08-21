@@ -1,4 +1,4 @@
-export default [
+const data = [
   {
     id: 123,
     title: 'S.A.C 2nd GIG',
@@ -44,3 +44,18 @@ export default [
     ]
   }
 ];
+
+const fetchData = () => new Promise(resolve =>
+  setTimeout(() => {
+    count += 1;
+    resolve(data);
+  }, Math.random() * 1000)
+);
+
+let count = 0;
+
+export default data;
+export {
+  fetchData,
+  count,
+};

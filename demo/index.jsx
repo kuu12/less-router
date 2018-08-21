@@ -28,5 +28,9 @@ style.innerHTML = `
   flex 1 1 100%;
 }
 
+.hidden-log {
+  display: none;
+}
+
 `;
 document.head.appendChild(style);
