@@ -1,10 +1,6 @@
-import {
-    regexFromPath,
-    paramsFromPath,
-    joinPath,
-    getPathname,
-} from '../src/path';
-import Basename from '../src/basename';
+import { join, pathname } from '../src/path/path';
+import { regexFromPath, paramsFromPath } from '../src/path/regex';
+import state from '../src/state';
 
 test('regexFromPath', () => {
     expect(
@@ -51,46 +47,46 @@ test('paramsFromPath', () => {
     });
 });
 
-test('joinPath', () => {
+test('join', () => {
     expect(
-        joinPath('/order', '/:orderId')
+        join('/order', '/:orderId')
     ).toEqual('/order/:orderId');
     expect(
-        joinPath('order', ':orderId')
+        join('order', ':orderId')
     ).toEqual('/order/:orderId');
     expect(
-        joinPath('/order', ':orderId')
+        join('/order', ':orderId')
     ).toEqual('/order/:orderId');
     expect(
-        joinPath('order/', ':orderId')
+        join('order/', ':orderId')
     ).toEqual('/order/:orderId');
     expect(
-        joinPath('/order/', ':orderId')
+        join('/order/', ':orderId')
     ).toEqual('/order/:orderId');
     expect(
-        joinPath('/order', ':orderId')
+        join('/order', ':orderId')
     ).toEqual('/order/:orderId');
     expect(
-        joinPath('/order', ':orderId/')
+        join('/order', ':orderId/')
     ).toEqual('/order/:orderId/');
     expect(
-        joinPath('/order', '/:orderId/')
+        join('/order', '/:orderId/')
     ).toEqual('/order/:orderId/');
 
     expect(
-        joinPath('/', '/order')
+        join('/', '/order')
     ).toEqual('/order');
     expect(
-        joinPath(undefined, '/order')
+        join(undefined, '/order')
     ).toEqual('/order');
     expect(
-        joinPath('', '/order')
+        join('', '/order')
     ).toEqual('/order');
 });
 
-describe('getPathname', () => {
+describe('pathname', () => {
     beforeAll(() => {
-        Basename.set('/my-project');
+        state.basename = '/my-project';
     });
 
     describe('/', () => {
@@ -100,7 +96,7 @@ describe('getPathname', () => {
 
         test('0', () => {
             expect(
-                getPathname()
+                pathname()
             ).toEqual('/');
         });
     });
@@ -112,7 +108,7 @@ describe('getPathname', () => {
 
         test('1', () => {
             expect(
-                getPathname()
+                pathname()
             ).toEqual('/order/191919');
         });
     });
@@ -124,7 +120,7 @@ describe('getPathname', () => {
 
         test('2', () => {
             expect(
-                getPathname()
+                pathname()
             ).toEqual('/home');
         });
     });

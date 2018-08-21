@@ -1,10 +1,7 @@
 import React from 'react';
 import state from './state';
-import Matching from './match';
-import {
-    PATH_START,
-    PARENT_END,
-} from './message';
+import Matching from './path/match';
+import { PATH_START, PARENT_END } from './message';
 
 const Route = ({
     Component,
@@ -14,8 +11,8 @@ const Route = ({
     autoCache,
     ...rest
 }) => {
-    if (!path.startsWith('/'))
-        throw new Error(PATH_START + path);
+    if (path && !path.startsWith('/'))
+        console.error(new Error(PATH_START + path));
 
     if (parentPath && !parentPath.endsWith('/'))
         throw new Error(PARENT_END + parentPath);
@@ -34,10 +31,10 @@ const Route = ({
     if (match) {
         component = (
             <Component
+                {...rest}
+                {...params}
                 path={fullPath}
                 routingStyle={{}}
-                {...params}
-                {...rest}
                 router={state.routerProxy}
             />
         );
@@ -60,9 +57,9 @@ const Route = ({
     } else if (cached) {
         component = (
             <Component
+                {...rest}
                 path={fullPath}
                 routingStyle={{ display: 'none' }}
-                {...rest}
                 router={state.routerProxy}
             />
         );

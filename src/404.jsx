@@ -1,6 +1,6 @@
 import React from 'react';
 import state from './state';
-import { getPathname } from './path';
+import { pathname } from './path/path';
 
 class NotFound extends React.Component {
     constructor(props) {
@@ -28,15 +28,13 @@ class NotFound extends React.Component {
             !matches.some(Boolean);
 
         if (notFound) this.setState({
-            entryPoint: getPathname(),
+            entryPoint: pathname(),
         });
     }
 
     render() {
         if (!this.state.entryPoint) return null;
-
-        const pathname = getPathname();
-        if (pathname !== this.state.entryPoint) return null;
+        if (pathname() !== this.state.entryPoint) return null;
 
         const { Component, title, titleName, ...rest } = this.props;
         document.title = title;
@@ -47,9 +45,9 @@ class NotFound extends React.Component {
 
         return (
             <Component
-                pathname={pathname}
-                title={titleName}
                 {...rest}
+                pathname={pathname()}
+                title={titleName}
             />
         );
     }

@@ -1,16 +1,21 @@
 import React from 'react';
 import state from './state';
-import { getPathname, regexFromPath } from './path';
-import Basename from './basename';
-import { PATH_START, PATH_NOT_FOUND } from './message';
+import { pathname, addHeadRemoveTail } from './path/path';
+import { regexFromPath } from './path/regex';
+import { PATH_START, BASENAME, PATH_NOT_FOUND } from './message';
 
 class Router extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        if (props.basename) {
+            if (state.basename)
+                console.error(new Error(BASENAME));
 
-        if (props.basename) Basename.set(props.basename);
+            state.basename = addHeadRemoveTail(props.basename);
+        }
+
+        this.state = {};
 
         window.addEventListener(
             'popstate',
@@ -26,10 +31,10 @@ class Router extends React.Component {
 
         return 'pushState' in history
             ? (
-                history.pushState({}, null, Basename.get() + path),
+                history.pushState({}, null, state.basename + path),
                 this.__updatePathnameState__()
             )
-            : location.href = Basename.get() + path;
+            : location.href = state.basename + path;
     }
 
     replace(path) {
@@ -38,10 +43,10 @@ class Router extends React.Component {
 
         return 'replaceState' in history
             ? (
-                history.replaceState({}, null, Basename.get() + path),
+                history.replaceState({}, null, state.basename + path),
                 this.__updatePathnameState__()
             )
-            : location.href = Basename.get() + path;
+            : location.href = state.basename + path;
     }
 
     back() {
@@ -57,7 +62,7 @@ class Router extends React.Component {
     __updatePathnameState__() {
         const exec = resolve =>
             this.setState({
-                __pathname__: getPathname(),
+                __pathname__: pathname(),
             }, resolve);
         return typeof Promise === 'function'
             ? new Promise(exec)
@@ -66,7 +71,7 @@ class Router extends React.Component {
 
     pathname() {
         const pathname = this.state.__pathname__ ||
-            getPathname();
+            pathname();
 
         return pathname === '/index.html'
             ? '/'

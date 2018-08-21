@@ -1,21 +1,5 @@
-import { cacheable } from './helper';
-import state from './state';
-
-const PARAMS = /:\w+(?=\W?)/g;
-const PARAMS_REPLACEMENT = '(\\w+)';
-
-/**
- *  /basename/xxx   ->   /xxx
- *  /basename       ->   /
- */
-let getPathname; {
-    const cache = cacheable(
-        pathname => decodeURIComponent(pathname)
-            .replace(new RegExp('^' + state.basename), '') || '/'
-    );
-    getPathname = (pathname = location.pathname) =>
-        cache(pathname);
-}
+import { PARAMS, PARAMS_REPLACEMENT, cacheable } from './helper';
+import { join } from './path';
 
 const regexFromString = cacheable(function (string) {
     if ('/' === string) {
@@ -50,7 +34,7 @@ let paramsFromPath; {
         path,
         pathname = location.pathname,
     ) => {
-        const fullPath = joinPath(
+        const fullPath = join(
             removeParam(parentPath), path
         );
         const params = ['pathname'];
@@ -76,28 +60,7 @@ let paramsFromPath; {
     };
 }
 
-const joinPath = (...paths) => {
-    let fullPath = paths
-        .filter(Boolean)
-        .filter(path => '/' !== path)
-        .map(addHeadRemoveTail)
-        .join('');
-
-    const last = paths[paths.length - 1];
-    if (last && last.endsWith('/'))
-        fullPath += '/';
-
-    return fullPath || '/';
-};
-
-const addHeadRemoveTail = path => path
-    .replace(/\/+$/, '')
-    .replace(/^(?=[^/])/, '/');
-
 export {
-    getPathname,
     regexFromPath,
     paramsFromPath,
-    joinPath,
-    addHeadRemoveTail,
 };

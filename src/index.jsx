@@ -2,9 +2,8 @@ import React from 'react';
 import Router from './router';
 import Route from './route';
 import NotFound from './404';
+import OneOf from './one-of';
 import state from './state';
-import Matching from './match';
-import * as pathUtil from './path';
 
 const Routing = (...args) => {
     switch (typeof args[0]) {
@@ -15,17 +14,19 @@ const Routing = (...args) => {
                 if (!state.RootComponent)
                     state.RootComponent = Component;
 
-                const Container =
-                    state.RootComponent === Component
-                        ? Router
-                        : (
-                            'NotFound' in props ||
-                            'notFound' in props ||
-                            'Notfound' in props ||
-                            'NOT_FOUND' in props
-                        )
-                            ? NotFound
-                            : Route;
+                let Container;
+
+                if (state.RootComponent === Component)
+                    Container = Router;
+                else if (
+                    'notFound' in props ||
+                    'NotFound' in props ||
+                    'Notfound' in props ||
+                    'NOT_FOUND' in props
+                )
+                    Container = NotFound;
+                else
+                    Container = Route;
 
                 return (
                     <Container
@@ -36,23 +37,12 @@ const Routing = (...args) => {
             };
 
         case 'object': {
-            const children = args[0].children
-                ? [].concat(args[0].children) // Both object and array transform to array.
-                : args;
-
-            let found = false;
-
-            return children.filter(child => {
-                const { parentPath, path } = child.props;
-                const { match, cached } = Matching(parentPath, path);
-
-                if (found) {
-                    return !match && cached;
-                } else {
-                    if (match) found = match;
-                    return match || cached;
-                }
-            });
+            /**
+             * support both <Routing><Child1 /><Child2 /></Routing>
+             * and {Routing(<Child1 />, <Child2 />)}
+             */
+            const children = args[0].children || args;
+            return <OneOf>{children}</OneOf>;
         }
     }
 };
@@ -65,8 +55,8 @@ export {
     router,
     Route,
     NotFound,
+    OneOf,
     state,
-    pathUtil,
 };
 Object.assign(Routing, {
     Routing,
@@ -74,6 +64,6 @@ Object.assign(Routing, {
     router,
     Route,
     NotFound,
+    OneOf,
     state,
-    pathUtil,
 });
