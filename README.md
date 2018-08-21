@@ -1,22 +1,11 @@
-# Less Router &middot; [![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router)[![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router.svg)](https://bundlephobia.com/result?p=less-router)[![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router)[![Travis (.org)](https://img.shields.io/travis/kuu12/less-router.svg)](https://travis-ci.org/kuu12/less-router/)
+# Less Router &middot; [![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router) [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router.svg)](https://bundlephobia.com/result?p=less-router) [![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router) [![Travis (.org)](https://img.shields.io/travis/kuu12/less-router.svg)](https://travis-ci.org/kuu12/less-router/)
 
-### Less API, more graceful and flatter learning curve.
+Less Router is a minimal and full functionally router for React. [中文 README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
 
-[中文 README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
-
-# Features
-
-#### Simple API
-Start using in 5 minutes.
-
-#### Cachable
-By adding `autoCache` property, Route changes won't destroy/remount component but hide/show it.
-
-#### Support most features in *React Router V4*
-Dynamic routing, recursive paths, no match (404), and other features.
-
-#### Minimal
-Less than 3kB(gzipped), while *React Router V4* takes 8kB.
+- **Simple:** API Start using in 5 minutes.
+- **Cachable:** By adding `autoCache` property, Route changes won't destroy/remount component but hide/show it.
+- **Support most features in *React Router V4*:** Dynamic routing, recursive paths, no match (404), and other features.
+- **Minimal:** Less than 3kB(gzipped), while *React Router V4* takes 8kB.
 
 # Installation
 ```shell
