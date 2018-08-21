@@ -4,7 +4,6 @@ import {
     getPathname,
     regexFromPath,
     paramsFromPath,
-    removeParam,
 } from './path';
 
 export default (parentPath, path) => {
@@ -16,10 +15,8 @@ export default (parentPath, path) => {
     const params = !match
         ? {}
         : paramsFromPath(
-            joinPath(
-                removeParam(parentPath),
-                path
-            ),
+            parentPath,
+            path,
             pathname,
         );
 

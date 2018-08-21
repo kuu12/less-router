@@ -31,7 +31,8 @@ test('regexFromPath', () => {
 test('paramsFromPath', () => {
     expect(
         paramsFromPath(
-            '/order/:orderId/:itemId',
+            '/order/',
+            '/:orderId/:itemId',
             '/order/112233abc/222555',
         )
     ).toMatchObject({
@@ -41,7 +42,8 @@ test('paramsFromPath', () => {
 
     expect(
         paramsFromPath(
-            '/order/:orderId/:orderId',
+            '/order/',
+            '/:orderId/:orderId',
             '/order/112233abc/222555',
         )
     ).toMatchObject({
