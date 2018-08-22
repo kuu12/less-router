@@ -10,26 +10,21 @@ class Router extends React.Component {
         super(props);
         this.registeredRoutes = {};
         this.cache = {};
-        this.basename = props.basename
-            ? addHeadRemoveTail(props.basename)
-            : '';
         this.state = locationState(this.basename);
-
-        Object.defineProperty(this, 'pathname', {
-            get() {
-                return this.state.pathname === '/index.html' ?
-                    '/' : this.state.pathname;
-            }
-        });
-
-        window.addEventListener('popstate', () => {
-            this.__updateState__(locationState(this.basename));
-        });
-
         proxy.router = this;
     }
     componentWillUnmount() {
         proxy.router = null;
+    }
+
+    get basename() {
+        return this.props.basename
+            ? addHeadRemoveTail(this.props.basename)
+            : '';
+    }
+    get pathname() {
+        return this.state.pathname === '/index.html' ?
+            '/' : this.state.pathname;
     }
 
     push(pathname) {
@@ -94,5 +89,12 @@ class Router extends React.Component {
         return {};
     }
 }
+
+window.addEventListener('popstate', () => {
+    if (!proxy.router) return;
+    proxy.router.__updateState__(
+        locationState(proxy.router.basename)
+    );
+});
 
 export default Router;
