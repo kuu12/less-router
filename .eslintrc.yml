@@ -22,9 +22,6 @@ settings:
         - .jsx
         - .json
 rules:
-  linebreak-style:
-  - error
-  - unix
   quotes:
   - warn
   - single

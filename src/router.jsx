@@ -1,52 +1,55 @@
 import React from 'react';
-import state from './state';
-import { pathname, addHeadRemoveTail } from './path/path';
+import proxy from './proxy';
+import { locationState, addHeadRemoveTail } from './path/path';
 import { regexFromPath } from './path/regex';
-import { PATH_START, BASENAME, PATH_NOT_FOUND } from './message';
+import { separate } from './path/query';
+import { PATH_START, PATH_NOT_FOUND } from './message';
 
 class Router extends React.Component {
     constructor(props) {
         super(props);
+        this.registeredRoutes = {};
+        this.cache = {};
+        this.basename = props.basename
+            ? addHeadRemoveTail(props.basename)
+            : '';
+        this.state = locationState(this.basename);
 
-        if (props.basename) {
-            if (state.basename)
-                console.error(new Error(BASENAME));
+        Object.defineProperty(this, 'pathname', {
+            get() {
+                return this.state.pathname === '/index.html' ?
+                    '/' : this.state.pathname;
+            }
+        });
 
-            state.basename = addHeadRemoveTail(props.basename);
+        window.addEventListener('popstate', () => {
+            this.__updateState__(locationState(this.basename));
+        });
+
+        proxy.router = this;
+    }
+    componentWillUnmount() {
+        proxy.router = null;
+    }
+
+    push(pathname) {
+        return this.__change__('pushState', pathname);
+    }
+    replace(pathname) {
+        return this.__change__('replaceState', pathname);
+    }
+    __change__(method, pathname) {
+        if (!pathname.startsWith('/')) {
+            console.error(new Error(PATH_START + pathname));
         }
+        const href = this.basename + pathname;
 
-        this.state = {};
-
-        window.addEventListener(
-            'popstate',
-            () => this.__updatePathnameState__(),
-        );
-
-        Object.setPrototypeOf(state.routerProxy, this);
-    }
-
-    push(path) {
-        if (!path.startsWith('/'))
-            console.error(new Error(PATH_START + path));
-
-        return 'pushState' in history
-            ? (
-                history.pushState({}, null, state.basename + path),
-                this.__updatePathnameState__()
-            )
-            : location.href = state.basename + path;
-    }
-
-    replace(path) {
-        if (!path.startsWith('/'))
-            console.error(new Error(PATH_START + path));
-
-        return 'replaceState' in history
-            ? (
-                history.replaceState({}, null, state.basename + path),
-                this.__updatePathnameState__()
-            )
-            : location.href = state.basename + path;
+        if (!(method in history)) {
+            return location.href = href;
+        }
+        history[method]({}, null, href);
+        const pathnameAndSearch = separate(pathname);
+        return this.__updateState__(pathnameAndSearch);
     }
 
     back() {
@@ -59,32 +62,22 @@ class Router extends React.Component {
         history.go(step);
     }
 
-    __updatePathnameState__() {
+    __updateState__(state) {
         const exec = resolve =>
-            this.setState({
-                __pathname__: pathname(),
-            }, resolve);
-        return typeof Promise === 'function'
-            ? new Promise(exec)
-            : exec();
-    }
+            this.setState(state, resolve);
 
-    pathname() {
-        const pathname = this.state.__pathname__ ||
-            pathname();
-
-        return pathname === '/index.html'
-            ? '/'
-            : pathname;
+        return typeof Promise === 'function' ?
+            new Promise(exec) : exec();
     }
 
     clearCache(path, callback) {
-        if (!path.startsWith('/'))
+        if (!path.startsWith('/')) {
             throw new Error(PATH_START + path);
-        if (!(path in state.registeredRoutes))
+        }
+        if (!(path in this.registeredRoutes)) {
             console.warn(new Error(PATH_NOT_FOUND + path));
-
-        delete state.cache[regexFromPath(path)];
+        }
+        delete this.cache[regexFromPath(path)];
         const exec = resolve => this.forceUpdate(resolve);
         return typeof Promise === 'function'
             ? new Promise(exec)
@@ -92,18 +85,13 @@ class Router extends React.Component {
     }
 
     render() {
-        const {
-            basename: ignored,
-            Component,
-            ...rest
-        } = this.props;
+        const { Component, ...rest } = this.props;
+        delete rest.basename;
+        return <Component router={this} {...rest} />;
+    }
 
-        return (
-            <Component
-                router={this}
-                {...rest}
-            />
-        );
+    toJSON() {
+        return {};
     }
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import state from './state';
-import { pathname } from './path/path';
+import proxy from './proxy';
 
 class NotFound extends React.Component {
     constructor(props) {
@@ -11,11 +10,11 @@ class NotFound extends React.Component {
     componentDidMount() {
         const parentPath = this.props.parentPath || '';
         const namespace = new RegExp(`^${parentPath}`);
-
-        const keyToValue = path => state.registeredRoutes[path];
+        const keyToValue = path =>
+            proxy.router.registeredRoutes[path];
 
         const all = Object
-            .keys(state.registeredRoutes)
+            .keys(proxy.router.registeredRoutes)
             .filter(keyToValue)
             .filter(path => namespace.test(path));
 
@@ -28,13 +27,13 @@ class NotFound extends React.Component {
             !matches.some(Boolean);
 
         if (notFound) this.setState({
-            entryPoint: pathname(),
+            entryPoint: proxy.router.pathname,
         });
     }
 
     render() {
         if (!this.state.entryPoint) return null;
-        if (pathname() !== this.state.entryPoint) return null;
+        if (this.state.entryPoint !== proxy.router.pathname) return null;
 
         const { Component, title, titleName, ...rest } = this.props;
         document.title = title;
@@ -46,7 +45,7 @@ class NotFound extends React.Component {
         return (
             <Component
                 {...rest}
-                pathname={pathname()}
+                pathname={proxy.router.pathname}
                 title={titleName}
             />
         );

@@ -1,18 +1,11 @@
-import { cacheable } from './helper';
-import state from '../state';
-
-/**
- *  /basename/xxx   ->   /xxx
- *  /basename       ->   /
- */
-let pathname; {
-    const raw = pathname =>
-        decodeURIComponent(pathname).replace(
-            new RegExp('^' + state.basename), ''
-        ) || '/';
-    const cache = cacheable(raw);
-    pathname = () => cache(location.pathname);
-}
+const locationState = (basename) => ({
+    pathname: decodeURIComponent(
+        location.pathname.replace(
+            new RegExp(`^${basename}`), ''
+        ) || '/'
+    ),
+    search: location.search,
+});
 
 const join = (...paths) => {
     let fullPath = paths
@@ -33,7 +26,7 @@ const addHeadRemoveTail = path => path
     .replace(/^(?=[^/])/, '/');
 
 export {
-    pathname,
+    locationState,
     join,
     addHeadRemoveTail,
 };

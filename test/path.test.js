@@ -1,6 +1,5 @@
-import { join, pathname } from '../src/path/path';
+import { join } from '../src/path/path';
 import { regexFromPath, paramsFromPath } from '../src/path/regex';
-import state from '../src/state';
 
 test('regexFromPath', () => {
     expect(
@@ -82,47 +81,4 @@ test('join', () => {
     expect(
         join('', '/order')
     ).toEqual('/order');
-});
-
-describe('pathname', () => {
-    beforeAll(() => {
-        state.basename = '/my-project';
-    });
-
-    describe('/', () => {
-        beforeEach(() => {
-            window.history.pushState({}, null, '/my-project');
-        });
-
-        test('0', () => {
-            expect(
-                pathname()
-            ).toEqual('/');
-        });
-    });
-
-    describe('/order/191919', () => {
-        beforeEach(() => {
-            window.history.pushState({}, null, '/my-project/order/191919');
-        });
-
-        test('1', () => {
-            expect(
-                pathname()
-            ).toEqual('/order/191919');
-        });
-    });
-
-    describe('/home', () => {
-        beforeEach(() => {
-            window.history.replaceState({}, null, '/my-project/home');
-        });
-
-        test('2', () => {
-            expect(
-                pathname()
-            ).toEqual('/home');
-        });
-    });
-
 });

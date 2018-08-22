@@ -1,6 +1,6 @@
 import React from 'react';
-import state from './state';
-import Matching from './path/match';
+import proxy from './proxy';
+import matching from './path/match';
 import { PATH_START, PARENT_END } from './message';
 
 const Route = ({
@@ -11,20 +11,20 @@ const Route = ({
     autoCache,
     ...rest
 }) => {
-    if (path && !path.startsWith('/'))
+    if (path && !path.startsWith('/')) {
         console.error(new Error(PATH_START + path));
-
-    if (parentPath && !parentPath.endsWith('/'))
+    }
+    if (parentPath && !parentPath.endsWith('/')) {
         throw new Error(PARENT_END + parentPath);
-
+    }
     const { fullPath, regex, match, cached, params } =
-        Matching(parentPath, path);
+        matching(parentPath, path);
 
     const wrap = autoCache && !(
         Component.propTypes &&
         Component.propTypes.routingStyle
     );
-    state.registeredRoutes[fullPath] = match;
+    proxy.router.registeredRoutes[fullPath] = match;
 
     let component = null;
 
@@ -35,7 +35,7 @@ const Route = ({
                 {...params}
                 path={fullPath}
                 routingStyle={{}}
-                router={state.routerProxy}
+                router={proxy.router}
             />
         );
 
@@ -47,7 +47,7 @@ const Route = ({
             );
 
         if (autoCache && !cached)
-            state.cache[regex] = true;
+            proxy.router.cache[regex] = true;
 
         if (typeof title === 'string')
             document.title = title;
@@ -60,7 +60,7 @@ const Route = ({
                 {...rest}
                 path={fullPath}
                 routingStyle={{ display: 'none' }}
-                router={state.routerProxy}
+                router={proxy.router}
             />
         );
 

@@ -3,7 +3,7 @@ import Router from './router';
 import Route from './route';
 import NotFound from './404';
 import OneOf from './one-of';
-import state from './state';
+import proxy from './proxy';
 
 const Routing = (...args) => {
     switch (typeof args[0]) {
@@ -11,12 +11,8 @@ const Routing = (...args) => {
             return props => {
                 const [Component] = args;
 
-                if (!state.RootComponent)
-                    state.RootComponent = Component;
-
                 let Container;
-
-                if (state.RootComponent === Component)
+                if (!proxy.router)
                     Container = Router;
                 else if (
                     'notFound' in props ||
@@ -47,23 +43,18 @@ const Routing = (...args) => {
     }
 };
 
-const router = state.routerProxy;
 export default Routing;
 export {
     Routing,
     Router,
-    router,
     Route,
     NotFound,
     OneOf,
-    state,
 };
 Object.assign(Routing, {
     Routing,
     Router,
-    router,
     Route,
     NotFound,
     OneOf,
-    state,
 });

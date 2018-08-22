@@ -1,25 +1,17 @@
-import state from '../state';
-import { join, pathname } from './path';
+import proxy from '../proxy';
+import { join } from './path';
 import { regexFromPath, paramsFromPath } from './regex';
 
 export default (parentPath, path) => {
     const fullPath = join(parentPath, path);
     const regex = regexFromPath(fullPath);
-    const match = regex.test(pathname());
-    const cached = state.cache[regex];
+    const match = regex.test(proxy.router.pathname);
+    const cached = proxy.router.cache[regex];
     const params = !match
         ? {}
         : paramsFromPath(
-            parentPath,
-            path,
-            pathname(),
+            parentPath, path, proxy.router.pathname,
         );
 
-    return {
-        fullPath,
-        regex,
-        match,
-        cached,
-        params,
-    };
+    return { fullPath, regex, match, cached, params };
 };
