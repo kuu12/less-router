@@ -24,12 +24,7 @@ const Routing = (...args) => {
                 else
                     Container = Route;
 
-                return (
-                    <Container
-                        Component={Component}
-                        {...props}
-                    />
-                );
+                return <Container Component={Component} {...props} />;
             };
 
         case 'object': {

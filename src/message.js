@@ -21,6 +21,5 @@ if ('production' === process.env.NODE_ENV) {
 export const {
     PATH_START,
     PARENT_END,
-    BASENAME,
     PATH_NOT_FOUND,
 } = message;
