@@ -4,7 +4,7 @@ Less Router is a minimal and full functionally router for React.
 [中文 README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
 
 - **Simple API:** Start using in 5 minutes.
-- **Cachable:** By adding `autoCache` property, Route changes won't destroy/remount component but hide/show it.
+- **Cachable:** By adding `autoCache` property, Route changes won't make component unmount/remount but hide/show.
 - **Support most features in *React Router V4*:** Dynamic routing, recursive paths, no match (404), and other features.
 - **Minimal:** Less than 3kB(gzipped), while *React Router V4* takes 8kB.
 - **Reliable:** All features have been tested.
@@ -205,6 +205,7 @@ See previous section [Matching Rules](#matching-rules)
 `NotFound` also supports dynamic routing.
 ```javascript
 import Routing from 'less-router';
+import ChildRoute from './child';
 const Parent = ({ path }) => (
   <div>
     <ChildRoute

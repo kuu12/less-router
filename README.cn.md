@@ -10,7 +10,7 @@
 花3-5分钟即可开始使用。
 
 ### 可缓存
-加入`autoCache`属性后，组件将不会被销毁或重新绑定，而是隐藏或显示。
+加入`autoCache`属性后，组件将不会被卸载或重新加载，而是隐藏或显示。
 
 ### 支持 *React Router V4* 的大多数特性
 动态路由、递归路由、404页面等等。
@@ -199,7 +199,7 @@ const Child = () => (
 export default Routing(Child);
 ```
 
-**留意:** `ParentRoute`的`path`**必须**以`/`结尾，否则将无法匹配`/parent/child`，`ParentRoute`会消失，`ChildRoute`更不复存在
+**留意:** `ParentRoute`的`path`**必须**以`/`结尾，否则进入`/parent/child`路由后，`ParentRoute`会消失，`ChildRoute`也跟着消失。
 ```javascript
 <ParentRoute
   path="/parent/" // 正确
@@ -218,6 +218,7 @@ export default Routing(Child);
 `NotFound`支持动态路由，可以使该组件只在某个路径下时才触发
 ```javascript
 import Routing from 'less-router';
+import ChildRoute from './child';
 const Parent = ({ path }) => (
   <div>
     <ChildRoute
