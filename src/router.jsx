@@ -102,10 +102,7 @@ window.addEventListener('popstate', () => {
     if (!proxy.router) return;
     const state = locationState(proxy.router.basename);
     const resolve = queue.pop();
-    proxy
-        .router
-        .__updateState__(state)
-        .then(resolve);
+    proxy.router.__updateState__(state, resolve);
 });
 
 export default Router;
