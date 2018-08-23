@@ -4,6 +4,7 @@ import Route from './route';
 import NotFound from './404';
 import OneOf from './one-of';
 import proxy from './proxy';
+import matching from './path/match';
 
 const Routing = (...args) => {
     switch (typeof args[0]) {
@@ -45,6 +46,7 @@ export {
     Route,
     NotFound,
     OneOf,
+    matching,
 };
 Object.assign(Routing, {
     Routing,
@@ -52,4 +54,5 @@ Object.assign(Routing, {
     Route,
     NotFound,
     OneOf,
+    matching,
 });

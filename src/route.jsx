@@ -18,7 +18,7 @@ const Route = ({
         throw new Error(PARENT_END + parentPath);
     }
     const { fullPath, regex, match, cached, params } =
-        matching(parentPath, path);
+        matching(parentPath, path, proxy.router.pathname);
 
     const wrap = autoCache && !(
         Component.propTypes &&

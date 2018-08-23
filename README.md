@@ -1,7 +1,7 @@
 # Less Router &middot; [![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router) [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router.svg)](https://bundlephobia.com/result?p=less-router) [![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router) [![Travis (.org)](https://img.shields.io/travis/kuu12/less-router.svg)](https://travis-ci.org/kuu12/less-router/)
 
 Less Router is a minimal and full functionally router for React.
-[中文 README](https://github.com/kuu12/less-router/blob/master/README.cn.md)
+ [[中文文档]](https://github.com/kuu12/less-router/blob/master/README.cn.md)
 
 - **Simple API:** Start using in 5 minutes.
 - **Cachable:** By adding `autoCache` property, Route changes won't make component unmount/remount but hide/show.
