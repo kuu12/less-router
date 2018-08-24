@@ -1,6 +1,8 @@
-import { PARAMS, PARAMS_REPLACEMENT, cacheable } from './helper';
-import { addHeadRemoveTail } from './path';
+import { cacheable } from '../helper';
+import { join } from './path';
 
+const PARAMS = /:\w+(?=\W?)/g;
+const PARAMS_REPLACEMENT = '(\\w+)';
 /**
  *  /           ->      /(?=(index.html)?$)     ->      /
  *                                                      /index.hml
@@ -38,19 +40,24 @@ const regexFrom = cacheable(
 );
 
 /**
+ *  /calendar/:year/:month/holiday
+ *  /calendar/\\w+/\\w+/holiday
+ */
+const removeParam = cacheable(
+    path => path && path.replace(PARAMS, '\\w+')
+);
+
+/**
  * @param   parentPath  /user/:username
  * @param   path        /calendar/:year/:month/:date
  * @param   pathname    /user/kuu12/calendar/2018/7/8
  * @returns             { year: '2018', month: '7', date: '8' }
 */
 const paramsFrom = (parentPath, path, pathname) => {
-    if (parentPath) {
-        parentPath = regexFrom(addHeadRemoveTail(parentPath));
-        pathname = pathname.replace(parentPath, '');
-    }
+    const fullPath = join(removeParam(parentPath), path);
     const params = ['pathname'];
     const result = {};
-    const string = path.replace(
+    const string = fullPath.replace(
         PARAMS,
         function ([syntax_ignored, ...paramName]) {
             params.push(paramName.join(''));
