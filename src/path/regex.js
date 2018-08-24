@@ -1,8 +1,8 @@
 import { cacheable } from '../helper';
 import { join } from './path';
 
-const PARAMS = /:\w+(?=\W?)/g;
-const PARAMS_REPLACEMENT = '(\\w+)';
+const PARAMS = /:[\w-~]+(?=\/|$)/g;
+const PARAMS_REPLACEMENT = '([\\w-~]+)';
 /**
  *  /           ->      /(?=(index.html)?$)     ->      /
  *                                                      /index.hml
@@ -44,7 +44,7 @@ const regexFrom = cacheable(
  *  /calendar/\\w+/\\w+/holiday
  */
 const removeParam = cacheable(
-    path => path && path.replace(PARAMS, '\\w+')
+    path => path && path.replace(PARAMS, '[\\w-~]+')
 );
 
 /**
