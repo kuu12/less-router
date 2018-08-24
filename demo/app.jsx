@@ -1,7 +1,8 @@
 import React from 'react';
 import Routing from '../src';
-import TV from './tv';
+import Trending from './trending';
 import Movie from './movie';
+import TV from './tv';
 import Purchased from './purchased';
 import Play from './play';
 import NotFound from './notfound';
@@ -22,29 +23,27 @@ class App extends React.Component {
     return (
       <div id="app">
         <div id="main">
-          <Movie          // test basic use
-            path="/movie"
-            title="Movies"
-            foo={11}
-            bar={22}
-          />
-          <TV             // test dynamic routing
-            path="/tv/"
-            title="TV Series"
-          />
+          {/* test html file */}
+          <Trending path="/" />
+
+          {/* test basic use */}
+          <Movie path="/movie" title="Movies" foo={11} bar={22} />
+
+          {/* test dynamic routing */}
+          <TV path="/tv/" title="TV Series" />
+
+          {/* test exclusive route */}
           <Routing>
-            <Purchased    // test exclusive route / test caching
-              path="/library/purchased"
-              autoCache
-            />
-            <Play         // test exclusive route / test url parameters
-              path="/library/:id"
-            />
+            {/* test caching */}
+            <Purchased path="/library/purchased" autoCache />
+            {/* test url parameters */}
+            <Play path="/library/:id" />
           </Routing>
-          <NotFound       // test not found
-            notFound
-          />
+
+          {/* test not found */}
+          <NotFound notFound />
         </div>
+
         <div id="sidebar">
           <button
             id="button-movie"

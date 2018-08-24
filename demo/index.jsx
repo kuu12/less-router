@@ -2,14 +2,25 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './app';
 
-history.pushState({}, null, '/cinima');
+/*
+ * Mocking. This is not production code.
+ * Suppose your app has been deployed to www.domain.com/cinima
+ * And the entry html file is my-index.html
+ */
+history.pushState({}, null, '/cinima/my-index.html');
+/** 
+ * Mocking.
+*/
 
 const root = document.createElement('div');
 root.id = root;
 document.body.appendChild(root);
 
 render(
-  <App basename="/cinima" />,
+  <App
+    basename="/cinima"
+    htmlFile="my-index.html"
+  />,
   root
 );
 

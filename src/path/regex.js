@@ -1,3 +1,4 @@
+import proxy from '../proxy';
 import { cacheable } from '../helper';
 import { join } from './path';
 
@@ -16,8 +17,12 @@ const PARAMS_REPLACEMENT = '([\\w-~]+)';
  */
 const regexFromString = cacheable(
     string => {
-        if ('/' === string) {
-            string += '(?=(index.html)?$)';
+        if (
+            '/' === string &&
+            proxy.router &&
+            proxy.router.htmlFile
+        ) {
+            string += `(?=(${proxy.router.htmlFile})?$)`;
         } else if (string.endsWith('/')) {
             string = string.slice(0, string.length - 1);
             string += '(?=\\/?)';

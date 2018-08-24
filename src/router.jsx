@@ -25,8 +25,12 @@ class Router extends React.Component {
             : '';
     }
     get pathname() {
-        return this.state.pathname === '/index.html' ?
+        return this.state.pathname === this.htmlFile ?
             '/' : this.state.pathname;
+    }
+    get htmlFile() {
+        return 'htmlFile' in this.props ?
+            this.props.htmlFile : '/index.html';
     }
 
     push(pathname, cb) {

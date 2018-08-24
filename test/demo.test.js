@@ -13,6 +13,11 @@ const delay = time => new Promise(resolve =>
     setTimeout(resolve, time)
 );
 
+describe('homepage', () => {
+    expect(document.getElementById('trending'))
+        .toBeInstanceOf(HTMLElement);
+});
+
 describe('basic use', () => {
     beforeAll(() =>
         document
@@ -26,6 +31,8 @@ describe('basic use', () => {
     });
 
     test('route rendering', () => {
+        expect(document.getElementById('trending'))
+            .toBeFalsy();
         expect(document.getElementById('movie'))
             .toBeInstanceOf(HTMLElement);
         expect(document.getElementById('tv'))
