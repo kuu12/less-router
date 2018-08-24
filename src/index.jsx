@@ -7,12 +7,10 @@ import proxy from './proxy';
 import matching from './path/match';
 import { paramsFrom as params } from './path/regex';
 
-const Routing = (...args) => {
-    switch (typeof args[0]) {
+const Routing = arg => {
+    switch (typeof arg) {
         case 'function':
             return props => {
-                const [Component] = args;
-
                 let Container;
                 if (!proxy.router)
                     Container = Router;
@@ -26,16 +24,15 @@ const Routing = (...args) => {
                 else
                     Container = Route;
 
-                return <Container Component={Component} {...props} />;
+                return <Container Component={arg} {...props} />;
             };
 
         case 'object': {
-            /**
-             * support both <Routing><Child1 /><Child2 /></Routing>
-             * and {Routing(<Child1 />, <Child2 />)}
-             */
-            const children = args[0].children || args;
-            return <OneOf>{children}</OneOf>;
+            const { children, ...props } = arg;
+            const Component = () => <OneOf>{children}</OneOf>;
+            return proxy.router
+                ? <Component />
+                : <Router Component={Component} {...props} />;
         }
     }
 };

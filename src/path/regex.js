@@ -3,7 +3,8 @@ import { cacheable } from '../helper';
 import { join } from './path';
 
 const PARAMS = /:[\w-~]+(?=\/|$)/g;
-const PARAMS_REPLACEMENT = '([\\w-~]+)';
+const PARAMS_0 = '[\\w-~]+';
+const PARAMS_1 = `(${PARAMS_0})`;
 /**
  *  /           ->      /(?=(index.html)?$)     ->      /
  *                                                      /index.hml
@@ -40,16 +41,16 @@ const regexFromString = cacheable(
  */
 const regexFrom = cacheable(
     path => regexFromString(
-        path.replace(PARAMS, PARAMS_REPLACEMENT)
+        path.replace(PARAMS, PARAMS_1)
     )
 );
 
 /**
- *  /calendar/:year/:month/holiday
+ *  /calendar/:year/:month/holiday      ->
  *  /calendar/\\w+/\\w+/holiday
  */
 const removeParam = cacheable(
-    path => path && path.replace(PARAMS, '[\\w-~]+')
+    path => path && path.replace(PARAMS, PARAMS_0)
 );
 
 /**
@@ -66,13 +67,11 @@ const paramsFrom = (parentPath, path, pathname) => {
         PARAMS,
         function ([syntax_ignored, ...paramName]) {
             params.push(paramName.join(''));
-            return PARAMS_REPLACEMENT;
+            return PARAMS_1;
         },
     );
     const regex = regexFromString(string);
-
-    Array
-        .from(regex.exec(pathname) || [])
+    (regex.exec(pathname) || [])
         .filter(Boolean)
         .forEach((match, index) =>
             result[params[index]] = match
