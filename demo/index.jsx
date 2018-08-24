@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import App from './app';
 
 /*
@@ -13,10 +13,10 @@ history.pushState({}, null, '/cinima/my-index.html');
 */
 
 const root = document.createElement('div');
-root.id = root;
+root.id = 'root';
 document.body.appendChild(root);
 
-render(
+ReactDOM.render(
   <App
     basename="/cinima"
     htmlFile="my-index.html"
