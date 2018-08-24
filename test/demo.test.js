@@ -1,5 +1,6 @@
 import '../demo';
 import { getCount } from '../demo/data';
+import proxy from '../src/proxy';
 
 const getProps = containerId => JSON.parse(
     document
@@ -147,13 +148,12 @@ describe('caching', () => {
         ).toEqual('none');
     });
 
-    describe('back to purchased', () => {
+    describe('back', () => {
         let count;
 
         beforeAll(async () => {
             count = getCount();
-            history.back();
-            await delay(2000);
+            await proxy.router.back();
         });
 
         test('visible', () => {
@@ -167,4 +167,20 @@ describe('caching', () => {
             expect(getCount()).toBe(count);
         });
     });
+
+    describe('clear cache', () => {
+        let count;
+
+        beforeAll(async () => {
+            proxy.router.push('/');
+            await proxy.router.clearCache('/library/purchased');
+            count = getCount();
+            document.getElementById('button-purchased').click();
+        });
+
+        test('remount', () => {
+            expect(getCount()).toBeGreaterThan(count);
+        });
+    });
+
 });

@@ -12,7 +12,7 @@ class NotFound extends React.Component {
     return (
       <div id="404 Not Found">
         Page not found. Redirect in 3s.
-            </div>
+      </div>
     );
   }
 }

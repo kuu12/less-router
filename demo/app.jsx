@@ -21,6 +21,30 @@ class App extends React.Component {
     const { router } = this.props;
     return (
       <div id="app">
+        <div id="main">
+          <Movie          // test basic use
+            path="/movie"
+            title="Movies"
+            foo={11}
+            bar={22}
+          />
+          <TV             // test dynamic routing
+            path="/tv/"
+            title="TV Series"
+          />
+          <Routing>
+            <Purchased    // test exclusive route / test caching
+              path="/library/purchased"
+              autoCache
+            />
+            <Play         // test exclusive route / test url parameters
+              path="/library/:id"
+            />
+          </Routing>
+          <NotFound       // test not found
+            notFound
+          />
+        </div>
         <div id="sidebar">
           <button
             id="button-movie"
@@ -45,30 +69,6 @@ class App extends React.Component {
             alt={this.state.recommend.title}
             src={this.state.recommend.image}
             onClick={() => router.push(`/library/${this.state.recommend.id}`)}
-          />
-        </div>
-        <div id="main">
-          <Movie          // test basic use
-            path="/movie"
-            title="Movies"
-            foo={11}
-            bar={22}
-          />
-          <TV             // test dynamic routing
-            path="/tv/"
-            title="TV Series"
-          />
-          <Routing>
-            <Purchased    // test exclusive route / test caching
-              path="/library/purchased"
-              autoCache
-            />
-            <Play         // test exclusive route / test url parameters
-              path="/library/:id"
-            />
-          </Routing>
-          <NotFound       // test not found
-            notFound
           />
         </div>
       </div>
