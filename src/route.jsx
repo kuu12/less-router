@@ -1,6 +1,7 @@
 import React from 'react';
 import proxy from './proxy';
 import matching from './path/match';
+import { paramsFrom } from './path/regex';
 import { PATH_START, PARENT_END } from './message';
 
 const Route = ({
@@ -17,7 +18,7 @@ const Route = ({
     if (parentPath && !parentPath.endsWith('/')) {
         throw new Error(PARENT_END + parentPath);
     }
-    const { fullPath, regex, match, cached, params } =
+    const { fullPath, regex, match, cached } =
         matching(parentPath, path, proxy.router.pathname);
 
     const wrap = autoCache && !(
@@ -29,6 +30,9 @@ const Route = ({
     let component = null;
 
     if (match) {
+        const params = paramsFrom(
+            parentPath, path, proxy.router.pathname,
+        );
         component = (
             <Component
                 {...rest}

@@ -1,7 +1,7 @@
 import React from 'react';
 import proxy from './proxy';
 import { locationState, addHeadRemoveTail } from './path/path';
-import { regexFromPath } from './path/regex';
+import { regexFrom } from './path/regex';
 import { separate } from './path/query';
 import { PATH_START, PATH_NOT_FOUND } from './message';
 
@@ -75,7 +75,7 @@ class Router extends React.Component {
         if (!(path in this.registeredRoutes)) {
             console.warn(new Error(PATH_NOT_FOUND + path));
         }
-        delete this.cache[regexFromPath(path)];
+        delete this.cache[regexFrom(path)];
         return promiseAndCallback(resolve => {
             this.forceUpdate(resolve);
         }, cb);

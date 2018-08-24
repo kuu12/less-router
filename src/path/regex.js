@@ -1,5 +1,5 @@
 import { PARAMS, PARAMS_REPLACEMENT, cacheable } from './helper';
-import { join } from './path';
+import { addHeadRemoveTail } from './path';
 
 /**
  *  /           ->      /(?=(index.html)?$)     ->      /
@@ -27,21 +27,14 @@ const regexFromString = cacheable(
 );
 
 /**
- *  /calendar/:year/:month/holiday
- *  /\/calendar\/(\\w+)\/(\\w+)\/holiday(?=\\/?$)/
+ *  /calendar/:year/:month/holiday                      ->
+ *  /\/calendar\/(\\w+)\/(\\w+)\/holiday(?=\\/?$)/      ->
+ *  /calendar/2018/7/holiday
  */
-const regexFromPath = cacheable(
+const regexFrom = cacheable(
     path => regexFromString(
         path.replace(PARAMS, PARAMS_REPLACEMENT)
     )
-);
-
-/**
- *  /calendar/:year/:month/holiday
- *  /calendar/\\w+/\\w+/holiday
- */
-const removeParam = cacheable(
-    path => path && path.replace(PARAMS, '\\w+')
 );
 
 /**
@@ -50,14 +43,14 @@ const removeParam = cacheable(
  * @param   pathname    /user/kuu12/calendar/2018/7/8
  * @returns             { year: '2018', month: '7', date: '8' }
 */
-const paramsFromPath = (parentPath, path, pathname) => {
-    const fullPath = join(
-        removeParam(parentPath), path
-    );
+const paramsFrom = (parentPath, path, pathname) => {
+    if (parentPath) {
+        parentPath = regexFrom(addHeadRemoveTail(parentPath));
+        pathname = pathname.replace(parentPath, '');
+    }
     const params = ['pathname'];
     const result = {};
-
-    const string = fullPath.replace(
+    const string = path.replace(
         PARAMS,
         function ([syntax_ignored, ...paramName]) {
             params.push(paramName.join(''));
@@ -77,6 +70,6 @@ const paramsFromPath = (parentPath, path, pathname) => {
 };
 
 export {
-    regexFromPath,
-    paramsFromPath,
+    regexFrom,
+    paramsFrom,
 };

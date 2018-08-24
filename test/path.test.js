@@ -1,31 +1,31 @@
 import { join } from '../src/path/path';
-import { regexFromPath, paramsFromPath } from '../src/path/regex';
+import { regexFrom, paramsFrom } from '../src/path/regex';
 
-test('regexFromPath', () => {
+test('regexFrom', () => {
     expect(
-        regexFromPath('/order').test('/order')
+        regexFrom('/order').test('/order')
     ).toBeTruthy();
     expect(
-        regexFromPath('/order').test('/order/')
+        regexFrom('/order').test('/order/')
     ).toBeTruthy();
     expect(
-        regexFromPath('/order').test('/order/1')
+        regexFrom('/order').test('/order/1')
     ).toBeFalsy();
 
     expect(
-        regexFromPath('/order/').test('/order')
+        regexFrom('/order/').test('/order')
     ).toBeTruthy();
     expect(
-        regexFromPath('/order/').test('/order/')
+        regexFrom('/order/').test('/order/')
     ).toBeTruthy();
     expect(
-        regexFromPath('/order/').test('/order/1')
+        regexFrom('/order/').test('/order/1')
     ).toBeTruthy();
 });
 
-test('paramsFromPath', () => {
+test('paramsFrom', () => {
     expect(
-        paramsFromPath(
+        paramsFrom(
             '/order/',
             '/:orderId/:itemId',
             '/order/112233abc/222555',
@@ -36,7 +36,7 @@ test('paramsFromPath', () => {
     });
 
     expect(
-        paramsFromPath(
+        paramsFrom(
             '/order/',
             '/:orderId/:orderId',
             '/order/112233abc/222555',

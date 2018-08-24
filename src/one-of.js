@@ -7,7 +7,7 @@ const OneOf = ({ children }) => {
     return [].concat(children).filter(child => {
         const { parentPath, path } = child.props;
         const { match, cached } = matching(
-            parentPath, path, proxy.router.pathname
+            parentPath, path, proxy.router.pathname,
         );
         if (found) {
             return !match && cached;
