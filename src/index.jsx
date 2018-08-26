@@ -5,6 +5,7 @@ import NotFound from './404';
 import OneOf from './one-of';
 import proxy from './proxy';
 import matching from './path/match';
+import { ROOT } from './message';
 import { paramsFrom as params } from './path/regex';
 
 const Routing = arg => {
@@ -28,11 +29,11 @@ const Routing = arg => {
             };
 
         case 'object': {
-            const { children, ...props } = arg;
-            const Component = () => <OneOf>{children}</OneOf>;
-            return proxy.router
-                ? <Component />
-                : <Router Component={Component} {...props} />;
+            if (!proxy.router) {
+                throw new Error(ROOT);
+            }
+            const { children } = arg;
+            return <OneOf>{children}</OneOf>;
         }
     }
 };

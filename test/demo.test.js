@@ -1,17 +1,7 @@
 import '../demo';
 import { getCount } from '../demo/data';
 import proxy from '../src/proxy';
-
-const getProps = containerId => JSON.parse(
-    document
-        .getElementById(containerId)
-        .querySelector('.hidden-log')
-        .value
-);
-
-const delay = time => new Promise(resolve =>
-    setTimeout(resolve, time)
-);
+import { delay, getProps } from './util';
 
 describe('homepage', () => {
     expect(document.getElementById('trending'))
@@ -161,6 +151,7 @@ describe('caching', () => {
         beforeAll(async () => {
             count = getCount();
             await proxy.router.back();
+            await delay(1500);
         });
 
         test('visible', () => {
