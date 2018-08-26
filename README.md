@@ -118,7 +118,7 @@ When using `props.router.push(pathname)` or `props.router.replace(pathname)`, ju
 
 ## Props
 *Less Router* reserve serveral props:
-- **Input to wrapped `ComponentRoute`:** `path` `title` `parentPath` `autoCache` `NotFound`
+- **Input to wrapped `ComponentRoute`:** `path` `title` `parentPath` `autoCache` `notFound`
 - **Inject to origin `Component`:** `router` `path` `pathname` and [URL parameters](#basic-and-url-parameters)
 
 Other props will straightly pass into origin `Component`:
@@ -198,18 +198,18 @@ See previous section [Matching Rules](#matching-rules)
 ## Not Found
 ```javascript
 <ComponentRoute
-  NotFound
+  notFound
   title="Not Found"
 />
 ```
-`NotFound` also supports dynamic routing.
+`notFound` also supports dynamic routing.
 ```javascript
 import Routing from 'less-router';
 import ChildRoute from './child';
 const Parent = ({ path }) => (
   <div>
     <ChildRoute
-      NotFound
+      notFound
       title="Not Found"
       parentPath={path}
     />
@@ -258,7 +258,7 @@ Wrapped Component settings.
 - parentPath
 - autoFocus
 - basename
-- NotFound
+- notFound
 
 ### Props injected to Origin Component
 

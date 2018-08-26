@@ -1,9 +1,7 @@
 import React from 'react';
 import proxy from './proxy';
-import { locationState, addHeadRemoveTail } from './path/path';
+import { addHeadRemoveTail, separate } from './path/helper';
 import { regexFrom } from './path/regex';
-import { separate } from './path/query';
-import { promiseAndCallback } from './helper';
 import { PATH_START, PATH_NOT_FOUND } from './message';
 
 class Router extends React.Component {
@@ -96,6 +94,20 @@ class Router extends React.Component {
         return {};
     }
 }
+
+const locationState = (basename) => ({
+    pathname: decodeURIComponent(
+        location.pathname.replace(
+            new RegExp(`^${basename}`), ''
+        ) || '/'
+    ),
+    search: location.search,
+});
+
+const promiseAndCallback = (exec, callback) =>
+    typeof window.Promise === 'function'
+        ? new window.Promise(exec).then(callback)
+        : exec(callback);
 
 const queue = [];
 window.addEventListener('popstate', () => {

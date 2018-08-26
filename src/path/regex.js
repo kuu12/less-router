@@ -1,6 +1,5 @@
 import proxy from '../proxy';
-import { cacheable } from '../helper';
-import { join } from './path';
+import { cacheable, join } from './helper';
 
 const PARAMS = /:[\w-~]+(?=\/|$)/g;
 const PARAMS_0 = '[\\w-~]+';

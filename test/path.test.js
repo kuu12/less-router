@@ -1,4 +1,4 @@
-import { join } from '../src/path/path';
+import { join } from '../src/path/helper';
 import { regexFrom, paramsFrom } from '../src/path/regex';
 
 describe('join', () => {

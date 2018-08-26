@@ -130,7 +130,7 @@ ReactDOM.render(
 
 ## Props传递
 *Less Router* 保留数个props
-- **传给已包装的组件：** `path` `title` `parentPath` `autoCache` `NotFound`
+- **传给已包装的组件：** `path` `title` `parentPath` `autoCache` `notFound`
 - **注入到原始组件：** `router` `path` `pathname` 以及 [URL参数](#基本使用及url参数)
 
 其他props会直接传给原始组件:
@@ -211,18 +211,18 @@ export default Routing(Child);
 ## 404页面
 ```javascript
 <ComponentRoute
-  NotFound
+  notFound
   title="未找到该路径"
 />
 ```
-`NotFound`支持动态路由，可以使该组件只在某个路径下时才触发
+`notFound`支持动态路由，可以使该组件只在某个路径下时才触发
 ```javascript
 import Routing from 'less-router';
 import ChildRoute from './child';
 const Parent = ({ path }) => (
   <div>
     <ChildRoute
-      NotFound
+      notFound
       title="未找到该路径"
       parentPath={path}
     />
@@ -271,7 +271,7 @@ Wrapped Component settings.
 - parentPath
 - autoFocus
 - basename
-- NotFound
+- notFound
 
 ### Props injected to Origin Component
 

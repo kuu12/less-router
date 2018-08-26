@@ -1,5 +1,5 @@
 import proxy from '../proxy';
-import { join } from './path';
+import { join } from './helper';
 import { regexFrom } from './regex';
 
 export default (parentPath, path, pathname) => {

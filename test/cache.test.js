@@ -93,7 +93,7 @@ describe('route change', () => {
             parent.style.display
         ).toBe('none');
         expect(document.getElementById('aaa'))
-            .toBeInstanceOf(HTMLElement);            
+            .toBeInstanceOf(HTMLElement);
         expect(document.getElementById('bbb'))
             .toBeInstanceOf(HTMLElement);
         expect(count).toBe(1);
@@ -128,7 +128,6 @@ describe('clear cache', () => {
         console.log(JSON.stringify(proxy.router.cache));
         console.log(JSON.stringify(proxy.router.registeredRoutes));
         console.log('\n');
-        console.log(proxy.router.props.Component);
         expect(count).toBe(2);
     });
 });

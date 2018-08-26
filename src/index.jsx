@@ -8,10 +8,10 @@ import matching from './path/match';
 import { ROOT } from './message';
 import { paramsFrom as params } from './path/regex';
 
-const Routing = arg => {
+function Routing(arg) {
     switch (typeof arg) {
         case 'function':
-            return props => {
+            return function (props) {
                 let Container;
                 if (!proxy.router)
                     Container = Router;
@@ -28,15 +28,12 @@ const Routing = arg => {
                 return <Container Component={arg} {...props} />;
             };
 
-        case 'object': {
-            if (!proxy.router) {
-                throw new Error(ROOT);
-            }
-            const { children } = arg;
-            return <OneOf>{children}</OneOf>;
-        }
+        case 'object':
+            if (!proxy.router) throw new Error(ROOT);
+
+            return <OneOf>{arg.children}</OneOf>;
     }
-};
+}
 
 export default Routing;
 export {
