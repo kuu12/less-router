@@ -1,12 +1,3 @@
-export function cacheable(func) {
-    const cache = {};
-    return function (arg) {
-        if (!(arg in cache))
-            cache[arg] = func(arg);
-        return cache[arg];
-    };
-}
-
 const join = (...paths) => {
     let fullPath = paths
         .filter(Boolean)
@@ -39,8 +30,18 @@ const separate = origin => {
     return { pathname, search };
 };
 
+const cacheable = func => {
+    const cache = {};
+    return function (arg) {
+        if (!(arg in cache))
+            cache[arg] = func.call(this, arg);
+        return cache[arg];
+    };
+};
+
 export {
     join,
     addHeadRemoveTail,
     separate,
+    cacheable,
 };

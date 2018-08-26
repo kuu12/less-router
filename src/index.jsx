@@ -8,7 +8,7 @@ import matching from './path/match';
 import { ROOT } from './message';
 import { paramsFrom as params } from './path/regex';
 
-function Routing(arg) {
+const Routing = arg => {
     switch (typeof arg) {
         case 'function':
             return function (props) {
@@ -33,7 +33,7 @@ function Routing(arg) {
 
             return <OneOf>{arg.children}</OneOf>;
     }
-}
+};
 
 export default Routing;
 export {
