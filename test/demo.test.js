@@ -1,184 +1,82 @@
-import '../demo';
-import { getCount } from '../demo/data';
-import proxy from '../src/proxy';
-import { delay, getProps } from './util';
+history.replaceState({}, null, '/kuu12');
 
-describe('homepage', () => {
-    expect(document.getElementById('trending'))
-        .toBeInstanceOf(HTMLElement);
-});
+require('../demo');
+const Log = require('../demo/log').default;
+const { delay } = require('./util');
 
-describe('basic use', () => {
-    beforeAll(() =>
-        document
-            .getElementById('button-movie')
-            .click()
-    );
-
-    test('location.pathname', () => {
-        expect(location.pathname)
-            .toBe('/cinima/movie');
+const id = id => document.getElementById(id);
+const button = name => document.querySelector(`button[name="${name}"]`).click();
+describe('basic use', function () {
+    beforeAll(function () {
+        button('basic');
     });
-
-    test('route rendering', () => {
-        expect(document.getElementById('trending'))
-            .toBeFalsy();
-        expect(document.getElementById('movie'))
-            .toBeInstanceOf(HTMLElement);
-        expect(document.getElementById('tv'))
-            .toBeFalsy();
+    test('push', function () {
+        expect(id('basic')).toBeInstanceOf(HTMLElement);
     });
-
-    test('router and others in props', () => {
-        const props = getProps('movie');
-        expect(props.router).toBeTruthy();
-        expect(props.foo).toBe(11);
+    test('props', function () {
+        expect(typeof Log.basic.router).toBe('object');
     });
-});
-
-describe('dynamic routing', () => {
-    beforeAll(() =>
-        document
-            .getElementById('button-tv')
-            .click()
-    );
-
-    test('route rendering', () => {
-        expect(document.getElementById('movie'))
-            .toBeFalsy();
-        expect(document.getElementById('tv'))
-            .toBeInstanceOf(HTMLElement);
-        expect(document.querySelector('#tv #genre'))
-            .toBeFalsy();
+    test('rendering', function () {
+        expect(id('login')).toBeFalsy();
     });
-
-    test('path and pathname in props', () => {
-        const props = getProps('tv');
-        expect(props.path).toBe('/tv/');
-        expect(props.pathname).toBe('/tv');
-    });
-
-    describe('child route', () => {
-        beforeAll(() =>
-            document
-                .getElementById('button-action')
-                .click()
-        );
-
-        test('location.pathname', () => {
-            expect(location.pathname)
-                .toBe('/cinima/tv/action');
+    describe('back', function () {
+        beforeAll(async function () {
+            await Log.basic.router.back();
         });
-
-
-        test('route rendering', () => {
-            expect(document.getElementById('tv'))
-                .toBeInstanceOf(HTMLElement);
-            expect(document.querySelector('#tv #genre'))
-                .toBeInstanceOf(HTMLElement);
-        });
-
-        test('props', () => {
-            const props = getProps('genre');
-            expect(props.genre).toBe('action');
-            expect(props.pathname).toBe('/tv/action');
+        test('rendering', function () {
+            expect(id('basic')).toBeFalsy();
         });
     });
 });
-
-describe('history back', () => {
-    beforeAll(async () => {
-        document
-            .getElementById('button-back')
-            .click();
-
-        await delay(500);
+describe('URL parameters', function () {
+    beforeAll(function () {
+        button('parameter');
     });
-
-    test('location.pathname', () => {
-        expect(location.pathname)
-            .toBe('/cinima/tv');
+    test('rendering', function () {
+        expect(id('parameter')).toBeInstanceOf(HTMLElement);
     });
-
-    test('route rendering', async () => {
-        expect(document.getElementById('tv'))
-            .toBeInstanceOf(HTMLElement);
-        expect(document.querySelector('#tv #genre'))
-            .toBeFalsy();
+    test('props', function () {
+        expect(Log.parameter).toMatchObject({
+            name: 'kuu',
+            id: '12',
+        });
     });
 });
-
-describe('exclusive route', () => {
-    beforeAll(() => {
-        document
-            .getElementById('button-purchased')
-            .click();
+describe('cache', function () {
+    let mount = Log.cache.mount;
+    beforeAll(function () {
+        button('cache');
     });
-
-    test('route rendering', () => {
-        expect(document.getElementById('purchased'))
-            .toBeInstanceOf(HTMLElement);
-        expect(document.getElementById('play'))
-            .toBeFalsy();
+    test('mount', function () {
+        expect(id('cache')).toBeInstanceOf(HTMLElement);
+        expect(mount + 1).toBe(Log.cache.mount);
     });
-});
-
-describe('caching', () => {
-    beforeAll(async () => {
-        await delay(1500);
-        document
-            .querySelector('#purchased li')
-            .click();
-    });
-
-    test('route rendering', () => {
-        expect(document.getElementById('purchased'))
-            .toBeInstanceOf(HTMLElement);
-        expect(document.getElementById('play'))
-            .toBeInstanceOf(HTMLElement);
-    });
-
-    test('invisible', () => {
-        const dom = document.getElementById('purchased');
-        expect(
-            dom.parentNode.style.display
-        ).toEqual('none');
-    });
-
-    describe('back', () => {
-        let count;
-
-        beforeAll(async () => {
-            count = getCount();
-            await proxy.router.back();
-            await delay(1500);
+    describe('leave', function () {
+        beforeAll(async function () {
+            await Log.basic.router.push('/');
         });
-
-        test('visible', () => {
-            const dom = document.getElementById('purchased');
-            expect(
-                dom.parentNode.style.display
-            ).not.toEqual('none');
-        });
-
-        test('no remouting', () => {
-            expect(getCount()).toBe(count);
+        test('no unmount', function () {
+            expect(id('cache')).toBeInstanceOf(HTMLElement);
+            expect(id('cache').parentNode.style.display).toBe('none');
         });
     });
-
-    describe('clear cache', () => {
-        let count;
-
-        beforeAll(async () => {
-            proxy.router.push('/');
-            await proxy.router.clearCache('/library/purchased');
-            count = getCount();
-            document.getElementById('button-purchased').click();
+    describe('enter again', function () {
+        beforeAll(function () {
+            button('cache');
         });
-
-        test('remount', () => {
-            expect(getCount()).toBeGreaterThan(count);
+        test('no remount', function () {
+            expect(mount + 1).toBe(Log.cache.mount);
         });
     });
-
+    describe('clear cache', function () {
+        beforeAll(async function () {
+            await Log.basic.router.push('/');
+            await Log.basic.router.clearCache('/cache');
+            button('cache');
+            await delay(500);
+        });
+        test('remount', function () {
+            expect(mount + 1).toBe(Log.cache.mount - 1);
+        });
+    });
 });

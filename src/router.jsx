@@ -89,10 +89,6 @@ class Router extends React.Component {
         delete rest.basename;
         return <Component router={this} {...rest} />;
     }
-
-    toJSON() {
-        return {};
-    }
 }
 
 const locationState = (basename) => ({
