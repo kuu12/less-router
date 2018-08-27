@@ -4,6 +4,8 @@ import Routing from '../src';
 import proxy from '../src/proxy';
 import { delay } from './util';
 
+const log = (...args) => false && console.log(...args);
+
 let count = 0;
 
 class Aaa extends React.Component {
@@ -47,11 +49,11 @@ const Root = <ABRoute />;
 ReactDOM.render(Root, root);
 
 test('init', () => {
-    console.log(proxy.router.pathname);
-    console.log(root.innerHTML);
-    console.log(JSON.stringify(proxy.router.cache));
-    console.log(JSON.stringify(proxy.router.registeredRoutes));
-    console.log('\n');
+    log(proxy.router.pathname);
+    log(root.innerHTML);
+    log(JSON.stringify(proxy.router.cache));
+    log(JSON.stringify(proxy.router.registeredRoutes));
+    log('\n');
     expect(document.getElementById('aaa'))
         .toBeFalsy();
     expect(document.getElementById('bbb'))
@@ -63,11 +65,11 @@ describe('exclusive route', () => {
         proxy.router.push('/aaa');
     });
     test('route rendering', () => {
-        console.log(proxy.router.pathname);
-        console.log(root.innerHTML);
-        console.log(JSON.stringify(proxy.router.cache));
-        console.log(JSON.stringify(proxy.router.registeredRoutes));
-        console.log('\n');
+        log(proxy.router.pathname);
+        log(root.innerHTML);
+        log(JSON.stringify(proxy.router.cache));
+        log(JSON.stringify(proxy.router.registeredRoutes));
+        log('\n');
         expect(document.getElementById('aaa'))
             .toBeInstanceOf(HTMLElement);
         expect(document.getElementById('bbb'))
@@ -81,11 +83,11 @@ describe('route change', () => {
         await delay(500);
     });
     test('route rendering', () => {
-        console.log(proxy.router.pathname);
-        console.log(root.innerHTML);
-        console.log(JSON.stringify(proxy.router.cache));
-        console.log(JSON.stringify(proxy.router.registeredRoutes));
-        console.log('\n');
+        log(proxy.router.pathname);
+        log(root.innerHTML);
+        log(JSON.stringify(proxy.router.cache));
+        log(JSON.stringify(proxy.router.registeredRoutes));
+        log('\n');
         const parent = document
             .getElementById('aaa')
             .parentNode;
@@ -105,12 +107,12 @@ describe('back', () => {
         await delay(500);
     });
     test('no remount', () => {
-        console.log(proxy.router.pathname);
-        console.log(root.innerHTML);
-        console.log(JSON.stringify(proxy.router.cache));
-        console.log(JSON.stringify(proxy.router.registeredRoutes));
-        console.log('\n');
-        console.log(proxy.router.props.Component);
+        log(proxy.router.pathname);
+        log(root.innerHTML);
+        log(JSON.stringify(proxy.router.cache));
+        log(JSON.stringify(proxy.router.registeredRoutes));
+        log('\n');
+        log(proxy.router.props.Component);
         expect(count).toBe(1);
     });
 });
@@ -123,11 +125,11 @@ describe('clear cache', () => {
         await delay(500);
     });
     test('remount', () => {
-        console.log(proxy.router.pathname);
-        console.log(root.innerHTML);
-        console.log(JSON.stringify(proxy.router.cache));
-        console.log(JSON.stringify(proxy.router.registeredRoutes));
-        console.log('\n');
+        log(proxy.router.pathname);
+        log(root.innerHTML);
+        log(JSON.stringify(proxy.router.cache));
+        log(JSON.stringify(proxy.router.registeredRoutes));
+        log('\n');
         expect(count).toBe(2);
     });
 });
