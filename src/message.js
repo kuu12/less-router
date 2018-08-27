@@ -6,7 +6,6 @@ const en = {
     PATH_NOT_FOUND: 'clearCache could not find this path, please check your typein: ',
 };
 const en_dev = {
-    ROOT: `Exclusive Routing couldn't be the root component.\nIncorrect: ${root_0()}\nCorrect: ${root_1()}`,
 };
 
 const zh = {
@@ -15,7 +14,6 @@ const zh = {
     PATH_NOT_FOUND: 'clearCache找不到这个path，请检查拼写是否正确：',
 };
 const zh_dev = {
-    ROOT: `多选一的Routing不能作为根组件。\n错误的写法：${root_0()}\n正确的写法：${root_1()}`,
 };
 
 if ('production' === process.env.NODE_ENV) {
@@ -30,33 +28,4 @@ export const {
     PATH_START,
     PARENT_END,
     PATH_NOT_FOUND,
-    ROOT,
 } = message;
-
-
-function root_0() {
-    return `
-    ReactDOM.render(
-        <Routing>
-        <FooRoute path="/foo" />
-        <BarRoute path="/bar" />
-        </Routing>,
-        domElement,
-    );
-    `;
-}
-function root_1() {
-    return `
-const App = () => (
-    <Routing>
-      <FooRoute path="/foo" />
-      <BarRoute path="/bar" />
-    </Routing>
-);
-const AppRoute = Routing(App);
-ReactDOM.render(
-  <App />,
-  domElement,
-);
-`;
-}

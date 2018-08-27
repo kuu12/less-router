@@ -10,6 +10,7 @@ const Route = ({
     path,
     title,
     autoCache,
+    noWrap,
     ...rest
 }) => {
     if (path && !path.startsWith('/')) {
@@ -21,7 +22,7 @@ const Route = ({
     const { fullPath, regex, match, cached } =
         matching(parentPath, path, proxy.router.pathname);
 
-    const wrap = autoCache && !(
+    const wrap = !noWrap && autoCache && !(
         Component.propTypes &&
         Component.propTypes.routingStyle
     );

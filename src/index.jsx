@@ -5,7 +5,6 @@ import NotFound from './404';
 import OneOf from './one-of';
 import proxy from './proxy';
 import matching from './path/match';
-import { ROOT } from './message';
 import { paramsFrom as params } from './path/regex';
 
 const Routing = arg => {
@@ -28,10 +27,14 @@ const Routing = arg => {
                 return <Container Component={arg} {...props} />;
             };
 
-        case 'object':
-            if (!proxy.router) throw new Error(ROOT);
-
-            return <OneOf>{arg.children}</OneOf>;
+        case 'object': {
+            if (proxy.router) {
+                return <OneOf>{children}</OneOf>;
+            }
+            const { children, ...props } = arg;
+            const Component = () => <OneOf root>{children}</OneOf>;
+            return <Router Component={Component} {...props} />;
+        }
     }
 };
 export default Routing;
@@ -53,3 +56,4 @@ Object.assign(Routing, {
     matching,
     params,
 });
+window.proxy = proxy;
