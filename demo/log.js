@@ -6,3 +6,5 @@ const Log = ({ id, data }) => {
 };
 
 export default Log;
+
+window.Log = Log;

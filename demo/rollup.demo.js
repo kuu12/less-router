@@ -17,6 +17,10 @@ const config = {
         format: 'umd',
         file: './dist/demo.bundle.js',
         sourcemap: true,
+        globals: {
+            react: 'React',
+            'react-dom': 'ReactDOM',
+        }
     },
     plugins: [
         resolve({
@@ -33,7 +37,11 @@ const config = {
         uglify({
             mangle: { toplevel: true }
         })
-    ]
+    ],
+    watch: {
+        include: ['../src/**', './**'],
+        exclude: 'rollup.demo.js',
+    }
 };
 
 export default config;

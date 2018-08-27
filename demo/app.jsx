@@ -25,7 +25,13 @@ class App extends React.Component {
   render() {
     return (
       <div id="app">
-        <NavigationBar router={this.props.router} token={this.state.token} />
+        {
+          this.props.router.pathname !== '/login' &&
+          <NavigationBar
+            router={this.props.router}
+            token={this.state.token}
+          />
+        }
         <Log id="app" data={this.props} />
 
         <Basic path="/basic" title="Basic Route" />

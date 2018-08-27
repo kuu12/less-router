@@ -34,7 +34,6 @@ const Routing = arg => {
             return <OneOf>{arg.children}</OneOf>;
     }
 };
-
 export default Routing;
 export {
     Routing,

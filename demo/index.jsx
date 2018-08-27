@@ -7,6 +7,6 @@ root.id = 'root';
 document.body.appendChild(root);
 
 ReactDOM.render(
-  <App basename="/kuu12" />,
+  <App basename="" />,
   root,
 );
