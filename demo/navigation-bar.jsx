@@ -23,6 +23,7 @@ const NavigationBar = ({ router, token, setToken }) => (
       <button name="two" onClick={() => router.push('/exclusive/two')}>Render Second Route</button>
       <button name="three" onClick={() => router.push('/exclusive/foobar')}>Render Third Route</button>
     </div>
+    <br />
   </nav>
 );
 

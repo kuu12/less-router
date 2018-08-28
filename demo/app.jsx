@@ -34,20 +34,19 @@ class App extends React.Component {
             setToken={this.setToken}
           />
         }
-        <p>
-          <Basic path="/basic" title="Basic Route" />
-          <Parameter path="/parameter/:name/:id" title="URL Parameters" />
-          <Cache path="/cache" title="Cache" autoCache />
-          <Dynamic path="/dynamic/" title="Dynamic Routing" />
-          <Login path="/login" title="Login" setToken={this.setToken} />
-          <Profile path="/profile" title="profile" token={this.state.token} />
-          <Routing>
-            <One path="/exclusive/one" title="Exclusive Route 1" />
-            <Two path="/exclusive/two" title="Exclusive Route 2" autoCache />
-            <Three path="/exclusive/:any" title="Exclusive Route 3" />
-          </Routing>
-          <NotFound notFound title="404 Not Found" />
-        </p>
+        <Basic path="/basic" title="Basic Route" />
+        <Parameter path="/parameter/:name/:id" title="URL Parameters" />
+        <Cache path="/cache" title="Cache" autoCache />
+        <Dynamic path="/dynamic/" title="Dynamic Routing" />
+        <Login path="/login" title="Login" setToken={this.setToken} />
+        <Profile path="/profile" title="profile" token={this.state.token} />
+        <Routing>
+          <One path="/exclusive/one" title="Exclusive Route 1" />
+          <Two path="/exclusive/two" title="Exclusive Route 2" autoCache />
+          <Three path="/exclusive/:any" title="Exclusive Route 3" />
+        </Routing>
+        <NotFound notFound title="404 Not Found" />
+
         <Log id="app" data={this.props} />
       </React.Fragment>
     );

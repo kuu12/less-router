@@ -1,3 +1,4 @@
+import React from 'react';
 import proxy from './proxy';
 import matching from './path/match';
 
@@ -10,10 +11,10 @@ const OneOf = ({ children }) => {
             parentPath, path, proxy.router.pathname,
         );
         if (found) {
-            return !match && cached ? child : <div />;
+            return !match && cached ? child : <div key={path} />;
         } else {
             if (match) found = match;
-            return match || cached ? child : <div />;
+            return match || cached ? child : <div key={path} />;
         }
     });
 };
