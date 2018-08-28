@@ -24,11 +24,18 @@ class Cache extends React.Component {
     clearInterval(this.timer);
   }
   render() {
+    const { router } = this.props;
     return (
       <div id="cache">
         Start Time: {this.state.start}
         <br />
         Counting: {this.state.count}
+        <br />
+        <button name="clear-cache" onClick={async () => {
+          await router.replace('/');
+          await router.clearCache('/cache');
+          console.log('clear');
+        }}>Back to Home Page and Clear Cache</button>
       </div>
     );
   }

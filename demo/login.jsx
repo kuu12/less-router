@@ -6,12 +6,17 @@ const Login = ({ router, setToken }) => (
     <label>
       Username: <input defaultValue="kuu12" />
     </label>
+    <br />
     <label>
       Password: <input type="password" defaultValue="foobar" />
     </label>
+    <br />
     <button onClick={() => {
       setToken(true);
-      router.back();
+      router.replace(
+        sessionStorage.getItem('loginRedirect') ||
+        '/'
+      );
     }}>
       Submit
     </button>
