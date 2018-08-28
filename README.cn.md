@@ -3,7 +3,6 @@
 ### 更少的API，更多的优雅和更简单地学习。 
 
 [README in English](https://github.com/kuu12/less-router/blob/master/README.md)
-
 [Live Demo](https://kuu12.github.io/router-demo/)
 
 # 特性
