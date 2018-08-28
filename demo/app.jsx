@@ -23,16 +23,13 @@ class App extends React.Component {
   }
 
   render() {
+    const { router } = this.props;
     return (
       <React.Fragment>
         <h4>Demo of <a href="https://github.com/kuu12/less-router">Less-Router</a></h4>
         {
-          this.props.router.pathname !== '/login' &&
-          <NavigationBar
-            router={this.props.router}
-            token={this.state.token}
-            setToken={this.setToken}
-          />
+          router.pathname !== '/login' &&
+          <NavigationBar router={router} token={this.state.token} setToken={this.setToken} />
         }
         <Basic path="/basic" title="Basic Route" />
         <Parameter path="/parameter/:name/:id" title="URL Parameters" />
