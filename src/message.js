@@ -18,32 +18,16 @@ const zh_dev = {
     ROOT: `多选一的Routing不能作为根组件。\n错误的写法：${root_0()}\n正确的写法：${root_1()}`,
 };
 
-if ('production' === process.env.NODE_ENV) {
-    message = en;
-} else {
-    message = navigator.language.startsWith('zh-')
-        ? { ...zh, ...zh_dev }
-        : { ...en, ...en_dev };
-}
-
-export const {
-    PATH_START,
-    PARENT_END,
-    PATH_NOT_FOUND,
-    ROOT,
-} = message;
-
-
 function root_0() {
     return `
-    ReactDOM.render(
-        <Routing>
-        <FooRoute path="/foo" />
-        <BarRoute path="/bar" />
-        </Routing>,
-        domElement,
-    );
-    `;
+ReactDOM.render(
+  <Routing>
+    <FooRoute path="/foo" />
+    <BarRoute path="/bar" />
+  </Routing>,
+  domElement,
+);
+`;
 }
 function root_1() {
     return `
@@ -60,3 +44,18 @@ ReactDOM.render(
 );
 `;
 }
+
+if ('production' === process.env.NODE_ENV) {
+    message = en;
+} else {
+    message = navigator.language.startsWith('zh-')
+        ? { ...zh, ...zh_dev }
+        : { ...en, ...en_dev };
+}
+
+export const {
+    PATH_START,
+    PARENT_END,
+    PATH_NOT_FOUND,
+    ROOT,
+} = message;

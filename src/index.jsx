@@ -7,6 +7,7 @@ import proxy from './proxy';
 import matching from './path/match';
 import { ROOT } from './message';
 import { paramsFrom as params } from './path/regex';
+import A from './a';
 
 const Routing = arg => {
     switch (typeof arg) {
@@ -43,6 +44,7 @@ export {
     OneOf,
     matching,
     params,
+    A,
 };
 Object.assign(Routing, {
     Routing,
@@ -52,4 +54,5 @@ Object.assign(Routing, {
     OneOf,
     matching,
     params,
+    A,
 });

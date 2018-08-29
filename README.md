@@ -256,7 +256,7 @@ Wrapped Component settings.
 - path
 - title
 - parentPath
-- autoFocus
+- autoCache
 - basename
 - notFound
 
