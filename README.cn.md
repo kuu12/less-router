@@ -54,6 +54,8 @@ export default Routing(Component);
 ```
 使用已包装的组件
 ```javascript
+import ComponentRoute from './component';
+// ...
 <ComponentRoute
   // nickname会从URL取值并注入到组件的属性中
   path="/somepath/:nickname" 
@@ -258,6 +260,7 @@ export default Routing(Parent);
 ```
 
 ## API参考
+查阅 [高级指南](https://github.com/kuu12/less-router/blob/master/GUIDE.md).
 
 ### Routing
 

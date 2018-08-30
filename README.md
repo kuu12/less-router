@@ -40,6 +40,8 @@ export default Routing(Component);
 ```
 And use the wrapped component.
 ```javascript
+import ComponentRoute from './component';
+// ...
 <ComponentRoute
   // Notice the ':nickname' part, it will be treated as a variable.
   path="/somepath/:nickname" 
@@ -243,6 +245,7 @@ Both of `path` match `https://www.example.com/movies/purchased`. But obviously, 
 ```
 
 ## API Reference
+See [Advance Guide](https://github.com/kuu12/less-router/blob/master/GUIDE.md).
 
 ### Routing
 
