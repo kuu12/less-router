@@ -11,10 +11,10 @@ class NotFound extends React.Component {
         const parentPath = this.props.parentPath || '';
         const namespace = new RegExp(`^${parentPath}`);
         const keyToValue = path =>
-            proxy.router.registeredRoutes[path];
+            proxy.router.registry[path];
 
         const all = Object
-            .keys(proxy.router.registeredRoutes)
+            .keys(proxy.router.registry)
             .filter(keyToValue)
             .filter(path => namespace.test(path));
 
@@ -35,16 +35,15 @@ class NotFound extends React.Component {
         if (!this.state.entryPoint) return null;
         if (this.state.entryPoint !== proxy.router.pathname) return null;
 
-        const { Component, title, titleName, ...rest } = this.props;
+        const { Component, title, titleName, ...props } = this.props;
         document.title = title;
-        delete rest.NotFound;
-        delete rest.notFound;
-        delete rest.Notfound;
-        delete rest.NOT_FOUND;
+        delete props.NotFound;
+        delete props.notFound;
+        delete props.Notfound;
 
         return (
             <Component
-                {...rest}
+                {...props}
                 pathname={proxy.router.pathname}
                 title={titleName}
             />

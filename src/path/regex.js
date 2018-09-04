@@ -16,7 +16,7 @@ const PARAMS_1 = `(${PARAMS_0})`;
  *                                                      /movie/
  */
 const regexFromString = cacheable(
-    string => {
+    (string, caseSensitive) => {
         if (
             '/' === string &&
             proxy.router &&
@@ -29,7 +29,10 @@ const regexFromString = cacheable(
         } else {
             string += '(?=\\/?$)';
         }
-        return new RegExp(`^${string}`);
+        return new RegExp(
+            `^${string}`,
+            caseSensitive ? undefined : 'i'
+        );
     }
 );
 
@@ -39,8 +42,8 @@ const regexFromString = cacheable(
  *  /calendar/2018/7/holiday
  */
 const regexFrom = cacheable(
-    path => regexFromString(
-        path.replace(PARAMS, PARAMS_1)
+    (path, caseSensitive) => regexFromString(
+        path.replace(PARAMS, PARAMS_1), caseSensitive
     )
 );
 
@@ -58,16 +61,16 @@ const removeParam = cacheable(
  * @param   pathname    /user/kuu12/calendar/2018/7/8
  * @returns             { year: '2018', month: '7', date: '8' }
 */
-const paramsFrom = (parentPath, path, pathname = proxy.route.pathname) => {
+const paramsFrom = (parentPath, path, pathname = proxy.router.pathname) => {
     const fullPath = join(removeParam(parentPath), path);
     const params = ['pathname'];
     const result = {};
     const string = fullPath.replace(
         PARAMS,
-        function ([syntax_ignored, ...paramName]) {
-            params.push(paramName.join(''));
-            return PARAMS_1;
-        },
+        (paramName) => (
+            params.push(paramName.slice(1)),
+            PARAMS_1
+        ),
     );
     const regex = regexFromString(string);
     (regex.exec(pathname) || [])

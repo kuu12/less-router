@@ -16,28 +16,32 @@ const addHeadRemoveTail = path => path
     .replace(/\/+$/, '')
     .replace(/^(?=[^/])/, '/');
 
-const separate = origin => {
+const separate = pathnameAndSearch => {
     let pathname;
     let search;
-    const index = origin.indexOf('?');
+    const index = pathnameAndSearch.indexOf('?');
     if (index === -1) {
-        pathname = origin;
+        pathname = pathnameAndSearch;
         search = '';
     } else {
-        pathname = origin.slice(0, index);
-        search = origin.slice(index);
+        pathname = pathnameAndSearch.slice(0, index);
+        search = pathnameAndSearch.slice(index);
     }
     return { pathname, search };
 };
 
 const cacheable = func => {
     const cache = {};
-    return function (arg) {
-        if (!(arg in cache))
-            cache[arg] = func.call(this, arg);
-        return cache[arg];
+    return function (...args) {
+        const key = args.join(symbol);
+        if (!(key in cache)) {
+            cache[key] = func.apply(this, args);
+        }
+        return cache[key];
     };
 };
+
+const symbol = Math.random();
 
 export {
     join,

@@ -4,10 +4,10 @@ import Route from './route';
 import NotFound from './404';
 import OneOf from './one-of';
 import proxy from './proxy';
-import matching from './path/match';
 import { ROOT } from './message';
-import { paramsFrom as params } from './path/regex';
 import A from './a';
+import { match } from './path/match';
+import { paramsFrom as params } from './path/regex';
 
 const Routing = arg => {
     switch (typeof arg) {
@@ -19,8 +19,7 @@ const Routing = arg => {
                 else if (
                     'notFound' in props ||
                     'NotFound' in props ||
-                    'Notfound' in props ||
-                    'NOT_FOUND' in props
+                    'Notfound' in props
                 )
                     Container = NotFound;
                 else
@@ -42,9 +41,9 @@ export {
     Route,
     NotFound,
     OneOf,
-    matching,
-    params,
     A,
+    match,
+    params,
 };
 Object.assign(Routing, {
     Routing,
@@ -52,7 +51,7 @@ Object.assign(Routing, {
     Route,
     NotFound,
     OneOf,
-    matching,
-    params,
     A,
+    match,
+    params,
 });

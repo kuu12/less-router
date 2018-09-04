@@ -1,13 +1,13 @@
 import React from 'react';
 import proxy from './proxy';
 
-const A = ({ method = 'push', onClick, href, children, ...attrs }) => (
+const A = ({ redirect, onClick, href, children, ...attrs }) => (
     <a
         href={proxy.router.basename + href}
         onClick={event => {
             event.preventDefault();
 
-            const go = () => proxy.router[method](href);
+            const go = () => proxy.router[redirect ? 'replace' : 'push'](href);
 
             if (!onClick) return go();
 

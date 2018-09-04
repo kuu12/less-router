@@ -7,7 +7,7 @@ import { PATH_START, PATH_NOT_FOUND } from './message';
 class Router extends React.Component {
     constructor(props) {
         super(props);
-        this.registeredRoutes = {};
+        this.registry = {};
         this.cache = {};
         this.state = locationState(this.basename);
         proxy.router = this;
@@ -75,7 +75,7 @@ class Router extends React.Component {
         if (!path.startsWith('/')) {
             throw new Error(PATH_START + path);
         }
-        if (!(path in this.registeredRoutes)) {
+        if (!(path in this.registry)) {
             console.warn(new Error(PATH_NOT_FOUND + path));
         }
         delete this.cache[regexFrom(path)];

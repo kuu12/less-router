@@ -1,5 +1,5 @@
 import React from 'react';
-import matching from './path/match';
+import { matching } from './path/match';
 
 const OneOf = ({ children }) => {
     let found = false;

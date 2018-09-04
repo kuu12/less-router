@@ -70,6 +70,18 @@ describe('regexFrom', () => {
             regexFrom('/order/:n/:w').test('/order/-my~name/-my~work')
         ).toBeTruthy();
     });
+
+    test('case sensitive', () => {
+        expect(
+            regexFrom('/order').test('/Order')
+        ).toBeTruthy();
+        expect(
+            regexFrom('/Order', true).test('/Order')
+        ).toBeTruthy();
+        expect(
+            regexFrom('/Order', true).test('/order')
+        ).toBeFalsy();
+    });
 });
 
 describe('paramsFrom', () => {
