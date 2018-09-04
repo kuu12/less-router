@@ -2,7 +2,7 @@ import proxy from '../proxy';
 import { join } from './helper';
 import { regexFrom } from './regex';
 
-export default (parentPath, path, pathname) => {
+export default (parentPath, path, pathname = proxy.router.pathname) => {
     const fullPath = join(parentPath, path);
     const regex = regexFrom(fullPath);
     const match = regex.test(pathname);

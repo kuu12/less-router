@@ -1,5 +1,4 @@
 import React from 'react';
-import proxy from './proxy';
 import matching from './path/match';
 
 const OneOf = ({ children }) => {
@@ -7,9 +6,7 @@ const OneOf = ({ children }) => {
 
     return [].concat(children).map(child => {
         const { parentPath, path } = child.props;
-        const { match, cached } = matching(
-            parentPath, path, proxy.router.pathname,
-        );
+        const { match, cached } = matching(parentPath, path);
         if (found) {
             return !match && cached ? child : <div key={path} />;
         } else {

@@ -18,8 +18,7 @@ const Route = ({
     if (parentPath && !parentPath.endsWith('/')) {
         throw new Error(PARENT_END + parentPath);
     }
-    const { fullPath, regex, match, cached } =
-        matching(parentPath, path, proxy.router.pathname);
+    const { fullPath, regex, match, cached } = matching(parentPath, path);
 
     const wrap = autoCache && !(
         Component.propTypes &&
@@ -30,9 +29,7 @@ const Route = ({
     let component = null;
 
     if (match) {
-        const params = paramsFrom(
-            parentPath, path, proxy.router.pathname,
-        );
+        const params = paramsFrom(parentPath, path);
         component = (
             <Component
                 {...rest}
