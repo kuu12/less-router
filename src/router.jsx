@@ -57,12 +57,16 @@ class Router extends React.Component {
     }
 
     back(pathname, cb) {
-        return !history.state || (history.state.i > this.point)
+        return !pathname ||
+            !history.state ||
+            (history.state.i > this.point)
             ? this.go(-1, cb)
             : this.replace(pathname, cb);
     }
     forward(pathname, cb) {
-        return !history.state || (history.state.i < history.length)
+        return !pathname ||
+            !history.state ||
+            (history.state.i < history.length)
             ? this.go(1, cb)
             : this.push(pathname, cb);
     }
