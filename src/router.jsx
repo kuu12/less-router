@@ -10,8 +10,11 @@ class Router extends React.Component {
         this.registry = {};
         this.cache = {};
         this.state = locationState(this.basename);
-        this.start = window.history && history.length;
-        this.end = this.start;
+
+        this.point = history.length;
+        if (history.replaceState)
+            history.replaceState({ i: this.point }, '');
+
         proxy.router = this;
     }
     componentWillUnmount() {
@@ -34,35 +37,32 @@ class Router extends React.Component {
     }
 
     push(pathname, cb) {
-        return this.__change__('pushState', pathname, () => {
-            this.end = window.history && history.length;
-            if (cb) cb();
-        });
+        return this.__change__(1, pathname, cb);
     }
     replace(pathname, cb) {
-        return this.__change__('replaceState', pathname, cb);
+        return this.__change__(0, pathname, cb);
     }
-    __change__(method, pathname, cb) {
+    __change__(step, pathname, cb) {
         if (!pathname.startsWith('/')) {
             console.error(new Error(PATH_START + pathname));
         }
         const href = this.basename + pathname;
-
-        if (!window.history || !history[method]) {
+        if (!history.replaceState) {
             location.href = href;
             return cb && cb();
         }
-        history[method]({}, null, href);
+        history[step ? 'pushState' : 'replaceState'](
+            { i: history.state.i + step }, '', href);
         return this.__updateState__(separate(pathname), cb);
     }
 
     back(pathname, cb) {
-        return history.length > this.start
+        return !history.state || (history.state.i > this.point)
             ? this.go(-1, cb)
             : this.replace(pathname, cb);
     }
     forward(pathname, cb) {
-        return history.length < this.end
+        return !history.state || (history.state.i < history.length)
             ? this.go(1, cb)
             : this.push(pathname, cb);
     }
