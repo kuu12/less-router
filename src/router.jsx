@@ -10,6 +10,8 @@ class Router extends React.Component {
         this.registry = {};
         this.cache = {};
         this.state = locationState(this.basename);
+        this.start = window.history && history.length;
+        this.end = this.start;
         proxy.router = this;
     }
     componentWillUnmount() {
@@ -32,7 +34,10 @@ class Router extends React.Component {
     }
 
     push(pathname, cb) {
-        return this.__change__('pushState', pathname, cb);
+        return this.__change__('pushState', pathname, () => {
+            this.end = window.history && history.length;
+            if (cb) cb();
+        });
     }
     replace(pathname, cb) {
         return this.__change__('replaceState', pathname, cb);
@@ -43,20 +48,23 @@ class Router extends React.Component {
         }
         const href = this.basename + pathname;
 
-        if (!(method in history)) {
+        if (!window.history || !history[method]) {
             location.href = href;
-            return cb();
+            return cb && cb();
         }
         history[method]({}, null, href);
-        const pathnameAndSearch = separate(pathname);
-        return this.__updateState__(pathnameAndSearch, cb);
+        return this.__updateState__(separate(pathname), cb);
     }
 
-    back(cb) {
-        return this.go(-1, cb);
+    back(pathname, cb) {
+        return history.length > this.start
+            ? this.go(-1, cb)
+            : this.replace(pathname, cb);
     }
-    forward(cb) {
-        return this.go(1, cb);
+    forward(pathname, cb) {
+        return history.length < this.end
+            ? this.go(1, cb)
+            : this.push(pathname, cb);
     }
     go(step, cb) {
         return promiseAndCallback(resolve => {
@@ -100,17 +108,16 @@ const locationState = (basename) => ({
     search: location.search,
 });
 
-const promiseAndCallback = (exec, callback) =>
-    typeof window.Promise === 'function'
-        ? new window.Promise(exec).then(callback)
-        : exec(callback);
+const promiseAndCallback = (exec, callback) => window.Promise
+    ? new Promise(exec).then(callback)
+    : exec(callback);
 
 const queue = [];
 window.addEventListener('popstate', () => {
-    if (!proxy.router) return;
-    const state = locationState(proxy.router.basename);
-    const resolve = queue.pop();
-    proxy.router.__updateState__(state, resolve);
+    if (proxy.router) proxy.router.__updateState__(
+        locationState(proxy.router.basename),
+        queue.pop()
+    );
 });
 
 export default Router;
