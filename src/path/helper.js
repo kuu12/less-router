@@ -17,17 +17,11 @@ const addHeadRemoveTail = path => path
     .replace(/^(?=[^/])/, '/');
 
 const separate = pathnameAndSearch => {
-    let pathname;
-    let search;
-    const index = pathnameAndSearch.indexOf('?');
-    if (index === -1) {
-        pathname = pathnameAndSearch;
-        search = '';
-    } else {
-        pathname = pathnameAndSearch.slice(0, index);
-        search = pathnameAndSearch.slice(index);
-    }
-    return { pathname, search };
+    const fragment = pathnameAndSearch.split('?');
+    return {
+        pathname: fragment[0],
+        search: fragment[1] ? `?${fragment[1]}` : '',
+    };
 };
 
 const cacheable = func => {

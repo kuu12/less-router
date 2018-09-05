@@ -85,9 +85,9 @@ class Router extends React.Component {
     }
 
     render() {
-        const { Component, ...rest } = this.props;
-        delete rest.basename;
-        return <Component router={this} {...rest} />;
+        const { Component, ...props } = this.props;
+        delete props.basename;
+        return <Component router={this} {...props} />;
     }
 }
 

@@ -49,7 +49,7 @@ const Route = ({
                 </div>
             );
 
-        if (autoCache && !cached)
+        if (autoCache)
             proxy.router.cache[regex] = true;
 
         if (typeof title === 'string')
