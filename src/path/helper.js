@@ -1,13 +1,11 @@
-const join = (...paths) => {
-    let fullPath = paths
+const join = (parentPath, path) => {
+    let fullPath = [parentPath, path]
         .filter(Boolean)
         .filter(path => '/' !== path)
         .map(addHeadRemoveTail)
         .join('');
 
-    const last = paths[paths.length - 1];
-    if (last && last.endsWith('/'))
-        fullPath += '/';
+    if (path.endsWith('/')) fullPath += '/';
 
     return fullPath || '/';
 };

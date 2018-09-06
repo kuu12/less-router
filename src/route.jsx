@@ -22,10 +22,7 @@ const Route = ({
     const { fullPath, regex, match, cached } =
         matching(parentPath, path, caseSensitive);
 
-    const wrap = autoCache && !(
-        Component.propTypes &&
-        Component.propTypes.routingStyle
-    );
+    const wrap = autoCache && !(Component.propTypes || {}).routingStyle;
     proxy.router.registry[fullPath] = match;
 
     let component = null;
@@ -52,9 +49,9 @@ const Route = ({
         if (autoCache)
             proxy.router.cache[regex] = true;
 
-        if (typeof title === 'string')
+        if (title !== undefined)
             document.title = title;
-        else if (typeof params.title === 'string')
+        else if (params.title !== undefined)
             document.title = params.title;
 
     } else if (cached) {

@@ -32,17 +32,16 @@ class Router extends React.Component {
             '/' : this.state.pathname;
     }
     get htmlFile() {
-        return 'htmlFile' in this.props ?
-            this.props.htmlFile : '/index.html';
+        return this.props.htmlFile || '/index.html';
     }
 
     push(pathname, cb) {
-        return this.__change__(1, pathname, cb);
+        return this.__change(1, pathname, cb);
     }
     replace(pathname, cb) {
-        return this.__change__(0, pathname, cb);
+        return this.__change(0, pathname, cb);
     }
-    __change__(step, pathname, cb) {
+    __change(step, pathname, cb) {
         if (!pathname.startsWith('/')) {
             console.error(new Error(PATH_START + pathname));
         }
@@ -53,7 +52,7 @@ class Router extends React.Component {
         }
         history[step ? 'pushState' : 'replaceState'](
             { i: history.state.i + step }, '', href);
-        return this.__updateState__(separate(pathname), cb);
+        return this.__update(separate(pathname), cb);
     }
 
     back(pathname, cb) {
@@ -77,7 +76,7 @@ class Router extends React.Component {
         }, cb);
     }
 
-    __updateState__(state, cb) {
+    __update(state, cb) {
         return promiseAndCallback(resolve => {
             this.setState(state, resolve);
         }, cb);
@@ -99,6 +98,7 @@ class Router extends React.Component {
     render() {
         const { Component, ...props } = this.props;
         delete props.basename;
+        delete props.htmlFile;
         return <Component router={this} {...props} />;
     }
 }
@@ -118,7 +118,7 @@ const promiseAndCallback = (exec, callback) => window.Promise
 
 const queue = [];
 window.addEventListener('popstate', () => {
-    if (proxy.router) proxy.router.__updateState__(
+    if (proxy.router) proxy.router.__update(
         locationState(proxy.router.basename),
         queue.pop()
     );

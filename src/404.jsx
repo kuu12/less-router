@@ -4,7 +4,7 @@ import proxy from './proxy';
 class NotFound extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { entryPoint: null };
+        this.state = { entry: null };
     }
 
     componentDidMount() {
@@ -27,15 +27,14 @@ class NotFound extends React.Component {
             !matches.some(Boolean);
 
         if (notFound) this.setState({
-            entryPoint: proxy.router.pathname,
+            entry: proxy.router.pathname,
         });
     }
 
     render() {
-        if (!this.state.entryPoint) return null;
-        if (this.state.entryPoint !== proxy.router.pathname) return null;
+        if (this.state.entry != proxy.router.pathname) return null;
 
-        const { Component, title, titleName, ...props } = this.props;
+        const { Component, title, ...props } = this.props;
         document.title = title;
         delete props.NotFound;
         delete props.notFound;
@@ -44,8 +43,8 @@ class NotFound extends React.Component {
         return (
             <Component
                 {...props}
+                router={proxy.router}
                 pathname={proxy.router.pathname}
-                title={titleName}
             />
         );
     }
