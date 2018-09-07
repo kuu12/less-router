@@ -3,79 +3,107 @@ import proxy from './proxy';
 import { matching } from './path/match';
 import { paramsFrom } from './path/regex';
 import { PATH_START, PARENT_END } from './message';
+import { join } from './path/helper';
 
-const Route = ({
-    Component,
-    parentPath,
-    path,
-    title,
-    autoCache,
-    caseSensitive,
-    ...rest
-}) => {
-    if (path && !path.startsWith('/')) {
-        console.error(new Error(PATH_START + path));
+class Route extends React.Component {
+    constructor(props) {
+        super(props);
+        this.random = Math.random();
+        const {
+            Component: { propTypes: { routingStyle } = {} },
+            parentPath, path,
+            autoCache,
+        } = props;
+
+        if (path && !path.startsWith('/'))
+            console.error(new Error(PATH_START + path));
+
+        if (parentPath && !parentPath.endsWith('/'))
+            throw new Error(PARENT_END + parentPath);
+
+        this.state = {};
+        this.path = join(parentPath, path);
+        this.wrap = Boolean(autoCache && routingStyle);
     }
-    if (parentPath && !parentPath.endsWith('/')) {
-        throw new Error(PARENT_END + parentPath);
+
+    componentDidMount() {
+        console.log(this.random);
     }
-    const { fullPath, regex, match, cached } =
-        matching(parentPath, path, caseSensitive);
 
-    const wrap = autoCache && !(Component.propTypes || {}).routingStyle;
-    proxy.router.registry[fullPath] = match;
+    get params() {
+        const { parentPath, path } = this.props;
+        return paramsFrom(parentPath, path);
+    }
 
-    let component = null;
+    render() {
+        const {
+            parentPath,
+            path,
+            title,
+            autoCache,
+            caseSensitive,
+            Component,
+            ...rest
+        } = this.props;
+        // delete rest.parentPath;
+        // delete rest.title;
+        // delete rest.autoCache;
+        // delete rest.caseSensitive;
 
-    if (match) {
-        const params = paramsFrom(parentPath, path);
-        component = (
-            <Component
-                {...rest}
-                {...params}
-                path={fullPath}
-                routingStyle={{}}
-                router={proxy.router}
-            />
-        );
+        let component = null;
 
-        if (wrap)
+        const { fullPath, regex, match, cached } =
+            matching(parentPath, path, caseSensitive);
+
+        if (match) {
             component = (
-                <div className="route-container">
-                    {component}
-                </div>
+                <Component
+                    {...rest}
+                    {...this.params}
+                    path={this.path}
+                    routingStyle={{}}
+                    router={proxy.router}
+                />
             );
 
-        if (autoCache)
-            proxy.router.cache[regex] = true;
+            if (this.wrap)
+                component = (
+                    <div className="route-container">
+                        {component}
+                    </div>
+                );
 
-        if (title !== undefined)
-            document.title = title;
-        else if (params.title !== undefined)
-            document.title = params.title;
+            if (autoCache)
+                proxy.router.cache[regex] = true;
 
-    } else if (cached) {
-        component = (
-            <Component
-                {...rest}
-                path={fullPath}
-                routingStyle={{ display: 'none' }}
-                router={proxy.router}
-            />
-        );
+            if (title !== undefined)
+                document.title = title;
+            else if (this.params.title !== undefined)
+                document.title = this.params.title;
 
-        if (wrap)
+        } else if (cached) {
             component = (
-                <div
-                    className="route-container"
-                    style={{ display: 'none' }}
-                >
-                    {component}
-                </div>
+                <Component
+                    {...rest}
+                    path={fullPath}
+                    routingStyle={{ display: 'none' }}
+                    router={proxy.router}
+                />
             );
-    }
 
-    return component;
-};
+            if (this.wrap)
+                component = (
+                    <div
+                        className="route-container"
+                        style={{ display: 'none' }}
+                    >
+                        {component}
+                    </div>
+                );
+        }
+
+        return component;
+    }
+}
 
 export default Route;
