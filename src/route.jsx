@@ -57,10 +57,7 @@ class Route extends React.Component {
     }
 
     get params() {
-        return paramsFrom(
-            this.props.parentPath,
-            this.props.path,
-        );
+        return paramsFrom(this.props.parentPath, this.props.path);
     }
 
     get pass() {
@@ -77,16 +74,18 @@ class Route extends React.Component {
     }
 
     render() {
-        const { Component } = this.props;
+        const { Component, title } = this.props;
         let component;
 
         this.exec();
 
         if (this.match && this == this.core) {
+            const { params } = this;
+
             component = (
                 <Component
                     {...this.pass}
-                    {...this.params}
+                    {...params}
                     routingStyle={{}}
                 />
             );
@@ -98,10 +97,10 @@ class Route extends React.Component {
                     >{component}</div>
                 );
 
-            if (this.props.title !== undefined)
-                document.title = this.props.title;
-            else if (this.params.title !== undefined)
-                document.title = this.params.title;
+            if (title !== undefined)
+                document.title = title;
+            else if (params.title !== undefined)
+                document.title = params.title;
 
         } else if (this.cache) {
             component = (

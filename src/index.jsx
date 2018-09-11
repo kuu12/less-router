@@ -4,7 +4,6 @@ import Route from './route';
 import NotFound from './404';
 import proxy from './proxy';
 import A from './a';
-import { paramsFrom as params } from './path/regex';
 
 const Routing = Component => props => {
     let Container;
@@ -23,19 +22,5 @@ const Routing = Component => props => {
 };
 
 export default Routing;
-export {
-    Routing,
-    Router,
-    Route,
-    NotFound,
-    A,
-    params,
-};
-Object.assign(Routing, {
-    Routing,
-    Router,
-    Route,
-    NotFound,
-    A,
-    params,
-});
+export { Routing, A };
+Object.assign(Routing, { Routing, A });

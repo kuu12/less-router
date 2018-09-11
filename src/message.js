@@ -2,7 +2,7 @@ let PATH_START = 'path must starts with / . Current path is: ';
 let PARENT_END = 'In nested routes, parent route must has a path ends with \'/\'. Current path is: ';
 let PATH_NOT_FOUND = 'clearCache could not find this path, please check your typein: ';
 
-if ('development' === process.env.NODE_ENV) {
+if ('development' == process.env.NODE_ENV) {
 
   if (navigator.language.startsWith('zh-')) {
     PATH_START = 'path必须以/开头，当前组件path为：';

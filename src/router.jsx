@@ -1,6 +1,8 @@
 import React from 'react';
 import proxy from './proxy';
 import { addHeadRemoveTail, separate } from './path/helper';
+import match from './path/match';
+import { paramsFrom } from './path/regex';
 import { PATH_START, PATH_NOT_FOUND } from './message';
 
 class Router extends React.Component {
@@ -13,6 +15,8 @@ class Router extends React.Component {
         if (history.replaceState)
             history.replaceState({ i: this.point }, '');
 
+        this.match = match;
+        this.params = paramsFrom;
         proxy.router = this;
     }
     componentWillUnmount() {
@@ -26,7 +30,7 @@ class Router extends React.Component {
             : '';
     }
     get pathname() {
-        return this.state.pathname === this.htmlFile ?
+        return this.state.pathname == this.htmlFile ?
             '/' : this.state.pathname;
     }
     get htmlFile() {
@@ -86,7 +90,7 @@ class Router extends React.Component {
         }
         const routes = Object
             .values(this.registry)
-            .filter(route => path === route.path);
+            .filter(route => path == route.path);
 
         return promiseAndCallback(resolve => {
             if (routes.length) {

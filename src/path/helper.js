@@ -1,7 +1,7 @@
 const join = (parentPath, path) => {
     let fullPath = [parentPath, path]
         .filter(Boolean)
-        .filter(path => '/' !== path)
+        .filter(path => '/' != path)
         .map(addHeadRemoveTail)
         .join('');
 

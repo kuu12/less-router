@@ -7,7 +7,7 @@ const PARAMS_1 = `(${PARAMS_0})`;
 /**
  *  /           ->      /(?=(index.html)?$)     ->      /
  *                                                      /index.hml
- * 
+ *
  *  /movie/     ->      /movie(?=\\/?)          ->      /movie
  *                                                      /movie/
  *                                                      /movie/action
@@ -18,7 +18,7 @@ const PARAMS_1 = `(${PARAMS_0})`;
 const regexFromString = cacheable(
     (string, caseSensitive) => {
         if (
-            '/' === string &&
+            '/' == string &&
             proxy.router &&
             proxy.router.htmlFile
         ) {
