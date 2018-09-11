@@ -37,11 +37,11 @@ class App extends React.Component {
         <Dynamic path="/dynamic/" title="Dynamic Routing" />
         <Login path="/login" title="Login" setToken={this.setToken} />
         <Profile path="/profile" title="profile" token={this.state.token} />
-        <Routing>
-          <One path="/exclusive/one" title="Exclusive Route 1" />
-          <Two path="/exclusive/two" title="Exclusive Route 2" autoCache />
-          <Three path="/exclusive/:any" title="Exclusive Route 3" />
-        </Routing>
+
+        <One path="/exclusive/one" title="Exclusive Route 1" group="1" />
+        <Two path="/exclusive/two" title="Exclusive Route 2" autoCache group="1" />
+        <Three path="/exclusive/:any" title="Exclusive Route 3" group="1" />
+
         <NotFound notFound title="404 Not Found" />
 
         <Log id="app" data={this.props} />

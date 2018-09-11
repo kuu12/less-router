@@ -1,14 +1,14 @@
 import React from 'react';
 import proxy from './proxy';
-import { matching } from './path/match';
-import { paramsFrom } from './path/regex';
+import { regexFrom, paramsFrom } from './path/regex';
 import { PATH_START, PARENT_END } from './message';
 import { join } from './path/helper';
+
+let unique = 0;
 
 class Route extends React.Component {
     constructor(props) {
         super(props);
-        this.random = Math.random();
         const {
             Component: { propTypes: { routingStyle } = {} },
             parentPath, path,
@@ -21,73 +21,93 @@ class Route extends React.Component {
         if (parentPath && !parentPath.endsWith('/'))
             throw new Error(PARENT_END + parentPath);
 
-        this.state = {};
+        this.id = ++unique;
         this.path = join(parentPath, path);
-        this.wrap = Boolean(autoCache && routingStyle);
+        this.wrap = autoCache && !routingStyle;
+
+        proxy.router.registry[this.id] = this;
     }
 
-    componentDidMount() {
-        console.log(this.random);
+    componentWillUnmount() {
+        delete proxy.router.registry[this.id];
+        if (this == this.core) this.core = null;
+    }
+
+    exec() {
+        this.match = regexFrom(
+            this.path,
+            this.props.caseSensitive,
+        ).test(proxy.router.pathname);
+
+        if (this.match) {
+            if (!this.core) this.core = this;
+            if (this.props.autoCache) this.cache = true;
+        } else {
+            if (this == this.core) this.core = null;
+        }
+    }
+
+    get core() {
+        if (undefined === this.props.group) return this;
+        return proxy.router.groups[this.props.group];
+    }
+    set core(route) {
+        if (undefined === this.props.group) return;
+        return proxy.router.groups[this.props.group] = route;
     }
 
     get params() {
-        const { parentPath, path } = this.props;
-        return paramsFrom(parentPath, path);
+        return paramsFrom(
+            this.props.parentPath,
+            this.props.path,
+        );
+    }
+
+    get pass() {
+        const props = { ...this.props };
+        delete props.Component;
+        delete props.parentPath;
+        delete props.path;
+        delete props.title;
+        delete props.autoCache;
+        delete props.caseSensitive;
+        props.path = this.path;
+        props.router = proxy.router;
+        return props;
     }
 
     render() {
-        const {
-            parentPath,
-            path,
-            title,
-            autoCache,
-            caseSensitive,
-            Component,
-            ...rest
-        } = this.props;
-        // delete rest.parentPath;
-        // delete rest.title;
-        // delete rest.autoCache;
-        // delete rest.caseSensitive;
+        const { Component } = this.props;
+        let component;
 
-        let component = null;
+        this.exec();
 
-        const { fullPath, regex, match, cached } =
-            matching(parentPath, path, caseSensitive);
-
-        if (match) {
+        if (this.match && this == this.core) {
             component = (
                 <Component
-                    {...rest}
+                    {...this.pass}
                     {...this.params}
-                    path={this.path}
                     routingStyle={{}}
-                    router={proxy.router}
                 />
             );
 
             if (this.wrap)
                 component = (
-                    <div className="route-container">
-                        {component}
-                    </div>
+                    <div
+                        className="route-container"
+                    >{component}</div>
                 );
 
-            if (autoCache)
-                proxy.router.cache[regex] = true;
-
-            if (title !== undefined)
-                document.title = title;
+            if (this.props.title !== undefined)
+                document.title = this.props.title;
             else if (this.params.title !== undefined)
                 document.title = this.params.title;
 
-        } else if (cached) {
+        } else if (this.cache) {
             component = (
                 <Component
-                    {...rest}
-                    path={fullPath}
+                    {...this.pass}
                     routingStyle={{ display: 'none' }}
-                    router={proxy.router}
                 />
             );
 
@@ -96,10 +116,11 @@ class Route extends React.Component {
                     <div
                         className="route-container"
                         style={{ display: 'none' }}
-                    >
-                        {component}
-                    </div>
+                    >{component}</div>
                 );
+
+        } else {
+            component = null;
         }
 
         return component;

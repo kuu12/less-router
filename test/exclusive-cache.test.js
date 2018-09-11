@@ -24,10 +24,10 @@ class Bbb extends React.Component {
 class AB extends React.Component {
     render() {
         return (
-            <Routing>
-                <AaaRoute path="/aaa" title="aaa" autoCache />
-                <BbbRoute path="/bbb" title="bbb" />
-            </Routing>
+            <div>
+                <AaaRoute path="/aaa" title="aaa" group="2" autoCache />
+                <BbbRoute path="/bbb" title="bbb" group="2" />
+            </div>
         );
     }
 }

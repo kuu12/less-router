@@ -1,16 +1,14 @@
 import React from 'react';
 import proxy from './proxy';
 import { addHeadRemoveTail, separate } from './path/helper';
-import { regexFrom } from './path/regex';
 import { PATH_START, PATH_NOT_FOUND } from './message';
 
 class Router extends React.Component {
     constructor(props) {
         super(props);
         this.registry = {};
-        this.cache = {};
+        this.groups = {};
         this.state = locationState(this.basename);
-
         this.point = history.length;
         if (history.replaceState)
             history.replaceState({ i: this.point }, '');
@@ -86,12 +84,18 @@ class Router extends React.Component {
         if (!path.startsWith('/')) {
             throw new Error(PATH_START + path);
         }
-        if (!(path in this.registry)) {
-            console.warn(new Error(PATH_NOT_FOUND + path));
-        }
-        delete this.cache[regexFrom(path)];
+        const routes = Object
+            .values(this.registry)
+            .filter(route => path === route.path);
+
         return promiseAndCallback(resolve => {
-            this.forceUpdate(resolve);
+            if (routes.length) {
+                routes.forEach(route => route.cache = false);
+                this.forceUpdate(resolve);
+            } else {
+                console.warn(new Error(PATH_NOT_FOUND + path));
+                resolve();
+            }
         }, cb);
     }
 

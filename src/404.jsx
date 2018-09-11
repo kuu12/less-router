@@ -10,21 +10,18 @@ class NotFound extends React.Component {
     componentDidMount() {
         const parentPath = this.props.parentPath || '';
         const namespace = new RegExp(`^${parentPath}`);
-        const keyToValue = path =>
-            proxy.router.registry[path];
 
         const all = Object
-            .keys(proxy.router.registry)
-            .filter(keyToValue)
-            .filter(path => namespace.test(path));
+            .values(proxy.router.registry)
+            .filter(route => route.match)
+            .filter(route => namespace.test(route.path));
 
-        const matches = all
-            .filter(path => path.replace(namespace, ''))
-            .map(keyToValue);
+        const scope = all
+            .filter(route => route.path.replace(namespace, ''));
 
         const notFound =
             all.length > Number(Boolean(parentPath)) &&
-            !matches.some(Boolean);
+            !scope.some(route => route.match);
 
         if (notFound) this.setState({
             entry: proxy.router.pathname,
