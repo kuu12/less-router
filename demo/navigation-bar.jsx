@@ -10,10 +10,8 @@ const NavigationBar = ({ router, token, setToken }) => (
     {
       token &&
       <button name="logout" onClick={() => {
-        if (window.confirm('Logout?')) {
-          setToken(null);
-          router.push('/');
-        }
+        setToken(null);
+        router.push('/');
       }}>Logout</button>
     }
     <br />

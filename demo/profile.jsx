@@ -6,7 +6,6 @@ class Profile extends React.Component {
     if (!this.props.token) {
       sessionStorage.setItem('loginRedirect', '/profile');
       this.props.router.push('/login');
-      alert('Need Login');
     }
   }
   render() {

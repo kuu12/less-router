@@ -20,6 +20,7 @@ class App extends React.Component {
     super(props);
     this.state = { token: null };
     this.setToken = token => this.setState({ token });
+    window.debug_router = this.props.router;
   }
 
   render() {
@@ -39,8 +40,8 @@ class App extends React.Component {
         <Profile path="/profile" title="profile" token={this.state.token} />
 
         <One path="/exclusive/one" title="Exclusive Route 1" group="1" />
-        <Two path="/exclusive/two" title="Exclusive Route 2" autoCache group="1" />
-        <Three path="/exclusive/:any" title="Exclusive Route 3" group="1" />
+        <Two path="/exclusive/two" title="Exclusive Route 2" group="1" autoCache />
+        <Three path="/exclusive/:any" title="Exclusive Route 3" group="1" autoCache />
 
         <NotFound notFound title="404 Not Found" />
 
