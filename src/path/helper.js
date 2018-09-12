@@ -1,18 +1,15 @@
 const join = (parentPath, path) => {
-    let fullPath = [parentPath, path]
-        .filter(Boolean)
-        .filter(path => '/' != path)
-        .map(addHeadRemoveTail)
-        .join('');
+    parentPath = addHeadRemoveTail(parentPath || '');
 
-    if (path.endsWith('/')) fullPath += '/';
+    if (typeof path != 'string') path = '';
+    else if (!path.startsWith('/')) path = `/${path}`;
 
-    return fullPath || '/';
+    return parentPath + path;
 };
 
 const addHeadRemoveTail = path => path
-    .replace(/\/+$/, '')
-    .replace(/^(?=[^/])/, '/');
+    .replace(/^(?=[^/])/, '/')
+    .replace(/\/+$/, '');
 
 const separate = pathnameAndSearch => {
     const fragment = pathnameAndSearch.split('?');

@@ -26,7 +26,7 @@ const regexFromString = cacheable(
         } else if (string.endsWith('/')) {
             string = string.slice(0, string.length - 1);
             string += '(?=\\/?)';
-        } else {
+        } else if (string) {
             string += '(?=\\/?$)';
         }
         return new RegExp(

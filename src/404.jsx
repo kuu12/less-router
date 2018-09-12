@@ -20,8 +20,8 @@ class NotFound extends React.Component {
             .filter(route => route.path.replace(namespace, ''));
 
         const notFound =
-            all.length > Number(Boolean(parentPath)) &&
-            !scope.some(route => route.match);
+            all.length > Number(parentPath) &&
+            !scope.length;
 
         if (notFound) this.setState({
             entry: proxy.router.pathname,
@@ -31,14 +31,14 @@ class NotFound extends React.Component {
     render() {
         if (this.state.entry != proxy.router.pathname) return null;
 
-        const { Component, title, ...props } = this.props;
+        const { C_, title, ...props } = this.props;
         document.title = title;
         delete props.NotFound;
         delete props.notFound;
         delete props.Notfound;
 
         return (
-            <Component
+            <C_
                 {...props}
                 router={proxy.router}
                 pathname={proxy.router.pathname}

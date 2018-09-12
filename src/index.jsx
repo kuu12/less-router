@@ -18,7 +18,7 @@ const Routing = Component => props => {
     else
         Container = Route;
 
-    return <Container Component={Component} {...props} />;
+    return <Container C_={Component} {...props} />;
 };
 
 export default Routing;

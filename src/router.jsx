@@ -15,9 +15,9 @@ class Router extends React.Component {
         if (history.replaceState)
             history.replaceState({ i: this.point }, '');
 
+        proxy.router = this;
         this.match = match;
         this.params = paramsFrom;
-        proxy.router = this;
     }
     componentWillUnmount() {
         proxy.router = null;
@@ -25,16 +25,12 @@ class Router extends React.Component {
     }
 
     get basename() {
-        return this.props.basename
-            ? addHeadRemoveTail(this.props.basename)
-            : '';
+        return addHeadRemoveTail(this.props.basename || '');
     }
     get pathname() {
-        return this.state.pathname == this.htmlFile ?
-            '/' : this.state.pathname;
-    }
-    get htmlFile() {
-        return this.props.htmlFile || '/index.html';
+        const htmlFile = this.props.htmlFile || '/index.html';
+        return htmlFile == this.state.pathname
+            ? '/' : this.state.pathname;
     }
 
     push(pathname, cb) {
@@ -80,6 +76,7 @@ class Router extends React.Component {
 
     __update(state, cb) {
         return promiseAndCallback(resolve => {
+            this.groups = {};
             this.setState(state, resolve);
         }, cb);
     }
@@ -104,10 +101,11 @@ class Router extends React.Component {
     }
 
     render() {
-        const { Component, ...props } = this.props;
+        const { C_, ...props } = this.props;
         delete props.basename;
         delete props.htmlFile;
-        return <Component router={this} {...props} />;
+
+        return <C_ {...props} router={this} />;
     }
 }
 

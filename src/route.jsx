@@ -10,8 +10,8 @@ class Route extends React.Component {
     constructor(props) {
         super(props);
         const {
-            Component: { propTypes: { routingStyle } = {} },
             parentPath, path,
+            C_: { propTypes: { routingStyle } = {} },
             autoCache,
         } = props;
 
@@ -41,7 +41,7 @@ class Route extends React.Component {
 
         if (this.match) {
             if (!this.core) this.core = this;
-            if (this.props.autoCache) this.cache = true;
+            if (this == this.core) this.cache = this.props.autoCache;
         } else {
             if (this == this.core) this.core = null;
         }
@@ -62,7 +62,7 @@ class Route extends React.Component {
 
     get pass() {
         const props = { ...this.props };
-        delete props.Component;
+        delete props.C_;
         delete props.parentPath;
         delete props.path;
         delete props.title;
@@ -74,18 +74,16 @@ class Route extends React.Component {
     }
 
     render() {
-        const { Component, title } = this.props;
-        let component;
+        const { C_, title } = this.props;
+        let component = null;
 
         this.exec();
 
         if (this.match && this == this.core) {
-            const { params } = this;
-
             component = (
-                <Component
+                <C_
+                    {...this.params}
                     {...this.pass}
-                    {...params}
                     routingStyle={{}}
                 />
             );
@@ -99,12 +97,12 @@ class Route extends React.Component {
 
             if (title !== undefined)
                 document.title = title;
-            else if (params.title !== undefined)
-                document.title = params.title;
+            else if (this.params.title !== undefined)
+                document.title = this.params.title;
 
         } else if (this.cache) {
             component = (
-                <Component
+                <C_
                     {...this.pass}
                     routingStyle={{ display: 'none' }}
                 />
@@ -118,8 +116,6 @@ class Route extends React.Component {
                     >{component}</div>
                 );
 
-        } else {
-            component = null;
         }
 
         return component;
