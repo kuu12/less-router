@@ -20,7 +20,7 @@ class NotFound extends React.Component {
             .filter(route => route.path.replace(namespace, ''));
 
         const notFound =
-            all.length > Number(parentPath) &&
+            all.length >= Number(parentPath) &&
             !scope.length;
 
         if (notFound) this.setState({

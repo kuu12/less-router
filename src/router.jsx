@@ -11,6 +11,7 @@ class Router extends React.Component {
         this.registry = {};
         this.groups = {};
         this.state = locationState(this.basename);
+        this.htmlFile = this.props.htmlFile || '/index.html';
         this.point = history.length;
         if (history.replaceState)
             history.replaceState({ i: this.point }, '');
@@ -28,8 +29,7 @@ class Router extends React.Component {
         return addHeadRemoveTail(this.props.basename || '');
     }
     get pathname() {
-        const htmlFile = this.props.htmlFile || '/index.html';
-        return htmlFile == this.state.pathname
+        return this.htmlFile == this.state.pathname
             ? '/' : this.state.pathname;
     }
 

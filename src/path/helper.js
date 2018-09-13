@@ -1,10 +1,8 @@
 const join = (parentPath, path) => {
-    parentPath = addHeadRemoveTail(parentPath || '');
-
     if (typeof path != 'string') path = '';
     else if (!path.startsWith('/')) path = `/${path}`;
 
-    return parentPath + path;
+    return `${addHeadRemoveTail(parentPath || '')}${path}`;
 };
 
 const addHeadRemoveTail = path => path

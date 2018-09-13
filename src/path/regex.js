@@ -17,11 +17,7 @@ const PARAMS_1 = `(${PARAMS_0})`;
  */
 const regexFromString = cacheable(
     (string, caseSensitive) => {
-        if (
-            '/' == string &&
-            proxy.router &&
-            proxy.router.htmlFile
-        ) {
+        if ('/' == string) {
             string += `(?=(${proxy.router.htmlFile})?$)`;
         } else if (string.endsWith('/')) {
             string = string.slice(0, string.length - 1);
