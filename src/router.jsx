@@ -8,10 +8,13 @@ import { PATH_START, PATH_NOT_FOUND } from './message';
 class Router extends React.Component {
     constructor(props) {
         super(props);
-        this.registry = {};
-        this.groups = {};
+        this.matching = {};
+        this.cache = {};
+        this.group = {};
+
         this.state = locationState(this.basename);
-        this.htmlFile = this.props.htmlFile || '/index.html';
+        this.html = this.props.htmlFile || '/index.html';
+
         this.point = history.length;
         if (history.replaceState)
             history.replaceState({ i: this.point }, '');
@@ -29,7 +32,7 @@ class Router extends React.Component {
         return addHeadRemoveTail(this.props.basename || '');
     }
     get pathname() {
-        return this.htmlFile == this.state.pathname
+        return this.html == this.state.pathname
             ? '/' : this.state.pathname;
     }
 
@@ -76,7 +79,7 @@ class Router extends React.Component {
 
     __update(state, cb) {
         return promiseAndCallback(resolve => {
-            this.groups = {};
+            this.group = {};
             this.setState(state, resolve);
         }, cb);
     }
@@ -86,12 +89,12 @@ class Router extends React.Component {
             throw new Error(PATH_START + path);
         }
         const routes = Object
-            .values(this.registry)
+            .values(this.cache)
             .filter(route => path == route.path);
 
         return promiseAndCallback(resolve => {
             if (routes.length) {
-                routes.forEach(route => route.cache = false);
+                routes.forEach(route => route.set('cache', false));
                 this.forceUpdate(resolve);
             } else {
                 console.warn(new Error(PATH_NOT_FOUND + path));

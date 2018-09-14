@@ -1,5 +1,6 @@
 import React from 'react';
 import proxy from './proxy';
+import { NOT_FOUND } from './message';
 
 class NotFound extends React.Component {
     constructor(props) {
@@ -12,9 +13,8 @@ class NotFound extends React.Component {
         const namespace = new RegExp(`^${parentPath}`);
 
         const all = Object
-            .values(proxy.router.registry)
-            .filter(route => route.match)
-            .filter(route => namespace.test(route.path));
+            .values(proxy.router.matching)
+            .filter(route => route.path.match(namespace));
 
         const scope = all
             .filter(route => route.path.replace(namespace, ''));
@@ -31,7 +31,7 @@ class NotFound extends React.Component {
     render() {
         if (this.state.entry != proxy.router.pathname) return null;
 
-        const { C_, title, ...props } = this.props;
+        const { C_, title = NOT_FOUND, ...props } = this.props;
         document.title = title;
         delete props.NotFound;
         delete props.notFound;

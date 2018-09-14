@@ -43,7 +43,7 @@ class App extends React.Component {
         <Two path="/exclusive/two" title="Exclusive Route 2" group="1" autoCache />
         <Three path="/exclusive/:any" title="Exclusive Route 3" group="1" autoCache />
 
-        <NotFound notFound title="404 Not Found" />
+        <NotFound notFound parentPath="/dynamic/" title="404 Not Found" />
 
         <Log id="app" data={this.props} />
       </React.Fragment>
