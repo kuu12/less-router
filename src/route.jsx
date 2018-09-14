@@ -27,8 +27,8 @@ class Route extends React.Component {
     }
 
     componentWillUnmount() {
-        this.set('matching');
-        this.set('cache');
+        this.delete('matching');
+        this.delete('cache');
         if (this == this.core) this.core = null;
     }
 
@@ -39,24 +39,24 @@ class Route extends React.Component {
                 this.props.caseSensitive
             ).test(proxy.router.pathname)
         ) {
-            this.set('matching', true);
+            this.put('matching');
             if (!this.core) this.core = this;
-            if (this == this.core) this.set('cache', this.props.autoCache);
+            if (this == this.core && this.props.autoCache) this.put('cache');
         } else {
+            this.delete('matching');
             if (this == this.core) this.core = null;
         }
     }
 
     get(name) {
-        const state = proxy.router[name];
-        const { id } = this;
-        return state[id];
+        return proxy.router[name][this.id];
     }
-    set(name, value) {
-        const state = proxy.router[name];
-        const { id } = this;
-        if (value) state[id] = value;
-        else if (state[id]) delete state[id];
+    put(name) {
+        proxy.router[name][this.id] = this;
+    }
+    delete(name) {
+        if (proxy.router[name][this.id])
+            delete proxy.router[name][this.id];
     }
 
     get core() {

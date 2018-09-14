@@ -51,8 +51,6 @@ ReactDOM.render(Root, root);
 test('init', () => {
     log(proxy.router.pathname);
     log(root.innerHTML);
-    log(JSON.stringify(proxy.router.cache));
-    log(JSON.stringify(proxy.router.registeredRoutes));
     log('\n');
     expect(document.getElementById('aaa'))
         .toBeFalsy();
@@ -67,8 +65,6 @@ describe('exclusive route', () => {
     test('route rendering', () => {
         log(proxy.router.pathname);
         log(root.innerHTML);
-        log(JSON.stringify(proxy.router.cache));
-        log(JSON.stringify(proxy.router.registeredRoutes));
         log('\n');
         expect(document.getElementById('aaa'))
             .toBeInstanceOf(HTMLElement);
@@ -85,8 +81,6 @@ describe('route change', () => {
     test('route rendering', () => {
         log(proxy.router.pathname);
         log(root.innerHTML);
-        log(JSON.stringify(proxy.router.cache));
-        log(JSON.stringify(proxy.router.registeredRoutes));
         log('\n');
         const parent = document
             .getElementById('aaa')
@@ -109,8 +103,6 @@ describe('back', () => {
     test('no remount', () => {
         log(proxy.router.pathname);
         log(root.innerHTML);
-        log(JSON.stringify(proxy.router.cache));
-        log(JSON.stringify(proxy.router.registeredRoutes));
         log('\n');
         log(proxy.router.props.Component);
         expect(count).toBe(1);
@@ -127,8 +119,6 @@ describe('clear cache', () => {
     test('remount', () => {
         log(proxy.router.pathname);
         log(root.innerHTML);
-        log(JSON.stringify(proxy.router.cache));
-        log(JSON.stringify(proxy.router.registeredRoutes));
         log('\n');
         expect(count).toBe(2);
     });

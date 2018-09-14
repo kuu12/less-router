@@ -94,7 +94,7 @@ class Router extends React.Component {
 
         return promiseAndCallback(resolve => {
             if (routes.length) {
-                routes.forEach(route => route.set('cache', false));
+                routes.forEach(route => route.delete('cache'));
                 this.forceUpdate(resolve);
             } else {
                 console.warn(new Error(PATH_NOT_FOUND + path));
