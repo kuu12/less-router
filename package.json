@@ -1,6 +1,6 @@
 {
   "name": "less-router",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "A very easy React router component but full functionally.",
   "main": "src/index.jsx",
   "scripts": {

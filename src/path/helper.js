@@ -1,3 +1,12 @@
+const locationState = (basename) => ({
+    pathname: decodeURIComponent(
+        location.pathname.replace(
+            new RegExp(`^${basename}`), ''
+        ) || '/'
+    ),
+    search: location.search,
+});
+
 const join = (parentPath, path) => {
     if (typeof path != 'string') path = '';
     else if (!path.startsWith('/')) path = `/${path}`;
@@ -31,6 +40,7 @@ const cacheable = func => {
 const symbol = Math.random();
 
 export {
+    locationState,
     join,
     addHeadRemoveTail,
     separate,

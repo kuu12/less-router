@@ -1,6 +1,10 @@
 import React from 'react';
 import proxy from './proxy';
-import { addHeadRemoveTail, separate } from './path/helper';
+import {
+    locationState,
+    addHeadRemoveTail,
+    separate,
+} from './path/helper';
 import match from './path/match';
 import { paramsFrom } from './path/regex';
 import { PATH_START, PATH_NOT_FOUND } from './message';
@@ -11,6 +15,7 @@ class Router extends React.Component {
         this.matching = {};
         this.cache = {};
         this.group = {};
+        this[404] = {};
 
         this.state = locationState(this.basename);
         this.html = this.props.htmlFile || '/index.html';
@@ -26,6 +31,10 @@ class Router extends React.Component {
     componentWillUnmount() {
         proxy.router = null;
         queue.length = 0;
+    }
+
+    componentDidMount() {
+        this.sync404();
     }
 
     get basename() {
@@ -80,8 +89,15 @@ class Router extends React.Component {
     __update(state, cb) {
         return promiseAndCallback(resolve => {
             this.group = {};
-            this.setState(state, resolve);
+            this.setState(state, () => {
+                resolve();
+                this.sync404();
+            });
         }, cb);
+    }
+
+    sync404() {
+        Object.values(this[404]).forEach(route => route.refresh());
     }
 
     clearCache(path, cb) {
@@ -111,15 +127,6 @@ class Router extends React.Component {
         return <C_ {...props} router={this} />;
     }
 }
-
-const locationState = (basename) => ({
-    pathname: decodeURIComponent(
-        location.pathname.replace(
-            new RegExp(`^${basename}`), ''
-        ) || '/'
-    ),
-    search: location.search,
-});
 
 const promiseAndCallback = (exec, callback) => window.Promise
     ? new Promise(exec).then(callback)

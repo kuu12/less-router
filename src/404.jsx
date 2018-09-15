@@ -2,13 +2,26 @@ import React from 'react';
 import proxy from './proxy';
 import { NOT_FOUND } from './message';
 
+let unique = 0;
+const NULL = <div style={{ display: 'none' }} />;
+
 class NotFound extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { entry: null };
+        this.state = {};
+        this.id = ++unique;
+        proxy.router[404][this.id] = this;
     }
 
-    componentDidMount() {
+    componentWillUnmount() {
+        delete proxy.router[404][this.id];
+    }
+
+    refresh() {
+        this.setState({ f: !this.state.f });
+    }
+
+    get 404() {
         const parentPath = this.props.parentPath || '';
         const namespace = new RegExp(`^${parentPath}`);
 
@@ -20,16 +33,15 @@ class NotFound extends React.Component {
             .filter(route => route.path.replace(namespace, ''));
 
         const notFound =
-            all.length >= Number(parentPath) &&
+            all.length >= Number(Boolean(parentPath)) &&
             !scope.length;
 
-        if (notFound) this.setState({
-            entry: proxy.router.pathname,
-        });
+        return notFound;
     }
 
     render() {
-        if (this.state.entry != proxy.router.pathname) return null;
+        if (!('f' in this.state)) return NULL;
+        if (!this[404]) return NULL;
 
         const { C_, title = NOT_FOUND, ...props } = this.props;
         document.title = title;
@@ -37,13 +49,11 @@ class NotFound extends React.Component {
         delete props.notFound;
         delete props.Notfound;
 
-        return (
-            <C_
-                {...props}
-                router={proxy.router}
-                pathname={proxy.router.pathname}
-            />
-        );
+        return <C_
+            {...props}
+            router={proxy.router}
+            pathname={proxy.router.pathname}
+        />;
     }
 }
 

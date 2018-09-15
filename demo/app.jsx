@@ -4,6 +4,7 @@ import Routing from '../src';
 import NavigationBar from './navigation-bar';
 import Log from './log';
 
+import Home from './home';
 import Basic from './basic';
 import Parameter from './parameter';
 import Cache from './cache';
@@ -32,6 +33,8 @@ class App extends React.Component {
           router.pathname !== '/login' &&
           <NavigationBar router={router} token={this.state.token} setToken={this.setToken} />
         }
+        <NotFound notFound title="404 Not Found" />
+        <Home path="/" />
         <Basic path="/basic" title="Basic Route" />
         <Parameter path="/parameter/:name/:id" title="URL Parameters" />
         <Cache path="/cache" title="Cache" autoCache />
@@ -43,7 +46,6 @@ class App extends React.Component {
         <Two path="/exclusive/two" title="Exclusive Route 2" group="1" autoCache />
         <Three path="/exclusive/:any" title="Exclusive Route 3" group="1" autoCache />
 
-        <NotFound notFound title="404 Not Found" />
 
         <Log id="app" data={this.props} />
       </React.Fragment>

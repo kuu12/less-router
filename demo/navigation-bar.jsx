@@ -6,6 +6,7 @@ const NavigationBar = ({ router, token, setToken }) => (
     <button name="parameter" onClick={() => router.push('/parameter/kuu/12')}>Try URL Parameters </button>
     <button name="cache" onClick={() => router.push('/cache')}>Try Cache</button>
     <button name="dynamic" onClick={() => router.push('/dynamic/')}>Try Dynamic Routing</button>
+    <button name="notfound" onClick={() => router.push(`/${Math.random()}`)}>Not Found</button>
     <button name="profile" onClick={() => router.push('/profile')}>My Profile (Try Login)</button>
     {
       token &&
