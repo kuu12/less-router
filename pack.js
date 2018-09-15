@@ -25,8 +25,8 @@ fse.outputJson(pp('./dist/package.json'), pkg, { spaces: 2 });
 fse.outputFileSync(
     pp('./dist/index.js'),
     [
-        'module.exports = process.env.NODE_ENV === \'production\'',
-        '    ? require(\'./less-router.min.js\')',
-        '    : require(\'./less-router.js\');',
+        'module.exports=\'production\'==process.env.NODE_ENV',
+        '?require(\'./less-router.min.js\')',
+        ':require(\'./less-router.js\');',
     ].join('\n')
 );

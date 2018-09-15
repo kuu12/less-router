@@ -53,6 +53,9 @@ describe('regexFrom', () => {
         expect(
             regexFrom('/order').test('/order/1')
         ).toBeFalsy();
+        expect(
+            regexFrom('/order').test('/order1234')
+        ).toBeFalsy();
 
         expect(
             regexFrom('/order/').test('/order')
@@ -63,6 +66,9 @@ describe('regexFrom', () => {
         expect(
             regexFrom('/order/').test('/order/1')
         ).toBeTruthy();
+        expect(
+            regexFrom('/order/').test('/order1234')
+        ).toBeFalsy();
     });
 
     test('special', () => {

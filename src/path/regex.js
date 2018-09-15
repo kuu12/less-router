@@ -21,9 +21,9 @@ const regexFromString = cacheable(
             string += `(?=(${proxy.router.html})?$)`;
         } else if (string.endsWith('/')) {
             string = string.slice(0, string.length - 1);
-            string += '(?=\\/?)';
+            string += '(?=/?\\/|$)';
         } else if (string) {
-            string += '(?=\\/?$)';
+            string += '(?=/?$)';
         }
         return new RegExp(
             `^${string}`,
