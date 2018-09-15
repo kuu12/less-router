@@ -246,17 +246,19 @@ export default Routing(Parent);
 />
 ```
 
-两个`path`都能匹配`https://www.example.com/movies/purchased`。但显然我们只想匹配第一个路由，这时只需做一点点修改：
+两个`path`都能匹配`https://www.example.com/movies/purchased`。但显然我们只想匹配第一个路由，
+
+这时可以使用分组功能，同一分组只有第一个匹配的组件会被渲染。
 
 ```javascript
-<Routing>
-  <PurchasedRoute
-    path="/movies/purchased"
-  />
-  <MovieRoute
-    path="/movies/:title"
-  />
-</Routing>
+<PurchasedRoute
+  path="/movies/purchased"
+  group="123"
+/>
+<MovieRoute
+  path="/movies/:title"
+  group="123"
+/>
 ```
 
 ## API参考

@@ -231,17 +231,19 @@ export default Routing(Parent);
 />
 ```
 
-Both of `path` match `https://www.example.com/movies/purchased`. But obviously, we only want to render the first route component. Let's make some changes.
+Both of `path` match `https://www.example.com/movies/purchased`. But obviously, we only want to render the first route component. 
+
+Let's put them to the same group, only the first match route component will be rendered.
 
 ```javascript
-<Routing>
-  <PurchasedRoute
-    path="/movies/purchased"
-  />
-  <MovieRoute
-    path="/movies/:title"
-  />
-</Routing>
+<PurchasedRoute
+  path="/movies/purchased"
+  group="123"
+/>
+<MovieRoute
+  path="/movies/:title"
+  group="123"
+/>
 ```
 
 ## API Reference
