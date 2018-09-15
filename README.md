@@ -6,7 +6,7 @@ Less Router is a minimal and fully functional router for React.
 - **Simple API:** Start using in 5 minutes.
 - **Cachable:** By adding `autoCache` property, Route changes won't make component unmount/remount but hide/show.
 - **Support most features in *React Router V4*:** Dynamic routing, recursive paths, no match (404), and other features.
-- **Minimal:** Less than 3kB(gzipped), while *React Router V4* takes 8kB.
+- **Minimal:** Only 3kB(gzipped), while *React Router V4* takes 8kB.
 - **Reliable:** All features have been tested.
 
 # Installation
