@@ -9,9 +9,9 @@ const locationState = (basename) => ({
 
 const join = (parentPath, path) => {
     if (typeof path != 'string') path = '';
-    else if (!path.startsWith('/')) path = `/${path}`;
+    else if (!/^\//.test(path)) path = `/${path}`;
 
-    return `${addHeadRemoveTail(parentPath || '')}${path}`;
+    return addHeadRemoveTail(parentPath || '') + path;
 };
 
 const addHeadRemoveTail = path => path

@@ -52,9 +52,9 @@ class Router extends React.Component {
         return this.__change(0, pathname, cb);
     }
     __change(step, pathname, cb) {
-        if (!pathname.startsWith('/')) {
+        if (!/^\//.test(pathname))
             console.error(new Error(PATH_START + pathname));
-        }
+
         const href = this.basename + pathname;
         if (!history.replaceState) {
             location.href = href;
@@ -97,20 +97,24 @@ class Router extends React.Component {
     }
 
     sync404() {
-        Object.values(this[404]).forEach(route => route.refresh());
+        Object.values(this[404]).forEach(notFound => {
+            notFound.sync();
+        });
     }
 
     clearCache(path, cb) {
-        if (!path.startsWith('/')) {
+        if (!/^\//.test(path))
             throw new Error(PATH_START + path);
-        }
+
         const routes = Object
             .values(this.cache)
             .filter(route => path == route.path);
 
         return promiseAndCallback(resolve => {
             if (routes.length) {
-                routes.forEach(route => route.delete('cache'));
+                routes.forEach(route => {
+                    route.del('cache');
+                });
                 this.forceUpdate(resolve);
             } else {
                 console.warn(new Error(PATH_NOT_FOUND + path));

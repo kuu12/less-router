@@ -7,7 +7,9 @@ const A = ({ redirect, onClick, href, children, ...attrs }) => (
         onClick={event => {
             event.preventDefault();
 
-            const go = () => proxy.router[redirect ? 'replace' : 'push'](href);
+            const go = () => {
+                proxy.router[redirect ? 'replace' : 'push'](href);
+            };
 
             if (!onClick) return go();
 

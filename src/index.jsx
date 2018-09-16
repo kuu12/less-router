@@ -5,14 +5,17 @@ import NotFound from './404';
 import proxy from './proxy';
 import A from './a';
 
+if (!Object.values) Object.values = object =>
+    Object.keys(object).map(key => object[key]);
+
 const Routing = Component => props => {
     let Container;
     if (!proxy.router)
         Container = Router;
     else if (
-        'notFound' in props ||
-        'NotFound' in props ||
-        'Notfound' in props
+        props.notFound ||
+        props.NotFound ||
+        props.Notfound
     )
         Container = NotFound;
     else
@@ -23,4 +26,5 @@ const Routing = Component => props => {
 
 export default Routing;
 export { Routing, A };
-Object.assign(Routing, { Routing, A });
+Routing.Routing = Routing;
+Routing.A = A;

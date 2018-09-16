@@ -19,7 +19,7 @@ const regexFromString = cacheable(
     (string, caseSensitive) => {
         if ('/' == string) {
             string += `(?=(${proxy.router.html})?$)`;
-        } else if (string.endsWith('/')) {
+        } else if (/\/$/.test(string)) {
             string = string.slice(0, string.length - 1);
             string += '(?=/?\\/|$)';
         } else if (string) {
@@ -71,9 +71,9 @@ const paramsFrom = (parentPath, path, pathname = proxy.router.pathname) => {
     const regex = regexFromString(string);
     (regex.exec(pathname) || [])
         .filter(Boolean)
-        .forEach((match, index) =>
-            result[params[index]] = match
-        );
+        .forEach((match, index) => {
+            result[params[index]] = match;
+        });
 
     return result;
 };

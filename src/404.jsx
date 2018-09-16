@@ -8,7 +8,6 @@ const NULL = <div style={{ display: 'none' }} />;
 class NotFound extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
         this.id = ++unique;
         proxy.router[404][this.id] = this;
     }
@@ -17,31 +16,28 @@ class NotFound extends React.Component {
         delete proxy.router[404][this.id];
     }
 
-    refresh() {
-        this.setState({ f: !this.state.f });
+    sync() {
+        this.i = true;
+        this.forceUpdate();
     }
 
     get 404() {
-        const parentPath = this.props.parentPath || '';
-        const namespace = new RegExp(`^${parentPath}`);
+        const namespace = new RegExp(`^${this.props.parentPath || ''}`);
 
         const all = Object
             .values(proxy.router.matching)
             .filter(route => route.path.match(namespace));
 
-        const scope = all
+        const scoped = all
             .filter(route => route.path.replace(namespace, ''));
 
-        const notFound =
-            all.length >= Number(Boolean(parentPath)) &&
-            !scope.length;
+        const notFound = (all.length >= !!this.props.parentPath) && !scoped.length;
 
         return notFound;
     }
 
     render() {
-        if (!('f' in this.state)) return NULL;
-        if (!this[404]) return NULL;
+        if (!this.i || !this[404]) return NULL;
 
         const { C_, title = NOT_FOUND, ...props } = this.props;
         document.title = title;
@@ -51,7 +47,7 @@ class NotFound extends React.Component {
 
         return <C_
             {...props}
-            router={proxy.router}
+            {...proxy}
             pathname={proxy.router.pathname}
         />;
     }

@@ -9,26 +9,22 @@ let unique = 0;
 class Route extends React.Component {
     constructor(props) {
         super(props);
-        const {
-            parentPath, path,
-            C_: { propTypes: { routingStyle } = {} },
-            autoCache,
-        } = props;
+        const { parentPath, path, autoCache } = props;
 
-        if (path && !path.startsWith('/'))
+        if (path && !/^\//.test(path))
             console.error(new Error(PATH_START + path));
 
-        if (parentPath && !parentPath.endsWith('/'))
+        if (parentPath && !/\/$/.test(parentPath))
             throw new Error(PARENT_END + parentPath);
 
         this.id = ++unique;
         this.path = join(parentPath, path);
-        this.wrap = autoCache && !routingStyle;
+        this.wrap = autoCache && autoCache != 'nowrap';
     }
 
     componentWillUnmount() {
-        this.delete('matching');
-        this.delete('cache');
+        this.del('matching');
+        this.del('cache');
         if (this == this.core) this.core = null;
     }
 
@@ -43,7 +39,7 @@ class Route extends React.Component {
             if (!this.core) this.core = this;
             if (this == this.core && this.props.autoCache) this.put('cache');
         } else {
-            this.delete('matching');
+            this.del('matching');
             if (this == this.core) this.core = null;
         }
     }
@@ -54,7 +50,7 @@ class Route extends React.Component {
     put(name) {
         proxy.router[name][this.id] = this;
     }
-    delete(name) {
+    del(name) {
         if (proxy.router[name][this.id])
             delete proxy.router[name][this.id];
     }
@@ -95,18 +91,12 @@ class Route extends React.Component {
 
         if (this.get('matching') && this == this.core) {
             component = (
-                <C_
-                    {...this.params}
-                    {...this.pass}
-                    routingStyle={{}}
-                />
+                <C_ {...this.params} {...this.pass} />
             );
 
             if (this.wrap)
                 component = (
-                    <div
-                        className="route-container"
-                    >{component}</div>
+                    <div>{component}</div>
                 );
 
             if (title !== undefined)
@@ -116,18 +106,12 @@ class Route extends React.Component {
 
         } else if (this.get('cache')) {
             component = (
-                <C_
-                    {...this.pass}
-                    routingStyle={{ display: 'none' }}
-                />
+                <C_ {...this.pass} cached={true} />
             );
 
             if (this.wrap)
                 component = (
-                    <div
-                        className="route-container"
-                        style={{ display: 'none' }}
-                    >{component}</div>
+                    <div style={{ display: 'none' }}>{component}</div>
                 );
 
         }

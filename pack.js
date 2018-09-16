@@ -30,3 +30,11 @@ fse.outputFileSync(
         ':require(\'./less-router.js\');',
     ].join('\n')
 );
+
+let min = fse.readFileSync(pp('./dist/less-router.min.js'), { encoding: 'utf8' });
+min = min
+    .replace(/\([a-zA-Z],[a-zA-Z]\){if\(!\([a-zA-Z] instanceof [a-zA-Z]\)\)throw new TypeError\([^)]+\)/, '(){')
+    .replace(/if\("function"!=typeof [a-zA-Z]&&null!==[a-zA-Z]\)throw new TypeError\([^)]+\);/, '')
+    .replace(/\(([a-zA-Z]),[a-zA-Z]\){if\(![a-zA-Z]\)throw new ReferenceError\([^}]+(?=})/, '($1){return $1')
+    .replace(/for\(var [a-zA-Z]=arguments.length,([a-zA-Z])=Array\([a-zA-Z]\),[a-zA-Z]=0;[a-zA-Z]<[a-zA-Z];[a-zA-Z]\+\+\)[a-zA-Z]\[[a-zA-Z]\]=arguments\[[a-zA-Z]\];/, 'var $1=[].slice.call(arguments);');
+fse.writeFileSync(pp('./dist/less-router.min.js'), min);
