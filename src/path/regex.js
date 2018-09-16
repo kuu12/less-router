@@ -57,7 +57,8 @@ const removeParam = cacheable(
  * @param   pathname    /user/kuu12/calendar/2018/7/8
  * @returns             { year: '2018', month: '7', date: '8' }
 */
-const paramsFrom = (parentPath, path, pathname = proxy.router.pathname) => {
+const paramsFrom = (parentPath, path, pathname) => {
+    if (typeof pathname != 'string') pathname = proxy.router.pathname;
     const fullPath = join(removeParam(parentPath), path);
     const params = ['pathname'];
     const result = {};
