@@ -1,10 +1,10 @@
 # Less Router &middot; [![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router) [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router.svg)](https://bundlephobia.com/result?p=less-router) [![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router) [![Travis (.org)](https://img.shields.io/travis/kuu12/less-router.svg)](https://travis-ci.org/kuu12/less-router/)
 
-### 更少的API，更多的优雅和更简单地学习。 
+### 更少的API，更多的优雅和更简单地学习。
 
 [README in English](https://github.com/kuu12/less-router/blob/master/README.md)
 
-[在线演示](https://kuu12.github.io/router-demo/)
+[在线演示](https://kuu12.github.io/less-router/)
 
 # 特性
 
@@ -58,7 +58,7 @@ import ComponentRoute from './component';
 // ...
 <ComponentRoute
   // nickname会从URL取值并注入到组件的属性中
-  path="/somepath/:nickname" 
+  path="/somepath/:nickname"
   title="欢迎"
 />
 ```

@@ -1,4 +1,4 @@
-import child_process from 'child_process';
+
 import path from 'path';
 import fse from 'fs-extra';
 import resolve from 'rollup-plugin-node-resolve';
@@ -6,20 +6,8 @@ import replace from 'rollup-plugin-replace';
 import babel from 'rollup-plugin-babel';
 import { uglify } from 'rollup-plugin-uglify';
 
-fse.emptyDirSync(path.join(__dirname, '../dev'));
-fse.copySync(
-    path.join(__dirname, './index.html'),
-    path.join(__dirname, '../dev/index.html')
-);
-fse.copySync(
-    path.join(__dirname, './404.html'),
-    path.join(__dirname, '../dev/404.html')
-);
-
-child_process.exec('hs ./dev -s -o');
-
 const babelrc = fse.readJsonSync(
-    path.join(__dirname, '../.babelrc')
+    path.join(__dirname, '..', '.babelrc')
 );
 babelrc.presets[0][1].modules = false;
 
@@ -28,7 +16,7 @@ const config = {
     external: ['react', 'react-dom'],
     output: {
         format: 'umd',
-        file: './dev/demo.bundle.js',
+        file: './.temp/demo.bundle.js',
         sourcemap: true,
         globals: {
             react: 'React',
@@ -52,8 +40,7 @@ const config = {
         })
     ],
     watch: {
-        include: ['../src/**', './**'],
-        exclude: 'rollup.demo.js',
+        include: ['./src/**', './demo/**'],
     }
 };
 

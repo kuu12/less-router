@@ -7,6 +7,6 @@ root.id = 'root';
 document.body.appendChild(root);
 
 ReactDOM.render(
-  <App basename="/router-demo" />,
+  <App basename="/less-router" />,
   root,
 );

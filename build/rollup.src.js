@@ -6,7 +6,7 @@ import babel from 'rollup-plugin-babel';
 import { uglify } from 'rollup-plugin-uglify';
 
 const babelrc = fse.readJsonSync(
-    path.join(__dirname, '.babelrc')
+    path.join(__dirname, '..', '.babelrc')
 );
 babelrc.presets[0][1].modules = false;
 

@@ -5,7 +5,7 @@ before_script:
   - npm run eslint
 
 before_deploy:
-  - node pack.js
+  - node ./build/pack.js
   - cd dist
 
 deploy:

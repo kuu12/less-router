@@ -3,12 +3,12 @@ const fse = require('fs-extra');
 
 const pp = (...args) => path.join(__dirname, ...args);
 
-const pkg = fse.readJsonSync(pp('./package.json'));
+const pkg = fse.readJsonSync(pp('../package.json'));
 pkg.main = 'index.js';
 delete pkg.scripts;
 delete pkg.devDependencies;
 delete pkg.jest;
-fse.outputJson(pp('./dist/package.json'), pkg, { spaces: 2 });
+fse.outputJson(pp('../dist/package.json'), pkg, { spaces: 2 });
 
 [
     'src',
@@ -17,13 +17,13 @@ fse.outputJson(pp('./dist/package.json'), pkg, { spaces: 2 });
     'README.cn.md',
 ].forEach(name =>
     fse.copySync(
-        pp('.', name),
-        pp('./dist', name)
+        pp('..', name),
+        pp('../dist', name)
     )
 );
 
 fse.outputFileSync(
-    pp('./dist/index.js'),
+    pp('../dist/index.js'),
     [
         'module.exports=\'production\'==process.env.NODE_ENV',
         '?require(\'./less-router.min.js\')',
@@ -31,7 +31,7 @@ fse.outputFileSync(
     ].join('\n')
 );
 
-let min = fse.readFileSync(pp('./dist/less-router.min.js'), { encoding: 'utf8' });
+let min = fse.readFileSync(pp('../dist/less-router.min.js'), { encoding: 'utf8' });
 min = min
     .replace(/function [a-zA-Z]\([a-zA-Z]\){return [a-zA-Z]&&"object"==typeof [a-zA-Z]&&"default"in [a-zA-Z]\?[a-zA-Z]\.default:[a-zA-Z]}/, '')
     .replace(/[a-zA-Z]\(require\("react"\)\)/, 'require("react")')
@@ -47,4 +47,4 @@ min = min
     .replace(/\(([a-zA-Z])\.__proto__\|\|Object\.getPrototypeOf\([a-zA-Z]\)\)/, '$1.sup')
     .replace(/Object\.prototype\.hasOwnProperty\.call\(r,n\)/g, '!0');
 
-fse.writeFileSync(pp('./dist/less-router.min.js'), min);
+fse.writeFileSync(pp('../dist/less-router.min.js'), min);

@@ -1,7 +1,7 @@
 # Less Router &middot; [![NpmVersion](https://img.shields.io/npm/v/less-router.svg)](https://www.npmjs.com/package/less-router) [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/less-router.svg)](https://bundlephobia.com/result?p=less-router) [![npm](https://img.shields.io/npm/dt/less-router.svg)](https://www.npmjs.com/package/less-router) [![Travis (.org)](https://img.shields.io/travis/kuu12/less-router.svg)](https://travis-ci.org/kuu12/less-router/)
 
 Less Router is a minimal and fully functional router for React.
- [[中文文档]](https://github.com/kuu12/less-router/blob/master/README.cn.md) [[Live Demo]](https://kuu12.github.io/router-demo/)
+ [[中文文档]](https://github.com/kuu12/less-router/blob/master/README.cn.md) [[Live Demo]](https://kuu12.github.io/less-router/)
 
 - **Simple API:** Start using in 5 minutes.
 - **Cachable:** By adding `autoCache` property, Route changes won't make component unmount/remount but hide/show.
@@ -44,7 +44,7 @@ import ComponentRoute from './component';
 // ...
 <ComponentRoute
   // Notice the ':nickname' part, it will be treated as a variable.
-  path="/somepath/:nickname" 
+  path="/somepath/:nickname"
   title="Welcome"
 />
 ```
@@ -151,7 +151,7 @@ Add an `autoCache` property.
   autoCache
 />
 ```
-This component will keep alive. Route changes won't make it destroy or remount, that means `componentDidMount` just run once. 
+This component will keep alive. Route changes won't make it destroy or remount, that means `componentDidMount` just run once.
 If you want to invoke `componentDidMount` again, use `clearCache`.
 
 ```javascript
@@ -231,7 +231,7 @@ export default Routing(Parent);
 />
 ```
 
-Both of `path` match `https://www.example.com/movies/purchased`. But obviously, we only want to render the first route component. 
+Both of `path` match `https://www.example.com/movies/purchased`. But obviously, we only want to render the first route component.
 
 Let's put them to the same group, only the first match route component will be rendered.
 

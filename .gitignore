@@ -61,4 +61,4 @@ package-lock.json
 
 dist
 
-dev
+.temp
