@@ -5,13 +5,13 @@ import replace from 'rollup-plugin-replace';
 import babel from 'rollup-plugin-babel';
 import { uglify } from 'rollup-plugin-uglify';
 
-const babelrc = fse.readJsonSync(
-    path.join(__dirname, '..', '.babelrc')
-);
+const pp = (...args) => path.join(__dirname, ...args);
+
+const babelrc = fse.readJsonSync(pp('../.babelrc'));
 babelrc.presets[0][1].modules = false;
 
 const config = {
-    input: './src/index.jsx',
+    input: pp('../src/index.jsx'),
     external: ['react'],
     output: {
         name: 'Routing',
@@ -34,12 +34,12 @@ const config = {
 
 switch (process.env.NODE_ENV) {
     case 'development':
-        config.output.file = './dist/less-router.js';
+        config.output.file = pp('../dist/less-router.js');
         config.output.sourcemap = true;
         break;
 
     case 'production':
-        config.output.file = './dist/less-router.min.js';
+        config.output.file = pp('../dist/less-router.min.js');
         config.plugins.push(
             uglify({
                 mangle: { toplevel: true }

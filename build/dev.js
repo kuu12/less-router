@@ -1,35 +1,54 @@
 const child_process = require('child_process');
-const path = require('path');
 const fse = require('fs-extra');
+const path = require('path');
 
-fse.emptyDirSync(path.join(__dirname, '../.temp'));
+const pp = (...args) => path.join(__dirname, ...args);
 
-let indexHtml = fse.readFileSync(
-    path.join(__dirname, '../index.html'),
-    'utf8'
-);
-indexHtml = indexHtml.replace(
-    'https://rawgithub.com/kuu12/router-demo/master/demo.bundle.js',
-    '/demo.bundle.js'
-).replace(
-    /(?=<script)/,
-    '<script>history.replaceState({}, "", "/less-router/")</script>'
-);
+fse.emptyDirSync(pp('../.temp'));
+
+// fse.copySync(
+//     pp('../dist/less-router.min.js'),
+//     pp('../.temp/less-router.min.js')
+// );
+
+const indexHtml = fse
+    .readFileSync(
+        pp('../index.html'),
+        'utf8'
+    )
+    // .replace(
+    //     'react.production.min.js"></script>',
+    //     'react.production.min.js"></script>\n<script src="/less-router.min.js"></script>'
+    // )
+    .replace(
+        'https://rawgithub.com/kuu12/router-demo/master/demo.bundle.js',
+        '/demo.bundle.js'
+    )
+    .replace(
+        /(?=<script)/,
+        '<script>history.replaceState({}, "", "/less-router/")</script>'
+    );
 fse.outputFileSync(
-    path.join(__dirname, '../.temp/index.html'),
+    pp('../.temp/index.html'),
     indexHtml
 );
-let _404Html = fse.readFileSync(
-    path.join(__dirname, '../404.html'),
-    'utf8'
-);
-_404Html = _404Html.replace(
-    'var segmentCount = 1;',
-    'var segmentCount = 0;'
-);
+
+const _404Html = fse
+    .readFileSync(
+        pp('../404.html'),
+        'utf8'
+    )
+    .replace(
+        'var segmentCount = 1;',
+        'var segmentCount = 0;'
+    );
 fse.outputFileSync(
-    path.join(__dirname, '../.temp/404.html'),
+    pp('../.temp/404.html'),
     _404Html
 );
 
-child_process.exec('hs ./.temp -s -o');
+const timer = setInterval(() => {
+    if (!fse.existsSync(pp('../.temp/demo.bundle.js'))) return;
+    child_process.exec('hs ./.temp -s -o');
+    clearInterval(timer);
+}, 300);
