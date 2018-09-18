@@ -1,6 +1,6 @@
 {
   "name": "less-router",
-  "version": "2.1.2",
+  "version": "2.1.4",
   "description": "A very easy React router component but fully functionall.",
   "main": "src/index.jsx",
   "scripts": {
@@ -25,7 +25,7 @@
   ],
   "author": "kuu12",
   "license": "MIT",
-  "homepage": "https://kuu12.github.io/router-demo/",
+  "homepage": "https://kuu12.github.io/less-router/",
   "repository": {
     "type": "git",
     "url": "https://github.com/kuu12/less-router/"

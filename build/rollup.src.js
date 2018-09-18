@@ -14,8 +14,8 @@ const config = {
     input: pp('../src/index.jsx'),
     external: ['react'],
     output: {
-        name: 'Routing',
-        format: 'umd'
+        // name: 'Routing',
+        format: 'cjs'
     },
     plugins: [
         resolve({
