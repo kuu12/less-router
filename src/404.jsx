@@ -45,11 +45,7 @@ class NotFound extends React.Component {
         delete props.notFound;
         delete props.Notfound;
 
-        return <C_
-            {...props}
-            {...proxy}
-            pathname={proxy.router.pathname}
-        />;
+        return <C_ {...props} {...proxy} />;
     }
 }
 

@@ -1,9 +1,8 @@
 import proxy from '../proxy';
-import { cacheable, join } from './helper';
+import { cacheable } from './helper';
 
-const PARAMS = /:[\w-~]+(?=\/|$)/g;
-const PARAMS_0 = '[\\w-~]+';
-const PARAMS_1 = `(${PARAMS_0})`;
+const PARAMS_0 = /:[\w-~]+(?=\/|$)/g;
+const PARAMS_1 = '([\\w-~]+)';
 /**
  *  /           ->      /(?=(index.html)?$)     ->      /
  *                                                      /index.hml
@@ -39,16 +38,8 @@ const regexFromString = cacheable(
  */
 const regexFrom = cacheable(
     (path, caseSensitive) => regexFromString(
-        path.replace(PARAMS, PARAMS_1), caseSensitive
+        path.replace(PARAMS_0, PARAMS_1), caseSensitive
     )
-);
-
-/**
- *  /calendar/:year/:month/holiday      ->
- *  /calendar/\\w+/\\w+/holiday
- */
-const removeParam = cacheable(
-    path => path && path.replace(PARAMS, PARAMS_0)
 );
 
 /**
@@ -58,19 +49,21 @@ const removeParam = cacheable(
  * @returns             { year: '2018', month: '7', date: '8' }
 */
 const paramsFrom = (parentPath, path, pathname) => {
-    if (typeof pathname != 'string') pathname = proxy.router.pathname;
-    const fullPath = join(removeParam(parentPath), path);
+    if (typeof pathname != 'string')
+        pathname = proxy.router.pathname;
+    if (parentPath)
+        pathname = pathname.replace(regexFrom(parentPath), '');
+
     const params = ['pathname'];
     const result = {};
-    const string = fullPath.replace(
-        PARAMS,
-        (paramName) => (
+    const string = path.replace(
+        PARAMS_0,
+        paramName => (
             params.push(paramName.slice(1)),
             PARAMS_1
         ),
     );
-    const regex = regexFromString(string);
-    (regex.exec(pathname) || [])
+    (regexFromString(string).exec(pathname) || [])
         .filter(Boolean)
         .forEach((match, index) => {
             result[params[index]] = match;

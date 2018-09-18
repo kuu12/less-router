@@ -20,6 +20,13 @@ class Route extends React.Component {
         this.id = ++unique;
         this.path = join(parentPath, path);
         this.wrap = autoCache && autoCache != 'nowrap';
+
+        this.exec();
+    }
+
+    shouldComponentUpdate() {
+        this.exec();
+        return true;
     }
 
     componentWillUnmount() {
@@ -86,8 +93,6 @@ class Route extends React.Component {
         const { C_, title } = this.props;
 
         let component = null;
-
-        this.exec();
 
         if (this.get('matching') && this == this.core) {
             component = (
