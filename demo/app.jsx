@@ -22,6 +22,7 @@ class App extends React.Component {
     this.state = { token: null };
     this.setToken = token => this.setState({ token });
     window.debug_router = this.props.router;
+    window.debug_router.componentDidUpdate = () => window.PR.prettyPrint();
   }
 
   render() {
@@ -44,7 +45,7 @@ class App extends React.Component {
 
         <One path="/exclusive/one" title="Exclusive Route 1" group="1" />
         <Two path="/exclusive/two" title="Exclusive Route 2" group="1" autoCache />
-        <Three path="/exclusive/:any" title="Exclusive Route 3" group="1" autoCache />
+        <Three path="/exclusive/:any" title="Exclusive Route 3" group="1" />
 
 
         <Log id="app" data={this.props} />

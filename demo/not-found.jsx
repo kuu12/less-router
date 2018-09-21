@@ -3,9 +3,12 @@ import Routing from '../src';
 
 class NotFound extends React.Component {
   componentDidMount() {
-    setTimeout(() => {
+    this.timer = setTimeout(() => {
       this.props.router.replace('/');
     }, 3000);
+  }
+  componentWillUnmount() {
+    clearTimeout(this.timer);
   }
   render() {
     return (

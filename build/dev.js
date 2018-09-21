@@ -25,6 +25,10 @@ const indexHtml = fse
         '/demo.bundle.js'
     )
     .replace(
+        'https://rawgithub.com/kuu12/router-demo/master/style.css',
+        '/style.css'
+    )
+    .replace(
         /(?=<script)/,
         '<script>history.replaceState({}, "", "/less-router/")</script>'
     );
@@ -47,8 +51,13 @@ fse.outputFileSync(
     _404Html
 );
 
+fse.copySync(
+    pp('../demo/style.css'),
+    pp('../.temp/style.css')
+);
+
 const timer = setInterval(() => {
     if (!fse.existsSync(pp('../.temp/demo.bundle.js'))) return;
-    child_process.exec('hs ./.temp -s -o');
+    child_process.exec('hs ./.temp -s -o -c-1 -g');
     clearInterval(timer);
 }, 300);
