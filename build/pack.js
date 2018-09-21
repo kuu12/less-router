@@ -45,6 +45,7 @@ min = min
     .replace(/enumerable:!1,/, '')
     .replace(/for\(var [a-zA-Z]=0;[a-zA-Z]<([a-zA-Z])\.length;[a-zA-Z]\+\+\){var ([a-zA-Z])=[a-zA-Z]\[[a-zA-Z]\];([^}]+)}/, '$1.forEach(function($2){$3})')
     .replace(/\(([a-zA-Z])\.__proto__\|\|Object\.getPrototypeOf\([a-zA-Z]\)\)/, '$1.sup')
-    .replace(/Object\.prototype\.hasOwnProperty\.call\(r,n\)/g, '!0');
+    .replace(/Object\.prototype\.hasOwnProperty\.call\(r,n\)/g, '!0')
+    .replace(/\n$/, '');
 
 fse.writeFileSync(pp('../dist/less-router.min.js'), min);

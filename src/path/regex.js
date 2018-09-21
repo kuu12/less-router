@@ -49,8 +49,6 @@ const regexFrom = cacheable(
  * @returns             { year: '2018', month: '7', date: '8' }
 */
 const paramsFrom = (parentPath, path, pathname) => {
-    if (typeof pathname != 'string')
-        pathname = proxy.router.pathname;
     if (parentPath)
         pathname = pathname.replace(regexFrom(parentPath), '');
 

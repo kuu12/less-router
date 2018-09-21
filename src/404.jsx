@@ -16,7 +16,7 @@ class NotFound extends React.Component {
         delete proxy.router[404][this.id];
     }
 
-    sync() {
+    exec() {
         this.i = true;
         this.forceUpdate();
     }

@@ -21,33 +21,36 @@ class Route extends React.Component {
         this.path = join(parentPath, path);
         this.wrap = autoCache && autoCache != 'nowrap';
 
-        this.exec();
-    }
-
-    shouldComponentUpdate() {
-        this.exec();
-        return true;
+        this.put('route');
+        this.exec(proxy.router.pathname);
     }
 
     componentWillUnmount() {
+        this.del('route');
         this.del('matching');
         this.del('cache');
         if (this == this.core) this.core = null;
     }
 
-    exec() {
+    exec(pathname) {
         if (
             regexFrom(
                 this.path,
                 this.props.caseSensitive
-            ).test(proxy.router.pathname)
+            ).test(pathname)
         ) {
             this.put('matching');
             if (!this.core) this.core = this;
             if (this == this.core && this.props.autoCache) this.put('cache');
+            this.params = paramsFrom(
+                this.props.parentPath,
+                this.props.path,
+                pathname,
+            );
         } else {
             this.del('matching');
             if (this == this.core) this.core = null;
+            this.params = {};
         }
     }
 
@@ -69,10 +72,6 @@ class Route extends React.Component {
     set core(route) {
         if (undefined === this.props.group) return;
         return proxy.router.group[this.props.group] = route;
-    }
-
-    get params() {
-        return paramsFrom(this.props.parentPath, this.props.path);
     }
 
     get pass() {

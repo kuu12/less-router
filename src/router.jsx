@@ -5,13 +5,13 @@ import {
     addHeadRemoveTail,
     separate,
 } from './path/helper';
-import match from './path/match';
-import { paramsFrom } from './path/regex';
+import { match, params } from './path/tool';
 import { PATH_START, PATH_NOT_FOUND } from './message';
 
 class Router extends React.Component {
     constructor(props) {
         super(props);
+        this.route = {};
         this.matching = {};
         this.cache = {};
         this.group = {};
@@ -26,7 +26,7 @@ class Router extends React.Component {
 
         proxy.router = this;
         this.match = match;
-        this.params = paramsFrom;
+        this.params = params;
     }
     componentWillUnmount() {
         proxy.router = null;
@@ -34,7 +34,7 @@ class Router extends React.Component {
     }
 
     componentDidMount() {
-        this.sync404();
+        this.sync(404);
     }
 
     get basename() {
@@ -89,16 +89,17 @@ class Router extends React.Component {
     __update(state, cb) {
         return promiseAndCallback(resolve => {
             this.group = {};
+            this.sync('route', state.pathname);
             this.setState(state, () => {
+                this.sync(404);
                 resolve();
-                this.sync404();
             });
         }, cb);
     }
 
-    sync404() {
-        Object.values(this[404]).forEach(notFound => {
-            notFound.sync();
+    sync(type, pathname) {
+        Object.values(this[type]).forEach(component => {
+            component.exec(pathname);
         });
     }
 
