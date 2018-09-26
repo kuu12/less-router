@@ -1,6 +1,7 @@
 import React from 'react';
 import Routing from '../src';
 import Log from './log';
+import preview from './preview-code';
 
 Log.cache = { mount: 0 };
 
@@ -24,6 +25,8 @@ class Cache extends React.Component {
     clearInterval(this.timer);
   }
   render() {
+    preview(code);
+
     const { router } = this.props;
     return (
       <div id="cache">
@@ -36,8 +39,12 @@ class Cache extends React.Component {
           await router.clearCache('/cache');
           console.log('clear');
         }}>Back to Home Page and Clear Cache</button>
-        <pre className="prettyprint">
-          {`
+      </div>
+    );
+  }
+}
+
+const code = `
 // app.jsx
 import Cache from './cache';
 ...
@@ -84,11 +91,6 @@ class Cache extends React.Component {
 }
 
 export default Routing(Cache);
-        `}
-        </pre>
-      </div>
-    );
-  }
-}
+`;
 
 export default Routing(Cache);

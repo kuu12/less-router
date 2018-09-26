@@ -2,8 +2,10 @@ import React from 'react';
 import Routing from '../src';
 import Child from './child';
 import Log from './log';
+import preview from './preview-code';
 
 const Dynamic = ({ router, path, pathname }) => (
+  preview(code),
   <div id="dynamic">
     <Child parentPath={path} path="/child" />
     <button
@@ -13,8 +15,10 @@ const Dynamic = ({ router, path, pathname }) => (
       Show Child
     </button>
     <Log id="dynamic" data={{ router, path, pathname }} />
-    <pre className="prettyprint">
-      {`
+  </div>
+);
+
+const code = `
 // app.jsx
 import Dynamic from './dynamic';
 ...
@@ -38,9 +42,6 @@ const Dynamic = ({ router, path, pathname }) => (
 );
 
 export default Routing(Dynamic);
-      `}
-    </pre>
-  </div>
-);
+`;
 
 export default Routing(Dynamic);

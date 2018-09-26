@@ -1,5 +1,6 @@
 import React from 'react';
 import Routing from '../src';
+import preview from './preview-code';
 
 class Profile extends React.Component {
   componentDidMount() {
@@ -9,13 +10,19 @@ class Profile extends React.Component {
     }
   }
   render() {
+    preview(code);
+
     return (
       <div id="profile">
         My Profile
         <br />
         balance: $ 100.00
-        <pre className="prettyprint">
-          {`
+      </div>
+    );
+  }
+}
+
+const code = `
 import React from 'react';
 import Routing from 'less-router';
 
@@ -38,11 +45,6 @@ class Profile extends React.Component {
 }
 
 export default Routing(Profile);
-        `}
-        </pre>
-      </div>
-    );
-  }
-}
+`;
 
 export default Routing(Profile);

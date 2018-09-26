@@ -29,8 +29,8 @@ const indexHtml = fse
         '/style.css'
     )
     .replace(
-        /(?=<script)/,
-        '<script>history.replaceState({}, "", "/less-router/")</script>'
+        /<\/script>/,
+        '</script>\n<script>if(!location.pathname.startsWith("/less-router")) history.replaceState({}, "", "/less-router/")</script>'
     );
 fse.outputFileSync(
     pp('../.temp/index.html'),

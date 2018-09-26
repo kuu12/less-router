@@ -1,11 +1,15 @@
 import React from 'react';
 import Routing from '../src';
+import preview from './preview-code';
 
 const Child = ({ router }) => (
+  preview(code),
   <div id="child">
     Child is rendered.
-    <pre className="prettyprint">
-      {`
+  </div>
+);
+
+const code = `
 // child.jsx
 import React from 'react';
 import Routing from 'less-router';
@@ -17,9 +21,6 @@ const Child = ({ router }) => (
 );
 
 export default Routing(Child);
-      `}
-    </pre>
-  </div>
-);
+`;
 
 export default Routing(Child);

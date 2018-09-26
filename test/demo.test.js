@@ -1,4 +1,4 @@
-history.replaceState({}, null, '/kuu12');
+history.replaceState({}, null, '/less-router');
 
 require('../demo');
 const Log = require('../demo/log').default;

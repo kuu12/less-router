@@ -1,14 +1,19 @@
 import React from 'react';
 import Routing from '../src';
 import Log from './log';
+import preview from './preview-code';
 
 const Basic = ({ router }) => (
+  preview(code),
   <div id="basic">
     Basic Route is match.
     <br />
     <button name="basic-back" onClick={() => router.back('home')}>Back to home page</button>
-    <pre className="prettyprint">
-      {`
+    <Log id="basic" data={{ router }} />
+  </div>
+);
+
+const code = `
 // app.jsx
 import Basic from './basic';
 ...
@@ -30,10 +35,6 @@ const Basic = ({ router }) => (
 );
 
 export default Routing(Basic);
-      `}
-    </pre>
-    <Log id="basic" data={{ router }} />
-  </div>
-);
+`;
 
 export default Routing(Basic);
