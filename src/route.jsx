@@ -40,8 +40,13 @@ class Route extends React.Component {
             ).test(pathname)
         ) {
             this.put('matching');
-            if (!this.core) this.core = this;
-            if (this == this.core && this.props.autoCache) this.put('cache');
+
+            if (!this.core)
+                this.core = this;
+
+            if (this == this.core && this.props.autoCache)
+                this.put('cache');
+
             this.params = paramsFrom(
                 this.props.parentPath,
                 this.props.path,
@@ -49,7 +54,10 @@ class Route extends React.Component {
             );
         } else {
             this.del('matching');
-            if (this == this.core) this.core = null;
+
+            if (this == this.core)
+                this.core = null;
+
             this.params = {};
         }
     }

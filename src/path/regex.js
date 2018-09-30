@@ -70,7 +70,4 @@ const paramsFrom = (parentPath, path, pathname) => {
     return result;
 };
 
-export {
-    regexFrom,
-    paramsFrom,
-};
+export { regexFrom, paramsFrom };

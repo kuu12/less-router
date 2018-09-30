@@ -1,6 +1,7 @@
 import React from 'react';
 import proxy from './proxy';
 import { NOT_FOUND } from './message';
+import { values } from './compatibility';
 
 let unique = 0;
 const NULL = <div style={{ display: 'none' }} />;
@@ -24,8 +25,7 @@ class NotFound extends React.Component {
     get 404() {
         const namespace = new RegExp(`^${this.props.parentPath || ''}`);
 
-        const all = Object
-            .values(proxy.router.matching)
+        const all = values(proxy.router.matching)
             .filter(route => route.path.match(namespace));
 
         const scoped = all

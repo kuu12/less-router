@@ -8,7 +8,6 @@ if (/^zh-/.test(navigator.language)) {
 
 }
 
-
 if ('development' == process.env.NODE_ENV) {
 
     if (/^zh-/.test(navigator.language)) {

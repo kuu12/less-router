@@ -1,10 +1,7 @@
 import React from 'react';
 import proxy from './proxy';
-import {
-    locationState,
-    addHeadRemoveTail,
-    separate,
-} from './path/helper';
+import { values, promiseAndCallback } from './compatibility';
+import { locationState, addHeadRemoveTail, separate } from './path/helper';
 import { match, params } from './path/tool';
 import { PATH_START, PATH_NOT_FOUND } from './message';
 
@@ -18,7 +15,7 @@ class Router extends React.Component {
         this[404] = {};
 
         this.state = locationState(this.basename);
-        this.html = this.props.htmlFile || '/index.html';
+        this.html = this.props.htmlFile || 'index.html';
 
         this.point = history.length;
         if (history.replaceState)
@@ -41,7 +38,7 @@ class Router extends React.Component {
         return addHeadRemoveTail(this.props.basename || '');
     }
     get pathname() {
-        return this.html == this.state.pathname
+        return `/${this.html}` == this.state.pathname
             ? '/' : this.state.pathname;
     }
 
@@ -98,7 +95,7 @@ class Router extends React.Component {
     }
 
     sync(type, pathname) {
-        Object.values(this[type]).forEach(component => {
+        values(this[type]).forEach(component => {
             component.exec(pathname);
         });
     }
@@ -107,8 +104,7 @@ class Router extends React.Component {
         if (!/^\//.test(path))
             throw new Error(PATH_START + path);
 
-        const routes = Object
-            .values(this.cache)
+        const routes = values(this.cache)
             .filter(route => path == route.path);
 
         return promiseAndCallback(resolve => {
@@ -132,10 +128,6 @@ class Router extends React.Component {
         return <C_ {...props} router={this} />;
     }
 }
-
-const promiseAndCallback = (exec, callback) => window.Promise
-    ? new Promise(exec).then(callback)
-    : exec(callback);
 
 const queue = [];
 window.addEventListener('popstate', () => {
