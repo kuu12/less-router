@@ -15,6 +15,7 @@ const config = {
     external: ['react'],
     output: {
         // name: 'Routing',
+        // format: 'umd'
         format: 'cjs'
     },
     plugins: [
