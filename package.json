@@ -1,7 +1,7 @@
 {
   "name": "less-router",
-  "version": "2.1.8",
-  "description": "A very easy React router component but fully functionall.",
+  "version": "2.1.9",
+  "description": "A very easy React router component but fully functional.",
   "main": "src/index.jsx",
   "scripts": {
     "start": "rollup -c ./build/rollup.demo.js --watch --environment NODE_ENV:production | node ./build/dev.js",

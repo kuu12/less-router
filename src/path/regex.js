@@ -1,8 +1,6 @@
 import proxy from '../proxy';
 import { cacheable } from './helper';
 
-const PARAMS_0 = /:[\w-~]+(?=\/|$)/g;
-const PARAMS_1 = '([\\w-~]+)';
 /**
  *  /           ->      /(?=(index.html)?$)     ->      /
  *                                                      /index.hml
@@ -30,6 +28,9 @@ const regexFromString = cacheable(
         );
     }
 );
+
+const PARAMS_0 = /:[\w-~]+(?=\/|$)/g;
+const PARAMS_1 = '([\\w-~]+)';
 
 /**
  *  /calendar/:year/:month/holiday                      ->

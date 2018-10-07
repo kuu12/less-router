@@ -1,8 +1,8 @@
 import React from 'react';
 import proxy from './proxy';
+import { join } from './path/helper';
 import { regexFrom, paramsFrom } from './path/regex';
 import { PATH_START, PARENT_END } from './message';
-import { join } from './path/helper';
 
 let unique = 0;
 
