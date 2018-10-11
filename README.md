@@ -64,6 +64,18 @@ ReactDOM.render(
 );
 ```
 
+> Working with ***React Hot Loader***:
+> Both `react-hot-loader` and `less-router` need to wrap the root component. `Routing` **should be** outside of `hot(module)`.
+> ```javascript
+> import Routing from 'less-router';
+> import { hot } from 'react-hot-loader';
+>
+> class App extends React.Component {
+> }
+> export default Routing(hot(module)(App)); // Works well!
+> // export default hot(module)(Routing(App)); // Got errors..
+> ```
+
 ## Change route
 ```javascript
 import Routing from 'less-router';

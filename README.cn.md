@@ -78,6 +78,18 @@ ReactDOM.render(
 );
 ```
 
+> 兼容 ***React Hot Loader***:
+> `react-hot-loader`和`less-router`都需要对根组件进行包装。此时，`Routing`**必须**放在`hot(module)`外面。
+> ```javascript
+> import Routing from 'less-router';
+> import { hot } from 'react-hot-loader';
+>
+> class App extends React.Component {
+> }
+> export default Routing(hot(module)(App)); // 正常运作
+> // export default hot(module)(Routing(App)); // 会报错
+> ```
+
 ## 改变路由
 ```javascript
 import Routing from 'less-router';
