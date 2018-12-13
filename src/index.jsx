@@ -2,6 +2,7 @@ import React from 'react';
 import Router from './router';
 import Route from './route';
 import NotFound from './404';
+import Async from './async';
 import proxy from './proxy';
 import A from './a';
 
@@ -22,6 +23,7 @@ const Routing = Component => props => {
 };
 
 export default Routing;
-export { Routing, A };
+export { Routing, A, Async };
 Routing.Routing = Routing;
 Routing.A = A;
+Routing.Async = Async;
