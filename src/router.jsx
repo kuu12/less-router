@@ -15,7 +15,7 @@ class Router extends React.Component {
         this[404] = {};
 
         this.state = this.location;
-        this.html = this.props.htmlFile || 'index.html';
+        this.html = props.htmlFile || 'index.html';
 
         this.queue = [];
         this[0] = history.length;
@@ -24,7 +24,9 @@ class Router extends React.Component {
 
         this.match = match;
         this.params = params;
+
         proxy.router = this;
+        if (props.global) window[props.global] = this;
     }
     componentWillUnmount() {
         proxy.router = null;
