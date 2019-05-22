@@ -1,5 +1,6 @@
 import React from 'react';
 import Routing from '../src';
+import preview from './preview-code';
 
 class NotFound extends React.Component {
   componentDidMount() {
@@ -11,6 +12,7 @@ class NotFound extends React.Component {
     clearTimeout(this.timer);
   }
   render() {
+    preview();
     return (
       <div id="not-found">
         Nothing to show.

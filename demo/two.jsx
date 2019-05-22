@@ -1,5 +1,6 @@
 import React from 'react';
 import Routing from '../src';
+import preview from './preview-code';
 
 class Two extends React.Component {
   constructor(props) {

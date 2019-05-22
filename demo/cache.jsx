@@ -25,7 +25,7 @@ class Cache extends React.Component {
     clearInterval(this.timer);
   }
   render() {
-    preview(code);
+    if (this.props.router.pathname) preview(code);
 
     const { router } = this.props;
     return (
