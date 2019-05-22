@@ -21,11 +21,11 @@ const indexHtml = fse
     //     'react.production.min.js"></script>\n<script src="/less-router.min.js"></script>'
     // )
     .replace(
-        'https://rawgithub.com/kuu12/router-demo/master/demo.bundle.js',
+        'https://cdn.jsdelivr.net/gh/kuu12/router-demo/master/demo.bundle.js',
         '/demo.bundle.js'
     )
     .replace(
-        'https://rawgithub.com/kuu12/router-demo/master/style.css',
+        'https://cdn.jsdelivr.net/gh/kuu12/router-demo/master/style.css',
         '/style.css'
     )
     .replace(
